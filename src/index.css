@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  /* Corporate Dark Palette */
+  --color-brand-50:  #f9f9f9;
+  --color-brand-100: #ececec;
+  --color-brand-200: #d4d4d4;
+  --color-brand-300: #a8a8a8;
+  --color-brand-400: #6b6b6b;
+  --color-brand-500: #18181B; /* Corporate Near-Black */
+  --color-brand-600: #0f0f11;
+  --color-brand-700: #0a0a0c;
+  --color-brand-800: #060607;
+  --color-brand-900: #030304;
+
+  --color-accent-500: #4DC3D9; /* Logo Text Cyan */
+  
+  --color-dark-950: #0f172a;
+  --color-dark-900: #1e293b;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+
+  --radius-card: 16px;
+  --radius-btn: 8px;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .section-title {
+    @apply text-3xl md:text-4xl font-extrabold mb-4 text-gray-900;
+  }
+  
+  .section-subtitle {
+    @apply text-brand-500 font-bold text-sm uppercase tracking-widest mb-2 block;
+  }
+
+  .btn-primary {
+    @apply bg-brand-500 text-white font-bold py-3 px-6 rounded-md flex items-center justify-center transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-outline {
+    @apply border-2 border-brand-500 text-brand-600 font-bold py-3 px-6 rounded-md flex items-center justify-center transition-all hover:bg-brand-50 active:scale-95;
+  }
+
+  .card-premium {
+    @apply bg-white border border-gray-100 rounded-xl overflow-hidden transition-all hover:shadow-xl;
+  }
+
+  .input-standard {
+    @apply w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-2 outline-none focus:border-brand-500 transition-all;
+  }
+
+  .badge-status {
+    @apply px-2 py-1 rounded text-xs font-bold uppercase;
+  }
+  
+  .badge-status-depot { @apply bg-blue-100 text-blue-700; }
+  .badge-status-sold { @apply bg-green-100 text-green-700; }
+  .badge-status-upcoming { @apply bg-amber-100 text-amber-700; }
+
+  /* Admin Refined Styles */
+  .card-admin {
+    @apply bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden transition-all;
+  }
+
+  .label-admin {
+    @apply block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1;
+  }
+
+  .input-admin {
+    @apply w-full bg-white border-2 border-gray-100 rounded-xl px-4 py-3 outline-none focus:border-brand-500 focus:bg-white transition-all text-gray-900 placeholder:text-gray-300;
+  }
+
+  .input-admin-focused {
+    @apply border-brand-500 ring-4 ring-brand-500/10;
+  }
+}
