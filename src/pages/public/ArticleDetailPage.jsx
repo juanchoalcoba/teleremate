@@ -10,14 +10,22 @@ import {
   Phone,
   Maximize2,
   Info,
+  BookmarkPlus,
+  ShoppingCart,
+  MessageCircle
 } from "lucide-react";
 import { getArticleById } from "../../services/api";
+import ReservationModal from "../../components/modals/ReservationModal";
+import PurchaseModal from "../../components/modals/PurchaseModal";
+import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["article", id],
     queryFn: () => getArticleById(id),
   });
@@ -65,7 +73,7 @@ export default function ArticleDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
-          <div className="aspect-square rounded-[2rem] overflow-hidden border border-gray-100 bg-white relative group shadow-sm">
+          <div className="aspect-square rounded-4xl overflow-hidden border border-gray-100 bg-white relative group shadow-sm">
             <img
               src={currentImage}
               alt={article.title}
@@ -95,13 +103,19 @@ export default function ArticleDetailPage() {
         </div>
 
         <div className="flex flex-col">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 sm:mb-6 tracking-tight leading-tight whitespace-normal">
             {article.title}
           </h1>
 
-          <div className="flex flex-wrap gap-3 mb-8">
+          <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
             <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full">
-              <Tag size={14} className="text-brand-500" /> {article.category}
+              <Tag size={14} className="text-brand-500" />{" "}
+              {({
+                deposito: "En Depósito",
+                remate: "A Rematar",
+                inmueble: "Inmuebles",
+                vehiculo: "Vehículos",
+              }[article.category] || article.category)}
             </div>
             <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full">
               <ShieldCheck size={14} className="text-brand-500" />{" "}
@@ -109,47 +123,124 @@ export default function ArticleDetailPage() {
             </div>
           </div>
 
-          <div className="flex-1 bg-white border border-gray-50 rounded-3xl p-8 mb-8">
+          <div className="flex-1 bg-white border border-gray-50 rounded-3xl p-6 sm:p-8 mb-6 sm:mb-8">
             <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">
               Información del lote
             </h3>
-            <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+            <p className="text-gray-600 leading-relaxed text-sm sm:text-sm md:text-base">
               {article.description}
             </p>
           </div>
 
-          <div className="bg-dark-950 text-white p-8 rounded-[2rem] shadow-xl">
+          <div className="bg-dark-950 text-white p-8 rounded-4xl shadow-xl">
             <div className="flex items-end justify-between gap-4 mb-8">
               <div>
-                <p className="text-gray-500 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
+                <p className="text-gray-400 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
                   Inversión estimada
                 </p>
-                <p className="text-4xl font-black text-white">
-                  $ {article.estimatedPrice?.toLocaleString("es-UY")}
+                <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
+                  UYU $ {article.estimatedPrice?.toLocaleString("es-UY")}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-brand-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
-                  Remate
-                </p>
-                <div className="flex items-center gap-2 text-white font-bold italic">
-                  <Calendar size={18} />{" "}
-                  {article.auctionDate
-                    ? new Date(article.auctionDate).toLocaleDateString("es-UY")
-                    : "Próximamente"}
-                </div>
+                {article.category === "remate" ? (
+                  <>
+                    <p className="text-brand-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
+                      Fecha de Remate
+                    </p>
+                    <div className="flex items-center gap-2 text-brand-400 font-black italic justify-end">
+                      <Calendar size={18} />{" "}
+                      {article.auctionDate 
+                        ? new Date(article.auctionDate).toLocaleDateString("es-UY")
+                        : "Fecha a confirmar"}
+                    </div>
+                  </>
+                ) : article.reservedUntil && (
+                  <>
+                    <p className="text-orange-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
+                      Reservado hasta
+                    </p>
+                    <div className="flex items-center gap-2 text-orange-400 font-bold italic justify-end animate-pulse">
+                      <Calendar size={18} />{" "}
+                      {new Date(article.reservedUntil).toLocaleDateString("es-UY")}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-            <a
-              href={`https://wa.me/59899626385?text=Hola, consulto por el lote ${article.title}`}
-              target="_blank"
-              className="btn-primary bg-green-700 w-full py-5 text-base shadow-lg shadow-brand-500/20"
-            >
-              <Phone size={18} className="mr-3" /> Consultar por WhatsApp
-            </a>
+
+            {/* Status Badge */}
+            {(article.status === "reserved" || article.hasActiveReservation) && (
+              <div className="mb-4 p-3 bg-orange-500/20 border border-orange-500/50 rounded-2xl flex flex-col items-center">
+                <p className="text-orange-400 font-black text-center text-sm tracking-widest uppercase">
+                  Reservado
+                </p>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              {(article.status !== "sold" && article.status !== "reserved" && article.category !== "remate") && (
+                <>
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <button
+                      onClick={() => setShowReservationModal(true)}
+                      disabled={article.hasActiveReservation || article.hasActivePurchase}
+                      className={`flex items-center justify-center gap-1 px-3 py-2 text-sm font-semibold rounded-lg transition-all transform ${
+                        article.hasActiveReservation || article.hasActivePurchase
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
+                          : "bg-gradient-to-r from-brand-500 to-brand-600 text-white hover:shadow-lg hover:scale-105 active:scale-95"
+                      }`}
+                    >
+                      <BookmarkPlus size={18} /> Reservar
+                    </button>
+                    <button
+                      onClick={() => setShowPurchaseModal(true)}
+                      disabled={article.hasActiveReservation || article.hasActivePurchase}
+                      className={`flex items-center justify-center gap-1 px-3 py-2 text-sm font-semibold rounded-lg transition-all transform ${
+                        article.hasActiveReservation || article.hasActivePurchase
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
+                          : "bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-lg hover:scale-105 active:scale-95"
+                      }`}
+                    >
+                      <ShoppingCart size={18} /> Comprar
+                    </button>
+                  </div>
+                </>
+              )}
+              <a
+                href={getWALink(TELEREMATE_WA, WAMessages.inquiry(article.lotNumber, article.title))}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary bg-green-700 w-full py-3 text-[13px] sm:text-sm whitespace-nowrap shadow-md shadow-brand-500/10 flex items-center justify-center gap-2"
+              >
+                <MessageCircle size={18} className="shrink-0" />  Consultar por WhatsApp
+              </a>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {showReservationModal && (
+        <ReservationModal
+          articleId={id}
+          onClose={() => setShowReservationModal(false)}
+          onSuccess={() => {
+            refetch();
+          }}
+        />
+      )}
+
+      {showPurchaseModal && (
+        <PurchaseModal
+          articleId={id}
+          onClose={() => setShowPurchaseModal(false)}
+          onSuccess={() => {
+            refetch();
+          }}
+        />
+      )}
     </div>
   );
 }

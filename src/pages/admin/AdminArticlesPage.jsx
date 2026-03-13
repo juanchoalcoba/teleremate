@@ -17,33 +17,34 @@ import {
   deleteArticle,
   updateArticle,
 } from "../../services/api";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-const STATUS_BADGES = {
-  depot: "badge-depot",
-  upcoming: "badge-upcoming",
-  sold: "badge-sold",
+const CATEGORY_LABELS = {
+  deposito: "En Depósito",
+  remate: "A Rematar",
+  inmueble: "Inmuebles",
+  vehiculo: "Vehículos",
 };
 
-const STATUS_LABELS = {
-  depot: "En Depósito",
-  upcoming: "Próximo Remate",
-  sold: "Vendido",
+const CATEGORY_BADGES = {
+  deposito: "bg-blue-50 text-blue-600",
+  remate: "bg-amber-50 text-amber-600",
+  inmueble: "bg-purple-50 text-purple-600",
+  vehiculo: "bg-green-50 text-green-600",
 };
 
 export default function AdminArticlesPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin-articles", { search, page, status: statusFilter }],
+    queryKey: ["admin-articles", { search, page, category: categoryFilter }],
     queryFn: () =>
-      getAdminArticles({ search, page, status: statusFilter, limit: 10 }),
+      getAdminArticles({ search, page, category: categoryFilter, limit: 10 }),
   });
 
   const deleteMutation = useMutation({
@@ -55,11 +56,12 @@ export default function AdminArticlesPage() {
     onError: () => toast.error("Error al eliminar artículo"),
   });
 
-  const statusMutation = useMutation({
-    mutationFn: ({ id, status }) => updateArticle(id, { status }),
+  const categoryMutation = useMutation({
+    mutationFn: ({ id, category }) => updateArticle(id, { category }),
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-articles"]);
-      toast.success("Estado actualizado");
+      queryClient.invalidateQueries(["article"]);
+      toast.success("Categoría actualizada");
     },
   });
 
@@ -117,16 +119,17 @@ export default function AdminArticlesPage() {
         <div className="flex gap-2 sm:gap-4">
           <select
             className="input flex-1 sm:w-48"
-            value={statusFilter}
+            value={categoryFilter}
             onChange={(e) => {
-              setStatusFilter(e.target.value);
+              setCategoryFilter(e.target.value);
               setPage(1);
             }}
           >
-            <option value="">Todos los estados</option>
-            <option value="depot">En Depósito</option>
-            <option value="upcoming">Próximo Remate</option>
-            <option value="sold">Vendidos</option>
+            <option value="">Todas las categorías</option>
+            <option value="deposito">En Depósito</option>
+            <option value="remate">A Rematar</option>
+            <option value="inmueble">Inmuebles</option>
+            <option value="vehiculo">Vehículos</option>
           </select>
           <button className="btn-secondary px-3 lg:hidden">
             <Filter size={18} />
@@ -135,27 +138,27 @@ export default function AdminArticlesPage() {
       </div>
 
       {/* Table */}
-      <div className="card bg-white border border-gray-100">
+      <div className="card bg-white border border-gray-100 max-w-full mx-auto">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[30%]">
                   Artículo
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[10%]">
                   Lote
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[15%]">
                   Categoría
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[15%]">
                   Precio Est.
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[15%]">
                   Estado
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest text-right sticky right-0 bg-gray-50 z-10 w-[15%]">
                   Acciones
                 </th>
               </tr>
@@ -192,9 +195,9 @@ export default function AdminArticlesPage() {
                     key={item._id}
                     className="hover:bg-gray-50/50 transition-colors group"
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
                           <img
                             src={item.images?.[0]?.url}
                             alt=""
@@ -202,78 +205,74 @@ export default function AdminArticlesPage() {
                           />
                         </div>
                         <div className="min-w-0">
-                          <p className="font-bold text-gray-900 group-hover:text-brand-600 transition-colors truncate max-w-[200px]">
+                          <p className="font-bold text-gray-900 text-sm truncate max-w-[250px]">
                             {item.title}
                           </p>
-                          <p className="text-[10px] text-gray-400 uppercase tracking-wider">
+                          <p className="text-[10px] text-gray-400 uppercase font-bold tracking-tight">
                             {item.condition}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <code className="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-600">
+                    <td className="px-4 py-4">
+                      <code className="text-[10px] font-mono bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded text-gray-500">
                         {item.lotNumber}
                       </code>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-4 py-4 text-xs text-gray-500">
                       {item.category}
                     </td>
-                    <td className="px-6 py-4 font-semibold text-gray-900">
-                      $ {item.estimatedPrice.toLocaleString("es-UY")}
+                    <td className="px-4 py-4 text-xs font-black text-gray-900 whitespace-nowrap">
+                      ${item.estimatedPrice.toLocaleString("es-UY")}
                     </td>
-                    <td className="px-6 py-4">
-                      <select
-                        className={`text-xs font-bold px-2 py-1 rounded-full border-none cursor-pointer focus:ring-0 ${
-                          item.status === "depot"
-                            ? "bg-blue-100 text-blue-700"
-                            : item.status === "upcoming"
-                              ? "bg-amber-100 text-amber-700"
-                              : "bg-green-100 text-green-700"
-                        }`}
-                        value={item.status}
-                        onChange={(e) =>
-                          statusMutation.mutate({
-                            id: item._id,
-                            status: e.target.value,
-                          })
-                        }
-                      >
-                        <option value="depot">En Depósito</option>
-                        <option value="upcoming">Próximo Remate</option>
-                        <option value="sold">Vendido</option>
-                      </select>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <div className="relative group/select w-fit">
+                        <select
+                          className={`appearance-none text-xs font-black uppercase tracking-widest pl-3 pr-8 py-2 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-offset-1 transition-all shadow-sm ${
+                            CATEGORY_BADGES[item.category] || "bg-gray-50 text-gray-600"
+                          }`}
+                          value={item.category}
+                          onChange={(e) =>
+                            categoryMutation.mutate({
+                              id: item._id,
+                              category: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="deposito">EN DEPÓSITO</option>
+                          <option value="remate">A REMATAR</option>
+                          <option value="inmueble">INMUEBLES</option>
+                          <option value="vehiculo">VEHÍCULOS</option>
+                        </select>
+                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-current opacity-50">
+                          <MoreHorizontal size={14} />
+                        </div>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                    <td className="px-4 py-4 text-right sticky right-0 bg-white group-hover:bg-gray-50/50 transition-colors z-10 border-l border-gray-50/50">
+                      <div className="flex items-center justify-end gap-1">
                         <Link
                           to={`/articulo/${item._id}`}
                           target="_blank"
-                          className="p-2 text-gray-500 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
-                          title="Ver en el sitio"
+                          className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
+                          title="Ver"
                         >
-                          <ExternalLink size={16} />
+                          <ExternalLink size={14} />
                         </Link>
                         <Link
                           to={`/backoffice/articulos/editar/${item._id}`}
-                          className="p-2 text-gray-500 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-all"
+                          className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-all"
                           title="Editar"
                         >
-                          <Edit2 size={16} />
+                          <Edit2 size={14} />
                         </Link>
                         <button
                           onClick={() => handleDelete(item._id)}
-                          className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                          title="Eliminar"
+                          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                          title="Borrar"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={14} />
                         </button>
-                      </div>
-                      <div className="hidden md:block group-hover:hidden">
-                        <MoreHorizontal
-                          size={16}
-                          className="text-gray-300 ml-auto"
-                        />
                       </div>
                     </td>
                   </tr>

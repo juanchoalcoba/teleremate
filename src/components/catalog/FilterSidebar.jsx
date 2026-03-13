@@ -2,21 +2,13 @@ import { useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 
 const CATEGORIES = [
-  "Muebles",
-  "Electrodomésticos",
-  "Electrónica",
-  "Arte",
-  "Joyería",
-  "Vehículos",
-  "Ropa",
-  "Herramientas",
-  "Libros",
-  "Otros",
+  { value: "deposito", label: "En Depósito" },
+  { value: "remate", label: "A Rematar" },
+  { value: "inmueble", label: "Inmuebles" },
+  { value: "vehiculo", label: "Vehículos" },
 ];
 const STATUSES = [
-  { value: "depot", label: "En Depósito" },
-  { value: "upcoming", label: "Próximo Remate" },
-  { value: "sold", label: "Vendido" },
+  { value: "reserved", label: "Reservado" },
 ];
 const CONDITIONS = ["Excelente", "Muy bueno", "Bueno", "Regular"];
 
@@ -37,7 +29,7 @@ export default function FilterSidebar({ filters, onChange }) {
     filters.category || filters.status || filters.minPrice || filters.maxPrice;
 
   const panel = (
-    <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] p-5 space-y-6">
+    <div className="bg-white rounded-2xl shadow-(--shadow-card) p-5 space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="font-bold text-gray-900 font-display">Filtros</h3>
         {hasFilters && (
@@ -58,15 +50,15 @@ export default function FilterSidebar({ filters, onChange }) {
         <div className="flex flex-col gap-1">
           {CATEGORIES.map((cat) => (
             <button
-              key={cat}
-              onClick={() => handleCategory(cat)}
+              key={cat.value}
+              onClick={() => handleCategory(cat.value)}
               className={`text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
-                filters.category === cat
+                filters.category === cat.value
                   ? "bg-brand-500 text-white font-medium"
                   : "text-gray-600 hover:bg-gray-50"
               }`}
             >
-              {cat}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -95,25 +87,31 @@ export default function FilterSidebar({ filters, onChange }) {
       </div>
 
       {/* Price range */}
-      <div>
-        <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-          Precio Estimado ($)
+      <div className="pt-2 border-t border-gray-50">
+        <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+          Rango de Precio (UYU)
         </h4>
-        <div className="flex gap-2">
-          <input
-            type="number"
-            placeholder="Mín"
-            value={filters.minPrice}
-            onChange={(e) => onChange({ minPrice: e.target.value })}
-            className="input"
-          />
-          <input
-            type="number"
-            placeholder="Máx"
-            value={filters.maxPrice}
-            onChange={(e) => onChange({ maxPrice: e.target.value })}
-            className="input"
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="relative group">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-300 group-focus-within:text-brand-500 transition-colors">$</span>
+            <input
+              type="number"
+              placeholder="Min"
+              value={filters.minPrice}
+              onChange={(e) => onChange({ minPrice: e.target.value })}
+              className="w-full pl-6 pr-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold outline-none focus:border-brand-500 focus:bg-white transition-all placeholder:text-gray-300"
+            />
+          </div>
+          <div className="relative group">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-300 group-focus-within:text-brand-500 transition-colors">$</span>
+            <input
+              type="number"
+              placeholder="Max"
+              value={filters.maxPrice}
+              onChange={(e) => onChange({ maxPrice: e.target.value })}
+              className="w-full pl-6 pr-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold outline-none focus:border-brand-500 focus:bg-white transition-all placeholder:text-gray-300 transition-all"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -122,7 +120,7 @@ export default function FilterSidebar({ filters, onChange }) {
   return (
     <>
       {/* Desktop */}
-      <div className="hidden md:block w-56 flex-shrink-0 sticky top-24 self-start">
+      <div className="hidden md:block w-56 shrink-0 sticky top-24 self-start">
         {panel}
       </div>
 

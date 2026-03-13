@@ -8,12 +8,18 @@ import {
   ChevronRight,
   Menu,
   X,
+  BookmarkCheck,
+  ShoppingCart,
+  ClipboardList,
 } from "lucide-react";
 import useAuthStore from "../store/authStore";
 
 const navItems = [
   { to: "/backoffice", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/backoffice/articulos", label: "Inventario", icon: Package },
+  { to: "/backoffice/reservas", label: "Reservas", icon: BookmarkCheck },
+  { to: "/backoffice/compras", label: "Compras", icon: ShoppingCart },
+  { to: "/backoffice/pedidos", label: "Pedidos", icon: ClipboardList },
 ];
 
 export default function AdminLayout() {
@@ -55,7 +61,7 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside
         className={`
-        fixed inset-y-0 left-0 w-64 bg-dark-900 text-white z-50 transform transition-transform duration-300 lg:translate-x-0 flex flex-col
+        fixed inset-y-0 left-0 w-60 bg-dark-900 text-white z-50 transform transition-transform duration-300 lg:translate-x-0 flex flex-col
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}
       >
@@ -83,7 +89,7 @@ export default function AdminLayout() {
               end={end}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all relative ${
                   isActive
                     ? "bg-brand-500 text-white shadow-lg shadow-brand-500/20"
                     : "text-gray-400 hover:bg-dark-800 hover:text-white"
@@ -92,9 +98,7 @@ export default function AdminLayout() {
             >
               <Icon size={18} />
               {label}
-              {({ isActive }) =>
-                isActive && <ChevronRight size={14} className="ml-auto" />
-              }
+              <ChevronRight size={14} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
             </NavLink>
           ))}
         </nav>
@@ -122,8 +126,8 @@ export default function AdminLayout() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen pt-16 lg:pt-0 lg:pl-64 min-w-0 w-full overflow-x-hidden">
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto min-w-0 overflow-x-hidden">
+      <div className="flex-1 flex flex-col min-h-screen pt-16 lg:pt-0 lg:pl-60 min-w-0 w-full overflow-x-hidden">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1700px] w-full mx-auto min-w-0 overflow-x-hidden">
           <Outlet />
         </main>
       </div>

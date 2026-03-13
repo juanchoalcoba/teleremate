@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
@@ -8,6 +9,7 @@ import "lenis/dist/lenis.css";
  */
 export default function SmoothScroll({ children }) {
   const lenisRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     // Initialize Lenis
@@ -38,6 +40,15 @@ export default function SmoothScroll({ children }) {
       lenis.destroy();
     };
   }, []);
+
+  // Reset scroll to top on every route change
+  useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   return <>{children}</>;
 }

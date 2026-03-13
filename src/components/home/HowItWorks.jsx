@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Gavel, Shield, TrendingUp, ArrowRight } from "lucide-react";
+import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 
 const steps = [
   {
@@ -9,6 +11,7 @@ const steps = [
     tag: "Catálogo verificado",
     desc: "Navegá nuestro catálogo completo de artículos verificados y encontrá exactamente lo que buscás.",
     cta: "Ver catálogo",
+    link: "/catalogo",
   },
   {
     number: "02",
@@ -17,20 +20,31 @@ const steps = [
     tag: "Atención directa",
     desc: "Pedí más información, coordiná para ver el lote en persona o contactanos por WhatsApp.",
     cta: "Hablar con un asesor",
+    isWhatsApp: true,
   },
   {
     number: "03",
     icon: Shield,
-    title: "Comprá",
+    title: "Compra y Vende",
     tag: "100% seguro",
-    desc: "Participá del remate de forma segura y retirá tu compra en nuestras instalaciones.",
-    cta: "Participar ahora",
+    desc: "Participá de nuestros remates de forma segura o envianos tus artículos para vender con nosotros.",
+    cta: "Contactar ahora",
+    link: "/vender",
   },
 ];
 
 function StepCard({ step, index, isVisible }) {
+  const navigate = useNavigate();
   const Icon = step.icon;
   const delay = index * 150;
+
+  const handleClick = () => {
+    if (step.link) {
+      navigate(step.link);
+    } else if (step.isWhatsApp) {
+      window.open(getWALink(TELEREMATE_WA, WAMessages.general), "_blank");
+    }
+  };
 
   return (
     <div
@@ -40,6 +54,7 @@ function StepCard({ step, index, isVisible }) {
         transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
       }}
       className="group relative flex flex-col"
+      onClick={handleClick}
     >
       {/* Card */}
       <div
@@ -54,7 +69,7 @@ function StepCard({ step, index, isVisible }) {
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
           style={{
             background:
-              "radial-gradient(circle at 50% 0%, rgba(249,115,22,0.1) 0%, transparent 90%)",
+              "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 90%)",
           }}
         />
 
@@ -63,7 +78,7 @@ function StepCard({ step, index, isVisible }) {
           className="absolute top-0 left-0 right-0 h-px"
           style={{
             background:
-              "linear-gradient(90deg, transparent, rgba(234,179,8,0.6), transparent)",
+              "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
           }}
         />
 
@@ -84,9 +99,9 @@ function StepCard({ step, index, isVisible }) {
             <span
               className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mt-2"
               style={{
-                background: "rgba(249,115,22,0.13)",
-                color: "#f97316",
-                border: "1px solid rgba(249,115,22,0.22)",
+                background: "rgba(255,255,255,0.05)",
+                color: "#ffffff",
+                border: "1px solid rgba(255,255,255,0.2)",
               }}
             >
               {step.tag}
@@ -97,11 +112,11 @@ function StepCard({ step, index, isVisible }) {
           <div
             className="mb-5 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
             style={{
-              background: "rgba(249,115,22,0.12)",
-              border: "1px solid rgba(249,115,22,0.22)",
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.2)",
             }}
           >
-            <Icon size={22} style={{ color: "#f97316" }} />
+            <Icon size={22} style={{ color: "#ffffff" }} />
           </div>
 
           {/* Title */}
@@ -115,15 +130,15 @@ function StepCard({ step, index, isVisible }) {
           {/* Desc */}
           <p
             className="text-sm leading-relaxed mb-8 flex-1"
-            style={{ color: "#666" }}
+            style={{ color: "#999" }}
           >
             {step.desc}
           </p>
 
           {/* CTA */}
           <div
-            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest group/cta"
-            style={{ color: "#f97316" }}
+            className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest group/cta transition-colors hover:text-white"
+            style={{ color: "#ffffff" }}
           >
             <span>{step.cta}</span>
             <ArrowRight
@@ -140,7 +155,7 @@ function StepCard({ step, index, isVisible }) {
         />
         <div
           className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500"
-          style={{ background: "linear-gradient(90deg, #f97316, #ea580c)" }}
+          style={{ background: "linear-gradient(90deg, #ffffff, #aaaaaa)" }}
         />
       </div>
     </div>
@@ -172,8 +187,8 @@ export default function HowItWorks() {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(249,115,22,0.04) 0%, transparent 50%),
-          radial-gradient(circle at 80% 20%, rgba(249,115,22,0.05) 0%, transparent 40%)`,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255,255,255,0.02) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 40%)`,
         }}
       />
 
@@ -198,10 +213,10 @@ export default function HowItWorks() {
           }}
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="h-px w-8" style={{ background: "#f97316" }} />
+            <div className="h-px w-8" style={{ background: "#ffffff" }} />
             <span
               className="text-xs font-bold uppercase tracking-[0.4em]"
-              style={{ color: "#f97316" }}
+              style={{ color: "#ffffff" }}
             >
               Guía rápida
             </span>
@@ -214,12 +229,12 @@ export default function HowItWorks() {
             >
               ¿Cómo
               <br />
-              <span style={{ color: "#f97316" }}>funciona?</span>
+              <span style={{ color: "#ffffff" }}>funciona?</span>
             </h2>
 
             <p
               className="text-sm leading-relaxed max-w-xs md:text-right"
-              style={{ color: "#555" }}
+              style={{ color: "#888" }}
             >
               En tres simples pasos podés participar de nuestros remates y
               conseguir lo que buscás.
@@ -244,13 +259,13 @@ export default function HowItWorks() {
             transition: "opacity 0.7s ease 600ms",
           }}
         >
-          <p className="text-xs" style={{ color: "#444" }}>
+          <p className="text-xs" style={{ color: "#888" }}>
             Más de <span className="text-white font-semibold">2.400 lotes</span>{" "}
             rematados exitosamente
           </p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs" style={{ color: "#444" }}>
+            <span className="text-xs" style={{ color: "#888" }}>
               Remate en curso
             </span>
           </div>

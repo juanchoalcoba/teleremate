@@ -20,42 +20,37 @@ export default function ArticleCard({ article }) {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          <span
-            className={`badge-status ${
-              status === "sold"
-                ? "badge-status-sold"
-                : status === "depot"
-                  ? "badge-status-depot"
-                  : "badge-status-upcoming"
-            }`}
-          >
-            {status === "sold"
-              ? "Vendido"
-              : status === "depot"
-                ? "En Depósito"
-                : "Próximo"}
-          </span>
+          {status === "reserved" && (
+            <span className="badge-status badge-status-reserved">
+              Reservado
+            </span>
+          )}
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col flex-grow">
+      <div className="p-5 flex flex-col grow">
         <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
           <Tag size={10} className="text-brand-500" />{" "}
-          {category || "Sin Categoría"}
+          {({
+            deposito: "En Depósito",
+            remate: "A Rematar",
+            inmueble: "Inmuebles",
+            vehiculo: "Vehículos",
+          }[category] || category || "Sin Categoría")}
         </div>
 
-        <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors">
+        <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">
           {title}
         </h3>
 
-        <div className="mt-auto flex items-end justify-between pt-4 border-t border-gray-100">
+        <div className="mt-auto flex items-end justify-between pt-2 border-t border-gray-100">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
               Precio Base
             </p>
             <p className="text-lg font-black text-brand-500">
-              <span className="text-xs mr-1 opacity-70">USD</span>
+              <span className="text-xs mr-1 opacity-70">UYU</span>
               {(price || estimatedPrice)?.toLocaleString() || "0"}
             </p>
           </div>

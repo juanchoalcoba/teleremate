@@ -10,10 +10,14 @@ import {
   Instagram,
   MapPin,
 } from "lucide-react";
+import { getWALink, WAMessages, TELEREMATE_WA } from "../utils/whatsapp";
+import TermsModal from "../components/modals/TermsModal";
+import InstallPWA from "../components/common/InstallPWA";
 
 const PublicLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -25,13 +29,14 @@ const PublicLayout = () => {
   const navLinks = [
     { to: "/", label: "Inicio" },
     { to: "/catalogo", label: "Catálogo" },
+    { to: "/vender", label: "Vender" },
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* ── TOP CONTACT BAR ── */}
       <div className="hidden md:block bg-brand-500 text-white py-1.5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-[11px] font-bold uppercase tracking-widest">
+        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-[11px] font-bold  tracking-widest">
           <a
             href="tel:099626385"
             className="flex items-center gap-2 hover:text-white/80 transition-colors"
@@ -42,7 +47,7 @@ const PublicLayout = () => {
             href="mailto:contacto@teleremate.com.uy"
             className="flex items-center gap-2 hover:text-white/80 transition-colors"
           >
-            <Mail size={12} /> contacto@teleremate.com.uy
+            <Mail size={12} /> contacto@tele-remate.com.uy
           </a>
         </div>
       </div>
@@ -64,9 +69,16 @@ const PublicLayout = () => {
                 alt="Teleremate"
                 className="h-14 w-auto object-contain transition-transform group-hover:scale-105"
               />
-              <span className="hidden sm:block font-black text-white text-sm uppercase tracking-[0.15em] leading-none">
-                Tele<span className="text-gray-300">remate</span>
-              </span>
+              <div className="flex items-center gap-2.5">
+                <span className="hidden sm:block font-black text-white text-sm uppercase tracking-[0.15em] leading-none">
+                  Tele<span className="text-gray-300">remate</span>
+                </span>
+                <img
+                  src="https://flagcdn.com/w20/uy.png"
+                  alt="Uruguay"
+                  className="h-3.5 w-auto sm:h-2.5 rounded-[1px] opacity-70 sm:opacity-60 border border-white/10 shadow-sm"
+                />
+              </div>
             </Link>
 
             {/* Desktop Nav */}
@@ -94,12 +106,42 @@ const PublicLayout = () => {
 
             {/* CTA + Hamburger */}
             <div className="flex items-center gap-3">
-              <Link
-                to="/catalogo"
-                className="hidden md:inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-500/30 active:scale-95"
-              >
-                Ver Catálogo <ArrowRight size={14} />
-              </Link>
+              {/* Social Icons Desktop */}
+              <div className="hidden md:flex items-center gap-3">
+                <a
+                  target="_blank"
+                  href="https://www.facebook.com/canal6zebra"
+                  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+                  aria-label="Facebook"
+                >
+                  <Facebook size={18} />
+                </a>
+                <a
+                  target="_blank"
+                  href="https://www.instagram.com/teleremate/"
+                  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={18} />
+                </a>
+                <a
+                  href={getWALink(TELEREMATE_WA, WAMessages.general)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-[#25D366] hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+                  aria-label="WhatsApp"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.602 6.602 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
+                  </svg>
+                </a>
+              </div>
               <button
                 className="md:hidden p-2 text-white/80 hover:text-white rounded-xl hover:bg-white/10 transition-all"
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -128,13 +170,40 @@ const PublicLayout = () => {
                 {label}
               </Link>
             ))}
-            <Link
-              to="/catalogo"
-              onClick={() => setMenuOpen(false)}
-              className="mt-2 flex items-center justify-center gap-2 bg-brand-500 text-white font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-xl"
-            >
-              Ver Catálogo <ArrowRight size={14} />
-            </Link>
+            {/* Social Icons Mobile */}
+            <div className="mt-2 flex items-center justify-center gap-4 py-4 border-t border-white/5">
+              <a
+                href="#"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white"
+                aria-label="Facebook"
+              >
+                <Facebook size={20} />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white"
+                aria-label="Instagram"
+              >
+                <Instagram size={20} />
+              </a>
+              <a
+                href={getWALink(TELEREMATE_WA, WAMessages.general)}
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-[#25D366]"
+                aria-label="WhatsApp"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.602 6.602 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
+                </svg>
+              </a>
+            </div>
           </div>
         )}
       </header>
@@ -179,7 +248,7 @@ const PublicLayout = () => {
                   <Instagram size={18} />
                 </a>
                 <a
-                  href="https://wa.me/59899626385"
+                  href={getWALink(TELEREMATE_WA, WAMessages.general)}
                   target="_blank"
                   rel="noreferrer"
                   className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all duration-300 shadow-lg"
@@ -315,16 +384,28 @@ const PublicLayout = () => {
               reservados.
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-gray-500 text-xs font-medium">
-              <a href="#" className="hover:text-white transition-colors">
+              <button
+                onClick={() => setIsTermsOpen(true)}
+                className="hover:text-white transition-colors"
+              >
                 Términos y Condiciones
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
+              </button>
+              <button
+                onClick={() => setIsTermsOpen(true)}
+                className="hover:text-white transition-colors"
+              >
                 Aviso de Privacidad
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Terms & Conditions Modal */}
+      <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
+ 
+      {/* PWA Install Prompt */}
+      <InstallPWA />
     </div>
   );
 };

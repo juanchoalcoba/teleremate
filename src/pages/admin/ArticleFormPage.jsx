@@ -22,16 +22,10 @@ import {
 import { toast } from "react-hot-toast";
 
 const CATEGORIES = [
-  "Muebles",
-  "Electrodomésticos",
-  "Electrónica",
-  "Arte",
-  "Joyería",
-  "Vehículos",
-  "Ropa",
-  "Herramientas",
-  "Libros",
-  "Otros",
+  { value: "deposito", label: "En Depósito" },
+  { value: "remate", label: "A Rematar" },
+  { value: "inmueble", label: "Inmuebles" },
+  { value: "vehiculo", label: "Vehículos" },
 ];
 const CONDITIONS = ["Excelente", "Muy bueno", "Bueno", "Regular"];
 
@@ -45,13 +39,14 @@ export default function ArticleFormPage() {
     lotNumber: "",
     title: "",
     description: "",
-    category: "Muebles",
+    category: "deposito",
     condition: "Bueno",
     status: "depot",
     estimatedPrice: "",
     salePrice: "",
     featured: false,
     auctionDate: "",
+    reservedUntil: "",
   });
 
   const { data: articleData, isLoading: isLoadingArticle } = useQuery({
@@ -67,13 +62,14 @@ export default function ArticleFormPage() {
         lotNumber: art.lotNumber || "",
         title: art.title || "",
         description: art.description || "",
-        category: art.category || "Muebles",
+        category: art.category || "deposito",
         condition: art.condition || "Bueno",
         status: art.status || "depot",
         estimatedPrice: art.estimatedPrice || "",
         salePrice: art.salePrice || "",
         featured: art.featured || false,
         auctionDate: art.auctionDate ? art.auctionDate.split("T")[0] : "",
+        reservedUntil: art.reservedUntil ? art.reservedUntil.split("T")[0] : "",
       });
     }
   }, [articleData]);
@@ -129,10 +125,21 @@ export default function ArticleFormPage() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const newData = {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+      
+      // Auto-set status if category is remate
+      if (name === "category" && value === "remate") {
+        newData.status = "upcoming";
+      } else if (name === "category" && value === "deposito") {
+        newData.status = "depot";
+      }
+      
+      return newData;
+    });
   };
 
   if (isEdit && isLoadingArticle) {
@@ -200,8 +207,8 @@ export default function ArticleFormPage() {
                   className="input-admin"
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
+                    <option key={c.value} value={c.value}>
+                      {c.label}
                     </option>
                   ))}
                 </select>
@@ -340,26 +347,45 @@ export default function ArticleFormPage() {
             <h3 className="font-bold text-gray-900 mb-4">Publicación</h3>
             <div className="space-y-4">
               <div>
-                <label className="label-admin">Estado de Venta</label>
+                <label className="label-admin">Categoría del Catálogo</label>
                 <select
-                  name="status"
-                  value={formData.status}
+                  name="category"
+                  value={formData.category}
                   onChange={handleChange}
                   className="input-admin text-sm"
                 >
-                  <option value="depot">En Depósito</option>
-                  <option value="upcoming">Próximo Remate</option>
-                  <option value="sold">Vendido</option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              {formData.status === "upcoming" && (
-                <div>
-                  <label className="label-admin">Fecha del Remate</label>
+              {(formData.status === "upcoming" || formData.category === "remate") && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                  <label className="label-admin flex items-center justify-between">
+                    Fecha del Remate
+                    <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black">REQUERIDO</span>
+                  </label>
                   <input
                     name="auctionDate"
                     type="date"
                     value={formData.auctionDate}
+                    onChange={handleChange}
+                    required={formData.category === "remate"}
+                    className="input-admin text-sm border-amber-200 focus:border-amber-500 bg-amber-50/30"
+                  />
+                </div>
+              )}
+ 
+              {formData.status === "reserved" && (
+                <div>
+                  <label className="label-admin">Reservado Hasta</label>
+                  <input
+                    name="reservedUntil"
+                    type="date"
+                    value={formData.reservedUntil}
                     onChange={handleChange}
                     className="input-admin text-sm"
                   />

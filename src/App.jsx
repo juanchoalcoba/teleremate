@@ -17,6 +17,12 @@ import LoginPage from "./pages/admin/LoginPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import AdminArticlesPage from "./pages/admin/AdminArticlesPage";
 import ArticleFormPage from "./pages/admin/ArticleFormPage";
+import ReservationsPage from "./pages/admin/ReservationsPage";
+import PurchasesPage from "./pages/admin/PurchasesPage";
+import AdminSubmissionsPage from "./pages/admin/AdminSubmissionsPage";
+
+// Features
+import SellPage from "./pages/public/SellPage";
 
 // Auth Guard
 import useAuthStore from "./store/authStore";
@@ -47,6 +53,7 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="catalogo" element={<CatalogPage />} />
               <Route path="articulo/:id" element={<ArticleDetailPage />} />
+              <Route path="vender" element={<SellPage />} />
             </Route>
 
             {/* Admin Auth */}
@@ -68,6 +75,9 @@ function App() {
                 path="articulos/editar/:id"
                 element={<ArticleFormPage />}
               />
+              <Route path="reservas" element={<ReservationsPage />} />
+              <Route path="compras" element={<PurchasesPage />} />
+              <Route path="pedidos" element={<AdminSubmissionsPage />} />
             </Route>
 
             {/* 404 Redirect */}
