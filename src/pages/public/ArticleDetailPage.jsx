@@ -15,9 +15,9 @@ import {
   MessageCircle
 } from "lucide-react";
 import { getArticleById } from "../../services/api";
-import ReservationModal from "../../components/modals/ReservationModal";
 import PurchaseModal from "../../components/modals/PurchaseModal";
 import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
+import { getImageUrl } from "../../utils/imageUtils";
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
@@ -58,9 +58,9 @@ export default function ArticleDetailPage() {
   }
 
   const article = data.data;
-  const currentImage =
-    article.images?.[activeImageIdx]?.url ||
-    "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=800";
+  const currentImage = getImageUrl(
+    article.images?.[activeImageIdx]?.url
+  ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=800";
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -92,7 +92,7 @@ export default function ArticleDetailPage() {
                   className={`aspect-square rounded-2xl overflow-hidden border-2 transition-all ${activeImageIdx === idx ? "border-brand-500 shadow-md ring-2 ring-brand-50" : "border-transparent opacity-60 hover:opacity-100"}`}
                 >
                   <img
-                    src={img.url}
+                    src={getImageUrl(img.url)}
                     alt=""
                     className="w-full h-full object-cover"
                   />

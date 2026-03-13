@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -22,7 +20,9 @@ import {
 } from "lucide-react";
 import { getDashboard } from "../../services/api";
 import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/imageUtils";
 
+// eslint-disable-next-line no-unused-vars
 function KPICard({ title, value, icon: Icon, color, trend }) {
   const colors = {
     blue: "bg-blue-50 text-blue-600 border-blue-100",
@@ -206,7 +206,7 @@ export default function DashboardPage() {
               >
                 <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden shrink-0">
                   <img
-                    src={item.images?.[0]?.url}
+                    src={getImageUrl(item.images?.[0]?.url)}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />

@@ -19,6 +19,7 @@ import {
 } from "../../services/api";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { getImageUrl } from "../../utils/imageUtils";
 
 const CATEGORY_LABELS = {
   deposito: "En Depósito",
@@ -199,7 +200,7 @@ export default function AdminArticlesPage() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-100">
                           <img
-                            src={item.images?.[0]?.url}
+                            src={getImageUrl(item.images?.[0]?.url)}
                             alt=""
                             className="w-full h-full object-cover"
                           />

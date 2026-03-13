@@ -9,7 +9,6 @@ import {
   Loader2,
   Image as ImageIcon,
   AlertCircle,
-  Trash2,
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import {
@@ -20,6 +19,7 @@ import {
   deleteImage,
 } from "../../services/api";
 import { toast } from "react-hot-toast";
+import { getImageUrl } from "../../utils/imageUtils";
 
 const CATEGORIES = [
   { value: "deposito", label: "En Depósito" },
@@ -58,19 +58,21 @@ export default function ArticleFormPage() {
   useEffect(() => {
     if (articleData?.data) {
       const art = articleData.data;
-      setFormData({
-        lotNumber: art.lotNumber || "",
-        title: art.title || "",
-        description: art.description || "",
-        category: art.category || "deposito",
-        condition: art.condition || "Bueno",
-        status: art.status || "depot",
-        estimatedPrice: art.estimatedPrice || "",
-        salePrice: art.salePrice || "",
-        featured: art.featured || false,
-        auctionDate: art.auctionDate ? art.auctionDate.split("T")[0] : "",
-        reservedUntil: art.reservedUntil ? art.reservedUntil.split("T")[0] : "",
-      });
+      setTimeout(() => {
+        setFormData({
+          lotNumber: art.lotNumber || "",
+          title: art.title || "",
+          description: art.description || "",
+          category: art.category || "deposito",
+          condition: art.condition || "Bueno",
+          status: art.status || "depot",
+          estimatedPrice: art.estimatedPrice || "",
+          salePrice: art.salePrice || "",
+          featured: art.featured || false,
+          auctionDate: art.auctionDate ? art.auctionDate.split("T")[0] : "",
+          reservedUntil: art.reservedUntil ? art.reservedUntil.split("T")[0] : "",
+        });
+      }, 0);
     }
   }, [articleData]);
 
@@ -314,7 +316,7 @@ export default function ArticleFormPage() {
                         className="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm"
                       >
                         <img
-                          src={img.url}
+                          src={getImageUrl(img.url)}
                           className="w-full h-full object-cover"
                           alt=""
                         />

@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Tag } from "lucide-react";
+import { getImageUrl } from "../../utils/imageUtils";
 
 export default function ArticleCard({ article }) {
   const { _id, title, price, estimatedPrice, images, status, category } =
     article;
 
   // In the real backend, images might be objects with a 'url' property
-  const imgSrc =
-    (typeof images?.[0] === "string" ? images[0] : images?.[0]?.url) ||
-    "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=600";
+  const imgSrc = getImageUrl(
+    (typeof images?.[0] === "string" ? images[0] : images?.[0]?.url)
+  ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=600";
 
   return (
     <Link to={`/articulo/${_id}`} className="card-premium group block h-full">

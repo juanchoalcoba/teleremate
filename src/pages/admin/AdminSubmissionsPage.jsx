@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { getWALink, WAMessages } from "../../utils/whatsapp";
+import { getImageUrl } from "../../utils/imageUtils";
 
 const CATEGORIES = [
   { value: "deposito", label: "En Depósito" },
@@ -116,7 +117,7 @@ export default function AdminSubmissionsPage() {
             <X size={24} />
           </button>
           <img 
-            src={previewImage} 
+            src={getImageUrl(previewImage)} 
             alt="Preview" 
             className="max-w-full max-h-full object-contain rounded-xl shadow-2xl animate-in zoom-in duration-300"
           />
@@ -325,7 +326,7 @@ export default function AdminSubmissionsPage() {
                         onClick={() => setPreviewImage(img)}
                       >
                         <img 
-                          src={img} 
+                          src={getImageUrl(img)} 
                           alt="" 
                           className="w-full h-full object-cover transition-transform group-hover:scale-110" 
                         />
