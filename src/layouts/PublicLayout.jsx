@@ -173,14 +173,14 @@ const PublicLayout = () => {
             {/* Social Icons Mobile */}
             <div className="mt-2 flex items-center justify-center gap-4 py-4 border-t border-white/5">
               <a
-                href="#"
+                href="https://www.facebook.com/canal6zebra"
                 className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/teleremate/"
                 className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white"
                 aria-label="Instagram"
               >
@@ -403,7 +403,7 @@ const PublicLayout = () => {
 
       {/* Terms & Conditions Modal */}
       <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
- 
+
       {/* PWA Install Prompt */}
       <InstallPWA />
     </div>
