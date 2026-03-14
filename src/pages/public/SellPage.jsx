@@ -347,7 +347,7 @@ const SellPage = () => {
                         : "border-gray-200 hover:border-brand-400 hover:bg-gray-50"
                     }`}
                   >
-                    <input {...getInputProps({ capture: "environment" })} />
+                    <input {...getInputProps()} />
                     <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mb-4">
                         <Upload size={32} />
