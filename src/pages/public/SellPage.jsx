@@ -85,7 +85,7 @@ const SellPage = () => {
         setFiles((prev) => [...prev, ...processedFiles]);
       } catch (error) {
         console.error("Critical processing error:", error);
-        toast.error("Hubo un problema al cargar las imágenes. Intentá de a una.");
+        toast.error("🚫 Error al procesar imágenes. Por favor, refrescá la página e intentá de nuevo.");
       }
     },
     [files],
