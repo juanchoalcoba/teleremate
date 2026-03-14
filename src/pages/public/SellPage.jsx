@@ -45,12 +45,19 @@ const SellPage = () => {
         toast.error("Máximo 5 imágenes permitidas");
         return;
       }
-      const newFiles = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        }),
-      );
-      setFiles([...files, ...newFiles]);
+
+      acceptedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setFiles((prev) => [
+            ...prev,
+            Object.assign(file, {
+              preview: reader.result,
+            }),
+          ]);
+        };
+        reader.readAsDataURL(file);
+      });
     },
     [files],
   );
@@ -63,7 +70,6 @@ const SellPage = () => {
 
   const removeFile = (index) => {
     const newFiles = [...files];
-    URL.revokeObjectURL(newFiles[index].preview);
     newFiles.splice(index, 1);
     setFiles(newFiles);
   };
@@ -341,7 +347,7 @@ const SellPage = () => {
                         : "border-gray-200 hover:border-brand-400 hover:bg-gray-50"
                     }`}
                   >
-                    <input {...getInputProps()} />
+                    <input {...getInputProps({ capture: "environment" })} />
                     <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mb-4">
                         <Upload size={32} />
