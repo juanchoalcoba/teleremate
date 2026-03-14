@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X, Loader, ShieldCheck, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { createPurchase } from "../../services/api";
 
 export default function PurchaseModal({ articleId, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -46,16 +47,7 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (payload) =>
-      fetch("/api/purchases", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }).then(async (res) => {
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Error al crear la compra");
-        return data;
-      }),
+    mutationFn: (payload) => createPurchase(payload),
     onSuccess: () => {
       toast.success("¡Compra creada exitosamente!", {
         icon: "✅",
@@ -64,7 +56,7 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
       queryClient.invalidateQueries(["articles"]);
     },
     onError: (error) => {
-      toast.error(error.message || "Error al procesar la compra");
+      toast.error(error.response?.data?.message || error.message || "Error al procesar la compra");
     },
   });
 

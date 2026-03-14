@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { getArticleById } from "../../services/api";
 import PurchaseModal from "../../components/modals/PurchaseModal";
+import ReservationModal from "../../components/modals/ReservationModal";
 import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
 

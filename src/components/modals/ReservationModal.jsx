@@ -4,6 +4,7 @@ import { X, Loader, Calendar, ShieldCheck, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { createReservation } from "../../services/api";
 
 export default function ReservationModal({ articleId, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -59,17 +60,7 @@ export default function ReservationModal({ articleId, onClose, onSuccess }) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (payload) =>
-      fetch("/api/reservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }).then(async (res) => {
-        const data = await res.json();
-        if (!res.ok)
-          throw new Error(data.message || "Error al crear la reserva");
-        return data;
-      }),
+    mutationFn: (payload) => createReservation(payload),
     onSuccess: () => {
       toast.success("¡Reserva creada exitosamente!", {
         icon: "✅",
@@ -78,7 +69,7 @@ export default function ReservationModal({ articleId, onClose, onSuccess }) {
       queryClient.invalidateQueries(["articles"]);
     },
     onError: (error) => {
-      toast.error(error.message || "Error al procesar la reserva");
+      toast.error(error.response?.data?.message || error.message || "Error al procesar la reserva");
     },
   });
 
