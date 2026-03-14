@@ -49,34 +49,43 @@ const SellPage = () => {
 
       const compressionOptions = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1200,
-        useWebWorker: true,
+        maxWidthOrHeight: 1280, // Un poquito más para mejor calidad
+        useWebWorker: false, // Desactivamos esto para evitar errores en navegadores móviles antiguos
       };
 
       try {
         const processedFiles = await Promise.all(
           acceptedFiles.map(async (file) => {
-            // 1. Compress image
-            const compressedFile = await imageCompression(file, compressionOptions);
-            
-            // 2. Generate preview via FileReader
+            let processedFile = file;
+
+            try {
+              // 1. Intentamos comprimir
+              const compressed = await imageCompression(file, compressionOptions);
+              // Mantenemos las propiedades de File necesarias para el backend
+              processedFile = new File([compressed], file.name, {
+                type: file.type,
+                lastModified: Date.now(),
+              });
+            } catch (error) {
+              console.warn("Fallo de compresión, usando original:", file.name, error);
+              // Si falla la compresión, no bloqueamos al usuario, usamos la original
+            }
+
+            // 2. Generar preview (siempre, ya sea comprimida u original)
             return new Promise((resolve) => {
               const reader = new FileReader();
               reader.onload = () => {
-                resolve(Object.assign(compressedFile, {
-                  preview: reader.result,
-                  originalName: file.name
-                }));
+                resolve(Object.assign(processedFile, { preview: reader.result }));
               };
-              reader.readAsDataURL(compressedFile);
+              reader.readAsDataURL(processedFile);
             });
           })
         );
 
         setFiles((prev) => [...prev, ...processedFiles]);
       } catch (error) {
-        console.error("Compression error:", error);
-        toast.error("Error al procesar las imágenes. Intentá con fotos más pequeñas.");
+        console.error("Critical processing error:", error);
+        toast.error("Hubo un problema al cargar las imágenes. Intentá de a una.");
       }
     },
     [files],
