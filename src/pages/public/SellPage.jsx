@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import imageCompression from "browser-image-compression";
 import {
   Upload,
   X,
@@ -46,25 +47,36 @@ const SellPage = () => {
         return;
       }
 
+      const compressionOptions = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true,
+      };
+
       try {
         const processedFiles = await Promise.all(
-          acceptedFiles.map((file) => {
+          acceptedFiles.map(async (file) => {
+            // 1. Compress image
+            const compressedFile = await imageCompression(file, compressionOptions);
+            
+            // 2. Generate preview via FileReader
             return new Promise((resolve) => {
               const reader = new FileReader();
               reader.onload = () => {
-                // Return a new object that keeps the File properties but adds the preview
-                // Note: Object.assign on a File object works in most modern browsers
-                resolve(Object.assign(file, { preview: reader.result }));
+                resolve(Object.assign(compressedFile, {
+                  preview: reader.result,
+                  originalName: file.name
+                }));
               };
-              reader.readAsDataURL(file);
+              reader.readAsDataURL(compressedFile);
             });
           })
         );
-        
+
         setFiles((prev) => [...prev, ...processedFiles]);
-      } catch (err) {
-        console.error("Error processing files:", err);
-        toast.error("Error al procesar las imágenes");
+      } catch (error) {
+        console.error("Compression error:", error);
+        toast.error("Error al procesar las imágenes. Intentá con fotos más pequeñas.");
       }
     },
     [files],
