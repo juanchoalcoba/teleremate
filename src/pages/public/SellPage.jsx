@@ -40,24 +40,32 @@ const SellPage = () => {
   });
 
   const onDrop = useCallback(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       if (files.length + acceptedFiles.length > 5) {
         toast.error("Máximo 5 imágenes permitidas");
         return;
       }
 
-      acceptedFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setFiles((prev) => [
-            ...prev,
-            Object.assign(file, {
-              preview: reader.result,
-            }),
-          ]);
-        };
-        reader.readAsDataURL(file);
-      });
+      try {
+        const processedFiles = await Promise.all(
+          acceptedFiles.map((file) => {
+            return new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                // Return a new object that keeps the File properties but adds the preview
+                // Note: Object.assign on a File object works in most modern browsers
+                resolve(Object.assign(file, { preview: reader.result }));
+              };
+              reader.readAsDataURL(file);
+            });
+          })
+        );
+        
+        setFiles((prev) => [...prev, ...processedFiles]);
+      } catch (err) {
+        console.error("Error processing files:", err);
+        toast.error("Error al procesar las imágenes");
+      }
     },
     [files],
   );
@@ -93,11 +101,15 @@ const SellPage = () => {
 
     setIsSubmitting(true);
     try {
+      console.log("Iniciando subida de imágenes...", files.length, "archivos");
+      
       // 1. Subir imágenes
       const uploadRes = await uploadPublicImages(files);
+      console.log("Imágenes subidas con éxito:", uploadRes.data);
       const imageUrls = uploadRes.data.images;
 
       // 2. Crear pedido
+      console.log("Enviando datos del pedido...", formData);
       await createSubmission({
         ...formData,
         estimatedPrice: Number(formData.estimatedPrice),
@@ -108,8 +120,12 @@ const SellPage = () => {
       toast.success("¡Pedido enviado con éxito!");
       window.scrollTo(0, 0);
     } catch (error) {
-      console.error("Submission error:", error);
-      toast.error(error.response?.data?.message || "Error al enviar el pedido");
+      console.error("DEBUG - Submission error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      toast.error(error.response?.data?.message || "Error al enviar el pedido. Por favor intentá de nuevo.");
     } finally {
       setIsSubmitting(false);
     }
