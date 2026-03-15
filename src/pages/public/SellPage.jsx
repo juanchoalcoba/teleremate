@@ -46,42 +46,44 @@ const SellPage = () => {
     conditionDetails: "",
   });
 
-  // Shared processing: compress and add a Base64 preview.
-  // Compression is attempted silently; if it fails the original file is used.
-  const processFiles = async (rawFiles) => {
-    const total = files.length + rawFiles.length;
+  // Shared processing: show instant preview first, compress opportunistically.
+  // Works reliably on mobile because we freeze the File array before any async work.
+  const processFiles = async (fileArray) => {
+    const total = files.length + fileArray.length;
     if (total > 5) {
       toast.error("Máximo 5 imágenes permitidas");
       return;
     }
 
-    const compressionOptions = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1280,
-      useWebWorker: false, // false = more compatible across all mobile browsers
-    };
-
     try {
       const processed = await Promise.all(
-        Array.from(rawFiles).map(async (file) => {
-          // 1. Try to compress; fall back to original on any failure
-          let toUpload = file;
-          try {
-            const compressed = await imageCompression(file, compressionOptions);
-            toUpload = new File([compressed], file.name, { type: file.type });
-          } catch (compErr) {
-            console.warn("Compression skipped, using original:", file.name, compErr);
-          }
+        fileArray.map(
+          (file) =>
+            new Promise((resolve) => {
+              // Step 1: instant preview via FileReader (synchronous trigger, very fast)
+              const reader = new FileReader();
+              reader.onload = async (e) => {
+                const previewUrl = e.target.result;
 
-          // 2. Generate preview from FileReader (always works, no race conditions)
-          return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              resolve(Object.assign(toUpload, { preview: e.target.result }));
-            };
-            reader.readAsDataURL(toUpload);
-          });
-        })
+                // Step 2: try to compress; fall back to original on failure
+                let toUpload = file;
+                try {
+                  const compressed = await imageCompression(file, {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 1280,
+                    useWebWorker: false,
+                  });
+                  toUpload = new File([compressed], file.name, { type: file.type });
+                } catch {
+                  // compression failed → use original (still works, backend allows 20MB)
+                }
+
+                // Attach the preview (already generated) to what we'll upload
+                resolve(Object.assign(toUpload, { preview: previewUrl }));
+              };
+              reader.readAsDataURL(file);
+            })
+        )
       );
 
       setFiles((prev) => [...prev, ...processed]);
@@ -93,11 +95,14 @@ const SellPage = () => {
 
   // ── Native input handler (mobile) ────────────────────────────────────────
   const handleNativeChange = (e) => {
-    const selected = e.target.files;
-    if (!selected || selected.length === 0) return;
-    processFiles(selected);
-    // Reset so the same file can be selected again without issues
+    // Convert FileList → plain Array IMMEDIATELY (before reset or any async work)
+    const fileArray = Array.from(e.target.files || []);
+    if (fileArray.length === 0) return;
+
+    // Reset input NOW (safe: fileArray already holds strong references to the File objects)
     if (nativeInputRef.current) nativeInputRef.current.value = "";
+
+    processFiles(fileArray);
   };
 
   // ── Dropzone (desktop drag-and-drop only) ────────────────────────────────
