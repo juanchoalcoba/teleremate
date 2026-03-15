@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
-import imageCompression from "browser-image-compression";
 import {
   Upload,
   X,
@@ -24,10 +23,16 @@ import { createSubmission, uploadPublicImages } from "../../services/api";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
+// Detect mobile/tablet
+const isMobile = () =>
+  typeof navigator !== "undefined" &&
+  /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+
 const SellPage = () => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [files, setFiles] = useState([]);
+  const nativeInputRef = useRef(null);
   const [formData, setFormData] = useState({
     sellerName: "",
     sellerPhone: "",
@@ -40,61 +45,54 @@ const SellPage = () => {
     conditionDetails: "",
   });
 
-  const onDrop = useCallback(
-    async (acceptedFiles) => {
-      if (files.length + acceptedFiles.length > 5) {
-        toast.error("Máximo 5 imágenes permitidas");
-        return;
-      }
+  // Shared processing: reads a File and generates a Base64 preview.
+  // No compression — keeps it simple and 100% reliable on mobile.
+  const processFiles = (rawFiles) => {
+    const total = files.length + rawFiles.length;
+    if (total > 5) {
+      toast.error("Máximo 5 imágenes permitidas");
+      return;
+    }
 
-      const compressionOptions = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1280, // Un poquito más para mejor calidad
-        useWebWorker: false, // Desactivamos esto para evitar errores en navegadores móviles antiguos
-      };
+    const promises = Array.from(rawFiles).map(
+      (file) =>
+        new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            // Create a fresh File object so the original is not mutated
+            const fresh = new File([file], file.name, { type: file.type });
+            resolve(Object.assign(fresh, { preview: e.target.result }));
+          };
+          reader.readAsDataURL(file);
+        })
+    );
 
-      try {
-        const processedFiles = await Promise.all(
-          acceptedFiles.map(async (file) => {
-            let processedFile = file;
+    Promise.all(promises)
+      .then((processed) => setFiles((prev) => [...prev, ...processed]))
+      .catch((err) => {
+        console.error("processFiles error:", err);
+        toast.error("No se pudo cargar la imagen. Intentá de nuevo.");
+      });
+  };
 
-            try {
-              // 1. Intentamos comprimir
-              const compressed = await imageCompression(file, compressionOptions);
-              // Mantenemos las propiedades de File necesarias para el backend
-              processedFile = new File([compressed], file.name, {
-                type: file.type,
-                lastModified: Date.now(),
-              });
-            } catch (error) {
-              console.warn("Fallo de compresión, usando original:", file.name, error);
-              // Si falla la compresión, no bloqueamos al usuario, usamos la original
-            }
+  // ── Native input handler (mobile) ────────────────────────────────────────
+  const handleNativeChange = (e) => {
+    const selected = e.target.files;
+    if (!selected || selected.length === 0) return;
+    processFiles(selected);
+    // Reset so the same file can be selected again without issues
+    if (nativeInputRef.current) nativeInputRef.current.value = "";
+  };
 
-            // 2. Generar preview (siempre, ya sea comprimida u original)
-            return new Promise((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                resolve(Object.assign(processedFile, { preview: reader.result }));
-              };
-              reader.readAsDataURL(processedFile);
-            });
-          })
-        );
-
-        setFiles((prev) => [...prev, ...processedFiles]);
-      } catch (error) {
-        console.error("Critical processing error:", error);
-        toast.error("🚫 Error al procesar imágenes. Por favor, refrescá la página e intentá de nuevo.");
-      }
-    },
-    [files],
-  );
+  // ── Dropzone (desktop drag-and-drop only) ────────────────────────────────
+  const onDrop = (acceptedFiles) => processFiles(acceptedFiles);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
     maxFiles: 5,
+    noClick: true,    // We add our own click trigger to avoid conflicts
+    noKeyboard: true,
   });
 
   const removeFile = (index) => {
@@ -376,23 +374,69 @@ const SellPage = () => {
                 </div>
 
                 <div className="space-y-6">
-                  <div
-                    {...getRootProps()}
-                    className={`border-2 border-dashed rounded-3xl p-12 text-center transition-all cursor-pointer ${
-                      isDragActive
-                        ? "border-brand-500 bg-brand-50 scale-[0.98]"
-                        : "border-gray-200 hover:border-brand-400 hover:bg-gray-50"
-                    }`}
-                  >
-                    <input {...getInputProps()} />
-                    <div className="flex flex-col items-center">
-                      <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mb-4">
-                        <Upload size={32} />
+                  {isMobile() ? (
+                    /* ── MOBILE: Native <input> for 100% compatibility ── */
+                    <div className="border-2 border-dashed border-gray-200 rounded-3xl p-8 text-center">
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center">
+                          <Camera size={32} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-800 text-lg">Subí tus fotos</p>
+                          <p className="text-gray-400 text-sm mt-1">Galería o cámara</p>
+                        </div>
+                        <label className="cursor-pointer inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-6 py-3 rounded-2xl transition-colors">
+                          <Upload size={18} />
+                          Elegir imágenes
+                          <input
+                            ref={nativeInputRef}
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            className="hidden"
+                            onChange={handleNativeChange}
+                          />
+                        </label>
+                        {files.length > 0 && (
+                          <p className="text-sm text-brand-600 font-semibold">
+                            {files.length} foto{files.length > 1 ? "s" : ""} seleccionada{files.length > 1 ? "s" : ""}
+                          </p>
+                        )}
                       </div>
-                      <p className="font-bold text-gray-800 text-lg">Arrastrá las fotos acá</p>
-                      <p className="text-gray-400 text-sm mt-1">O hacé click para seleccionar</p>
                     </div>
-                  </div>
+                  ) : (
+                    /* ── DESKTOP: Drag-and-drop with react-dropzone ── */
+                    <div
+                      {...getRootProps()}
+                      onClick={() => {
+                        // Manually trigger a hidden input for click-to-browse on desktop
+                        const el = document.getElementById("desktop-file-input");
+                        if (el) el.click();
+                      }}
+                      className={`border-2 border-dashed rounded-3xl p-12 text-center transition-all cursor-pointer ${
+                        isDragActive
+                          ? "border-brand-500 bg-brand-50 scale-[0.98]"
+                          : "border-gray-200 hover:border-brand-400 hover:bg-gray-50"
+                      }`}
+                    >
+                      <input {...getInputProps()} />
+                      <input
+                        id="desktop-file-input"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handleNativeChange}
+                      />
+                      <div className="flex flex-col items-center">
+                        <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mb-4">
+                          <Upload size={32} />
+                        </div>
+                        <p className="font-bold text-gray-800 text-lg">Arrastrá las fotos acá</p>
+                        <p className="text-gray-400 text-sm mt-1">O hacé click para seleccionar</p>
+                      </div>
+                    </div>
+                  )}
 
                   {files.length > 0 && (
                     <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
