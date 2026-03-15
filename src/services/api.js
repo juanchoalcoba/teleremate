@@ -36,9 +36,10 @@ export const createSubmission = (data) => api.post("/submissions", data);
 export const uploadPublicImages = (files) => {
   const fd = new FormData();
   files.forEach((f) => fd.append("images", f));
-  return api.post("/submissions/images", fd, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  // Do NOT manually set Content-Type here.
+  // Axios will set "multipart/form-data; boundary=..." automatically when it detects FormData.
+  // Setting it manually omits the boundary and causes servers to reject the body on mobile.
+  return api.post("/submissions/images", fd);
 };
 export const getReservations = (params) =>
   api.get("/backoffice/reservations", { params });
