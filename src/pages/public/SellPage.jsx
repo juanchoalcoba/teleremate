@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import imageCompression from "browser-image-compression";
 import {
   Upload,
   X,
@@ -45,34 +46,49 @@ const SellPage = () => {
     conditionDetails: "",
   });
 
-  // Shared processing: reads a File and generates a Base64 preview.
-  // No compression — keeps it simple and 100% reliable on mobile.
-  const processFiles = (rawFiles) => {
+  // Shared processing: compress and add a Base64 preview.
+  // Compression is attempted silently; if it fails the original file is used.
+  const processFiles = async (rawFiles) => {
     const total = files.length + rawFiles.length;
     if (total > 5) {
       toast.error("Máximo 5 imágenes permitidas");
       return;
     }
 
-    const promises = Array.from(rawFiles).map(
-      (file) =>
-        new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            // Create a fresh File object so the original is not mutated
-            const fresh = new File([file], file.name, { type: file.type });
-            resolve(Object.assign(fresh, { preview: e.target.result }));
-          };
-          reader.readAsDataURL(file);
-        })
-    );
+    const compressionOptions = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1280,
+      useWebWorker: false, // false = more compatible across all mobile browsers
+    };
 
-    Promise.all(promises)
-      .then((processed) => setFiles((prev) => [...prev, ...processed]))
-      .catch((err) => {
-        console.error("processFiles error:", err);
-        toast.error("No se pudo cargar la imagen. Intentá de nuevo.");
-      });
+    try {
+      const processed = await Promise.all(
+        Array.from(rawFiles).map(async (file) => {
+          // 1. Try to compress; fall back to original on any failure
+          let toUpload = file;
+          try {
+            const compressed = await imageCompression(file, compressionOptions);
+            toUpload = new File([compressed], file.name, { type: file.type });
+          } catch (compErr) {
+            console.warn("Compression skipped, using original:", file.name, compErr);
+          }
+
+          // 2. Generate preview from FileReader (always works, no race conditions)
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              resolve(Object.assign(toUpload, { preview: e.target.result }));
+            };
+            reader.readAsDataURL(toUpload);
+          });
+        })
+      );
+
+      setFiles((prev) => [...prev, ...processed]);
+    } catch (err) {
+      console.error("processFiles error:", err);
+      toast.error("No se pudo cargar la imagen. Intentá de nuevo.");
+    }
   };
 
   // ── Native input handler (mobile) ────────────────────────────────────────
