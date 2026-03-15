@@ -130,6 +130,7 @@ const SellPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (step < 3) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setStep(step + 1);
       return;
     }
@@ -193,10 +194,10 @@ const SellPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50/50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Progress bar */}
-        <div className="mb-12">
+        <div className="mb-6 sm:mb-12">
           <div className="flex items-center justify-between mb-8 overflow-x-auto pb-6 scrollbar-hide px-2">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center group shrink-0">
@@ -224,10 +225,10 @@ const SellPage = () => {
         </div>
 
         {/* Form area */}
-        <div className="bg-white rounded-3xl sm:rounded-4xl shadow-lg shadow-black/5 border border-gray-100/50 p-6 sm:p-12 relative overflow-hidden">
+        <div className="bg-white rounded-3xl sm:rounded-4xl shadow-lg shadow-black/5 border border-gray-100/50 p-4 sm:p-12 relative overflow-hidden">
           <form onSubmit={handleSubmit} className="space-y-8">
             {step === 1 && (
-              <div className="space-y-8 animate-in slide-in-from-right duration-500">
+              <div className="space-y-5 sm:space-y-8 animate-in slide-in-from-right duration-500">
                 <div className="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
                   <div className="w-14 h-14 bg-brand-50/50 text-brand-500 rounded-2xl flex items-center justify-center shadow-inner">
                     <User size={28} />
@@ -248,7 +249,7 @@ const SellPage = () => {
                         name="sellerName"
                         value={formData.sellerName}
                         onChange={handleInputChange}
-                        className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                         placeholder="Juan Pérez"
                       />
                     </div>
@@ -262,7 +263,7 @@ const SellPage = () => {
                         name="sellerPhone"
                         value={formData.sellerPhone}
                         onChange={handleInputChange}
-                        className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                         placeholder="099 000 000"
                       />
                     </div>
@@ -276,7 +277,7 @@ const SellPage = () => {
                         name="sellerEmail"
                         value={formData.sellerEmail}
                         onChange={handleInputChange}
-                        className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                         placeholder="juan@ejemplo.com"
                       />
                     </div>
@@ -286,7 +287,7 @@ const SellPage = () => {
             )}
 
             {step === 2 && (
-              <div className="space-y-8 animate-in slide-in-from-right duration-500">
+              <div className="space-y-5 sm:space-y-8 animate-in slide-in-from-right duration-500">
                 <div className="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
                   <div className="w-14 h-14 bg-brand-50/50 text-brand-500 rounded-2xl flex items-center justify-center shadow-inner">
                     <FileText size={28} />
@@ -307,7 +308,7 @@ const SellPage = () => {
                         name="title"
                         value={formData.title}
                         onChange={handleInputChange}
-                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-brand-500 transition-all font-medium text-gray-900"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-brand-500 transition-all font-medium text-gray-900"
                         placeholder="Ej: Sofá de cuero vintage"
                       />
                     </div>
@@ -320,7 +321,7 @@ const SellPage = () => {
                       value={formData.description}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 resize-none shadow-sm outline-hidden"
+                      className="w-full px-5 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 resize-none shadow-sm outline-hidden"
                       placeholder="Describí el artículo, materiales, medidas..."
                     />
                   </div>
@@ -331,7 +332,7 @@ const SellPage = () => {
                       value={formData.conditionDetails}
                       onChange={handleInputChange}
                       rows={2}
-                      className="w-full px-5 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 resize-none shadow-sm outline-hidden"
+                      className="w-full px-5 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 resize-none shadow-sm outline-hidden"
                       placeholder="Ej: Tiene un pequeño raspón en la pata trasera, funciona perfecto."
                     />
                   </div>
@@ -344,7 +345,7 @@ const SellPage = () => {
                           name="usageYears"
                           value={formData.usageYears}
                           onChange={handleInputChange}
-                          className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                           placeholder="Ej: 2 años / Menos de 1 año"
                         />
                       </div>
@@ -357,7 +358,7 @@ const SellPage = () => {
                           name="pickupLocation"
                           value={formData.pickupLocation}
                           onChange={handleInputChange}
-                          className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                           placeholder="Ciudad / Barrio"
                         />
                       </div>
@@ -372,7 +373,7 @@ const SellPage = () => {
                           name="estimatedPrice"
                           value={formData.estimatedPrice}
                           onChange={handleInputChange}
-                          className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                           placeholder="25000"
                         />
                       </div>
@@ -487,11 +488,14 @@ const SellPage = () => {
             )}
 
             {/* Actions */}
-            <div className="pt-8 flex flex-col-reverse sm:flex-row gap-4">
+            <div className="pt-5 sm:pt-8 flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
               {step > 1 && (
                 <button
                   type="button"
-                  onClick={() => setStep(step - 1)}
+                  onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                setStep(step - 1);
+              }}
                   className="w-full sm:w-auto px-6 py-4 rounded-xl sm:rounded-2xl text-gray-500 font-bold hover:bg-gray-100 flex items-center justify-center gap-2 transition-all order-1 sm:order-0"
                 >
                   <ArrowLeft size={18} /> Atrás
