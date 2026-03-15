@@ -36,10 +36,14 @@ export const createSubmission = (data) => api.post("/submissions", data);
 export const uploadPublicImages = (files) => {
   const fd = new FormData();
   files.forEach((f) => fd.append("images", f));
-  // Do NOT manually set Content-Type here.
-  // Axios will set "multipart/form-data; boundary=..." automatically when it detects FormData.
-  // Setting it manually omits the boundary and causes servers to reject the body on mobile.
-  return api.post("/submissions/images", fd);
+  // Content-Type must be null (not set) so the BROWSER sets the correct
+  // "multipart/form-data; boundary=..." header. If we set it manually—even
+  // to "multipart/form-data"—the boundary is missing and Multer can't parse
+  // the body. axios instance defaults are NOT auto-cleared for FormData,
+  // so we must explicitly pass null here to remove the default JSON header.
+  return api.post("/submissions/images", fd, {
+    headers: { "Content-Type": null },
+  });
 };
 export const getReservations = (params) =>
   api.get("/backoffice/reservations", { params });
