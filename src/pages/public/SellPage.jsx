@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import imageCompression from "browser-image-compression";
 import {
@@ -23,6 +23,7 @@ import {
 import { createSubmission, uploadPublicImages } from "../../services/api";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import SellWarningModal from "../../components/modals/SellWarningModal";
 
 // Detect mobile/tablet
 const isMobile = () =>
@@ -34,6 +35,15 @@ const SellPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [files, setFiles] = useState([]);
   const nativeInputRef = useRef(null);
+  const [isWarningOpen, setIsWarningOpen] = useState(false);
+
+  useEffect(() => {
+    const hasSeenWarning = sessionStorage.getItem("teleremate_sell_warning");
+    if (!hasSeenWarning) {
+      setIsWarningOpen(true);
+      sessionStorage.setItem("teleremate_sell_warning", "true");
+    }
+  }, []);
   const [formData, setFormData] = useState({
     sellerName: "",
     sellerPhone: "",
@@ -195,6 +205,7 @@ const SellPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <SellWarningModal isOpen={isWarningOpen} onClose={() => setIsWarningOpen(false)} />
       <div className="max-w-3xl mx-auto">
         {/* Progress bar */}
         <div className="mb-6 sm:mb-12">
