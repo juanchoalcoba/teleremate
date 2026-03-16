@@ -27,6 +27,21 @@ export default function SmoothScroll({ children }) {
 
     lenisRef.current = lenis;
 
+    // MutationObserver to detect when body overflow is hidden
+    const observer = new MutationObserver(() => {
+      const isLocked = document.body.style.overflow === "hidden";
+      if (isLocked) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+
+    observer.observe(document.body, { 
+      attributes: true, 
+      attributeFilter: ["style"] 
+    });
+
     // RAF (Request Animation Frame) loop
     function raf(time) {
       lenis.raf(time);
@@ -37,6 +52,7 @@ export default function SmoothScroll({ children }) {
 
     // Clean up
     return () => {
+      observer.disconnect();
       lenis.destroy();
     };
   }, []);
