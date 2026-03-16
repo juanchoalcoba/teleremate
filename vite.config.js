@@ -17,30 +17,30 @@ export default defineConfig({
         short_name: "TeleRemate",
         description: "Plataforma de Subastas y Ventas Online",
         theme_color: "#000000",
-        background_color: "#ffffff",
+        background_color: "#0a0a0a",
         display: "standalone",
         start_url: "/",
         icons: [
           {
-            src: "/pwa-icon.png",
+            src: "/logoprincipal.png",
             sizes: "144x144",
             type: "image/png",
             purpose: "any"
           },
           {
-            src: "/pwa-icon.png",
+            src: "/logoprincipal.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any"
           },
           {
-            src: "/pwa-icon.png",
+            src: "/logoprincipal.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any"
           },
           {
-            src: "/pwa-icon.png",
+            src: "/logoprincipal.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable"
