@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X, Loader, Calendar, ShieldCheck, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
@@ -14,6 +14,13 @@ export default function ReservationModal({ articleId, onClose, onSuccess }) {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [acceptedGuarantee, setAcceptedGuarantee] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
