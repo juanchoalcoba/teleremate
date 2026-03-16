@@ -24,7 +24,7 @@ const SellWarningModal = ({ isOpen, onClose }) => {
       />
 
       {/* Modal Container */}
-      <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-white w-full max-w-lg sm:max-w-xl max-h-[90vh] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-300">
         {/* Header */}
         <div className="bg-brand-500 px-6 py-8 relative overflow-hidden shrink-0">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-2xl rounded-full -mr-10 -mt-10 pointer-events-none" />
@@ -45,8 +45,8 @@ const SellWarningModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 sm:p-8 space-y-6 bg-gray-50/30">
+        {/* Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 bg-gray-50/30 custom-scrollbar">
           <p className="text-gray-600 font-medium leading-relaxed text-center text-sm sm:text-base">
             Para que tu artículo pueda ser revisado y aprobado, te pedimos que completes la información de forma clara y sincera.
           </p>
@@ -86,7 +86,7 @@ const SellWarningModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6 pt-0 bg-gray-50/30 flex justify-center shrink-0">
+        <div className="p-6 bg-white border-t border-gray-100 flex justify-center shrink-0">
           <button 
             onClick={onClose}
             className="w-full bg-brand-500 hover:bg-brand-600 text-white px-8 py-4 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-95 transition-all"
