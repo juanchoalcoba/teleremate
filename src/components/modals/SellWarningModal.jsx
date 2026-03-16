@@ -46,7 +46,7 @@ const SellWarningModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 bg-gray-50/30 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 bg-gray-50/30 custom-scrollbar" data-lenis-prevent>
           <p className="text-gray-600 font-medium leading-relaxed text-center text-sm sm:text-base">
             Para que tu artículo pueda ser revisado y aprobado, te pedimos que completes la información de forma clara y sincera.
           </p>

@@ -53,7 +53,7 @@ const TermsModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-8 sm:p-10 space-y-10 custom-scrollbar bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto p-8 sm:p-10 space-y-10 custom-scrollbar bg-gray-50/50" data-lenis-prevent>
           
           <section className="space-y-4">
             <div className="flex items-center gap-3 text-dark-950">
