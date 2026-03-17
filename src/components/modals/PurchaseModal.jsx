@@ -13,7 +13,7 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [acceptedGuarantee, setAcceptedGuarantee] = useState(false);
-  
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -38,7 +38,10 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
       toast.error("Por favor ingresa tu teléfono");
       return false;
     }
-    if (formData.deliveryMethod === "delivery" && !formData.deliveryAddress.trim()) {
+    if (
+      formData.deliveryMethod === "delivery" &&
+      !formData.deliveryAddress.trim()
+    ) {
       toast.error("Por favor ingresa tu dirección de entrega");
       return false;
     }
@@ -47,7 +50,7 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
       toast.error("Debes aceptar la garantía de certificación");
       return false;
     }
- 
+
     return true;
   };
 
@@ -63,7 +66,11 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
       queryClient.invalidateQueries(["articles"]);
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || error.message || "Error al procesar la compra");
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Error al procesar la compra",
+      );
     },
   });
 
@@ -98,7 +105,10 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto" data-lenis-prevent>
+      <div
+        className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        data-lenis-prevent
+      >
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-green-500 to-green-600 p-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">Comprar Artículo</h2>
@@ -120,16 +130,21 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
                 <ShieldCheck size={20} />
               </div>
               <div className="flex-1">
-                <h4 className="text-sm font-black text-brand-900 uppercase tracking-wider mb-1">Certificación TeleRemate</h4>
+                <h4 className="text-sm font-black text-brand-900 uppercase tracking-wider mb-1">
+                  Certificación TeleRemate
+                </h4>
                 <p className="text-xs text-brand-700 leading-relaxed">
-                  Este artículo cuenta con nuestra garantía oficial. Nuestro equipo técnico ha verificado personalmente su estado y funcionamiento para asegurar que recibas exactamente lo que ves.
+                  Este artículo cuenta con nuestra garantía oficial. Nuestro
+                  equipo técnico ha verificado personalmente su estado y
+                  funcionamiento para asegurar que recibas exactamente lo que
+                  ves
                 </p>
               </div>
             </div>
-            
+
             <label className="flex items-center gap-3 cursor-pointer group mt-2 bg-white/50 p-2 rounded-lg border border-brand-200/50 hover:bg-white transition-colors">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 checked={acceptedGuarantee}
                 onChange={(e) => setAcceptedGuarantee(e.target.checked)}
                 className="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 border-brand-300 transition-all cursor-pointer"
@@ -141,7 +156,10 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
           </div>
           {/* Full Name */}
           <div>
-            <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="fullName"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Nombre Completo *
             </label>
             <input
@@ -158,7 +176,10 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
 
           {/* Phone */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Teléfono *
             </label>
             <input
@@ -175,7 +196,10 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
 
           {/* Delivery Method */}
           <div>
-            <label htmlFor="deliveryMethod" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="deliveryMethod"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Forma de Entrega *
             </label>
             <select
@@ -194,7 +218,10 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
           {/* Delivery Address (conditional) */}
           {formData.deliveryMethod === "delivery" && (
             <div className="animate-in fade-in">
-              <label htmlFor="deliveryAddress" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="deliveryAddress"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Dirección de Entrega *
               </label>
               <textarea
