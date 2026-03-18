@@ -152,7 +152,7 @@ export default function ArticleDetailPage() {
                     <div className="flex items-center gap-2 text-brand-400 font-black italic justify-end">
                       <Calendar size={18} />{" "}
                       {article.auctionDate 
-                        ? new Date(article.auctionDate).toLocaleDateString("es-UY")
+                        ? new Date(article.auctionDate).toLocaleDateString("es-UY", { timeZone: 'UTC' })
                         : "Fecha a confirmar"}
                     </div>
                   </>
@@ -163,7 +163,7 @@ export default function ArticleDetailPage() {
                     </p>
                     <div className="flex items-center gap-2 text-orange-400 font-bold italic justify-end animate-pulse">
                       <Calendar size={18} />{" "}
-                      {new Date(article.reservedUntil).toLocaleDateString("es-UY")}
+                      {new Date(article.reservedUntil).toLocaleDateString("es-UY", { timeZone: 'UTC' })}
                     </div>
                   </>
                 )}
