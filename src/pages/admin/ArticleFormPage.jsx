@@ -139,6 +139,13 @@ export default function ArticleFormPage() {
       } else if (name === "category" && value === "deposito") {
         newData.status = "depot";
       }
+
+      // Auto-set category if status is depot or upcoming
+      if (name === "status" && value === "depot") {
+        newData.category = "deposito";
+      } else if (name === "status" && value === "upcoming") {
+        newData.category = "remate";
+      }
       
       return newData;
     });

@@ -58,7 +58,12 @@ export default function AdminArticlesPage() {
   });
 
   const statusMutation = useMutation({
-    mutationFn: ({ id, status }) => updateArticle(id, { status }),
+    mutationFn: ({ id, status }) => {
+      const payload = { status };
+      if (status === "depot") payload.category = "deposito";
+      if (status === "upcoming") payload.category = "remate";
+      return updateArticle(id, payload);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-articles"]);
       queryClient.invalidateQueries(["article"]);
