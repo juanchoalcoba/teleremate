@@ -92,8 +92,8 @@ export default function CatalogPage() {
           />
         </div>
 
-        {/* Category Tabs */}
-        <div className="relative group/tabs flex flex-col">
+        {/* Category Tabs and Indicator Container */}
+        <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
             {CATEGORY_TABS.map((tab) => (
               <button
@@ -111,10 +111,10 @@ export default function CatalogPage() {
             ))}
           </div>
 
-          {/* Mobile "Desliza" Indicator - Moved below buttons */}
-          <div className="flex items-center justify-end mt-2 md:hidden">
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-white/50 backdrop-blur-md rounded-full border border-gray-100 shadow-sm animate-pulse pointer-events-none">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-600">
+          {/* Dedicated indicator row (Only on Mobile) */}
+          <div className="flex items-center justify-end md:hidden pr-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50/50 backdrop-blur-sm rounded-full border border-gray-100/50 animate-pulse pointer-events-none">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-600">
                 Desliza para ver más
               </span>
               <ArrowRight size={12} className="text-brand-500" />
