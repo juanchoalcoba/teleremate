@@ -93,7 +93,7 @@ export default function CatalogPage() {
         </div>
 
         {/* Category Tabs */}
-        <div className="relative group/tabs">
+        <div className="relative group/tabs flex flex-col">
           <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
             {CATEGORY_TABS.map((tab) => (
               <button
@@ -111,16 +111,15 @@ export default function CatalogPage() {
             ))}
           </div>
 
-          {/* Mobile "Desliza" Indicator */}
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-gray-100 md:hidden animate-pulse pointer-events-none z-20">
-            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-600">
-              Desliza
-            </span>
-            <ArrowRight size={10} className="text-brand-500" />
+          {/* Mobile "Desliza" Indicator - Moved below buttons */}
+          <div className="flex items-center justify-end mt-2 md:hidden">
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-white/50 backdrop-blur-md rounded-full border border-gray-100 shadow-sm animate-pulse pointer-events-none">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-600">
+                Desliza para ver más
+              </span>
+              <ArrowRight size={12} className="text-brand-500" />
+            </div>
           </div>
-          
-          {/* Subtle gradient to indicate more content */}
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-linear-to-l from-gray-50/80 to-transparent pointer-events-none rounded-r-2xl md:hidden" />
         </div>
       </div>
 
