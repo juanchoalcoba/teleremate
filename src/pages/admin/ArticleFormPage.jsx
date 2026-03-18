@@ -349,6 +349,21 @@ export default function ArticleFormPage() {
             <h3 className="font-bold text-gray-900 mb-4">Publicación</h3>
             <div className="space-y-4">
               <div>
+                <label className="label-admin">Estado de Publicación</label>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="input-admin text-sm font-bold bg-gray-50 uppercase tracking-wider"
+                >
+                  <option value="depot">EN DEPÓSITO</option>
+                  <option value="upcoming">PRÓXIMO REMATE</option>
+                  <option value="reserved">RESERVADO</option>
+                  <option value="sold">VENDIDO</option>
+                </select>
+              </div>
+
+              <div>
                 <label className="label-admin">Categoría del Catálogo</label>
                 <select
                   name="category"

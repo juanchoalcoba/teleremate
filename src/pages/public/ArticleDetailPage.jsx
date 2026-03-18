@@ -179,6 +179,14 @@ export default function ArticleDetailPage() {
               </div>
             )}
 
+            {article.status === "sold" && (
+              <div className="mb-4 p-4 bg-red-500/10 border border-red-500/40 rounded-3xl flex flex-col items-center shadow-inner">
+                <p className="text-red-600 font-black text-center text-sm tracking-[0.2em] uppercase animate-pulse">
+                   ESTE ARTÍCULO HA SIDO VENDIDO
+                </p>
+              </div>
+            )}
+
             {/* Action Buttons */}
             <div className="space-y-3">
               {(article.status !== "sold" && article.status !== "reserved" && article.category !== "remate") && (

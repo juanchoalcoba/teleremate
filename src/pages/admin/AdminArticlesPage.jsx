@@ -57,12 +57,12 @@ export default function AdminArticlesPage() {
     onError: () => toast.error("Error al eliminar artículo"),
   });
 
-  const categoryMutation = useMutation({
-    mutationFn: ({ id, category }) => updateArticle(id, { category }),
+  const statusMutation = useMutation({
+    mutationFn: ({ id, status }) => updateArticle(id, { status }),
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-articles"]);
       queryClient.invalidateQueries(["article"]);
-      toast.success("Categoría actualizada");
+      toast.success("Estado actualizado");
     },
   });
 
@@ -230,20 +230,25 @@ export default function AdminArticlesPage() {
                       <div className="relative group/select w-fit">
                         <select
                           className={`appearance-none text-xs font-black uppercase tracking-widest pl-3 pr-8 py-2 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-offset-1 transition-all shadow-sm ${
-                            CATEGORY_BADGES[item.category] || "bg-gray-50 text-gray-600"
+                            {
+                              depot: "bg-blue-50 text-blue-600",
+                              upcoming: "bg-amber-50 text-amber-600",
+                              reserved: "bg-orange-50 text-orange-600",
+                              sold: "bg-red-50 text-red-600",
+                            }[item.status] || "bg-gray-50 text-gray-600"
                           }`}
-                          value={item.category}
+                          value={item.status}
                           onChange={(e) =>
-                            categoryMutation.mutate({
+                            statusMutation.mutate({
                               id: item._id,
-                              category: e.target.value,
+                              status: e.target.value,
                             })
                           }
                         >
-                          <option value="deposito">EN DEPÓSITO</option>
-                          <option value="remate">A REMATAR</option>
-                          <option value="inmueble">INMUEBLES</option>
-                          <option value="vehiculo">VEHÍCULOS</option>
+                          <option value="depot">EN DEPÓSITO</option>
+                          <option value="upcoming">PRÓX. REMATE</option>
+                          <option value="reserved">RESERVADO</option>
+                          <option value="sold">VENDIDO</option>
                         </select>
                         <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-current opacity-50">
                           <MoreHorizontal size={14} />

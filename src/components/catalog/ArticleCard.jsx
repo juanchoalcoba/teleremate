@@ -26,6 +26,11 @@ export default function ArticleCard({ article }) {
               Reservado
             </span>
           )}
+          {status === "sold" && (
+            <span className="badge-status bg-red-100 text-red-700">
+              Vendido
+            </span>
+          )}
         </div>
       </div>
 
