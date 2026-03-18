@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Package, Gavel } from "lucide-react";
+import { Search, Package, Gavel, ArrowRight } from "lucide-react";
 import { getArticles } from "../../services/api";
 import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
@@ -93,21 +93,34 @@ export default function CatalogPage() {
         </div>
 
         {/* Category Tabs */}
-        <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
-          {CATEGORY_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => updateFilters({ category: tab.value })}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
-                filters.category === tab.value
-                  ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
-                  : "text-gray-500 hover:text-gray-900"
-              }`}
-            >
-              <tab.icon size={16} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
-              {tab.label}
-            </button>
-          ))}
+        <div className="relative group/tabs">
+          <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
+            {CATEGORY_TABS.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => updateFilters({ category: tab.value })}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
+                  filters.category === tab.value
+                    ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                <tab.icon size={16} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Mobile "Desliza" Indicator */}
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg border border-gray-100 md:hidden animate-pulse pointer-events-none z-20">
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-600">
+              Desliza
+            </span>
+            <ArrowRight size={10} className="text-brand-500" />
+          </div>
+          
+          {/* Subtle gradient to indicate more content */}
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-linear-to-l from-gray-50/80 to-transparent pointer-events-none rounded-r-2xl md:hidden" />
         </div>
       </div>
 
