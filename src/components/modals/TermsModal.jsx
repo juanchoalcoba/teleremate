@@ -62,7 +62,7 @@ const TermsModal = ({ isOpen, onClose }) => {
             </div>
             <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm leading-relaxed text-gray-600">
               <p>
-                El presente documento establece las condiciones legales que regulan el uso de la plataforma <strong>TeleRemate</strong>. Al utilizar nuestros servicios, participar en reservas o realizar compras directas, usted acepta íntegramente los presentes términos. TeleRemate actúa como plataforma de intermediación y corretaje, garantizando la publicidad y transparencia de los lotes ofrecidos.
+                El presente documento establece las condiciones legales que regulan el uso de la plataforma <strong>TeleRemate</strong>. Al utilizar nuestros servicios, participar en reservas o realizar compras directas, usted acepta íntegramente los presentes términos. TeleRemate actúa como plataforma de intermediación y corretaje, garantizando la publicidad y transparencia de los artículos ofrecidos.
               </p>
             </div>
           </section>
@@ -76,7 +76,7 @@ const TermsModal = ({ isOpen, onClose }) => {
               <div className="flex gap-4">
                 <div className="shrink-0 w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-700 font-bold text-sm">A</div>
                 <p className="text-gray-600 text-sm leading-relaxed pt-1">
-                  <strong>Estado de los Lotes:</strong> Todos los bienes se subastan o venden en el estado en que se encuentran, a la vista y sin reclamo posterior. TeleRemate proporciona descripciones y fotografías que buscan reflejar fielmente la realidad del lote.
+                  <strong>Estado de los Artículos:</strong> Todos los bienes se subastan o vendan en el estado en que se encuentran, a la vista y sin reclamo posterior. TeleRemate proporciona descripciones y fotografías que buscan reflejar fielmente la realidad del artículo.
                 </p>
               </div>
               <div className="flex gap-4">
@@ -95,7 +95,7 @@ const TermsModal = ({ isOpen, onClose }) => {
             </div>
             <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm leading-relaxed text-gray-600 text-sm space-y-4">
               <p>
-                Las reservas efectuadas a través del sitio web tienen carácter de <strong>preferencia temporal</strong>. El cliente se compromete a formalizar la operación dentro del plazo estipulado en la reserva. En caso de incumplimiento del plazo, el lote podrá ser reintegrado al inventario público o remate sin previo aviso.
+                Las reservas efectuadas a través del sitio web tienen carácter de <strong>preferencia temporal</strong>. El cliente se compromete a formalizar la operación dentro del plazo estipulado en la reserva. En caso de incumplimiento del plazo, el artículo podrá ser reintegrado al inventario público o remate sin previo aviso.
               </p>
               <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex gap-3 text-amber-800">
                 <AlertCircle size={18} className="shrink-0 mt-0.5" />

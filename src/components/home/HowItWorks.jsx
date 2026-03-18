@@ -18,7 +18,7 @@ const steps = [
     icon: Gavel,
     title: "Consultá",
     tag: "Atención directa",
-    desc: "Pedí más información, coordiná para ver el lote en persona o contactanos por WhatsApp.",
+    desc: "Pedí más información, coordiná para ver el artículo en persona o contactanos por WhatsApp.",
     cta: "Hablar con un asesor",
     isWhatsApp: true,
   },
@@ -260,7 +260,7 @@ export default function HowItWorks() {
           }}
         >
           <p className="text-xs" style={{ color: "#888" }}>
-            Más de <span className="text-white font-semibold">2.400 lotes</span>{" "}
+            Más de <span className="text-white font-semibold">2.400 artículos</span>{" "}
             rematados exitosamente
           </p>
           <div className="flex items-center gap-2">

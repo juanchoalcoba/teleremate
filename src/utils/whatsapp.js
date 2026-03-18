@@ -45,7 +45,7 @@ export const getWALink = (phone, message = "") => {
 export const WAMessages = {
   // Public -> Admin
   inquiry: (lot, title) => 
-    `Hola Teleremate, estoy interesado en el artículo Lote ${lot}: ${title}. ¿Me podrían dar más información?`,
+    `Hola Teleremate, estoy interesado en el artículo ID ${lot}: ${title}. ¿Me podrían dar más información?`,
   
   general: "Hola Teleremate, tengo una consulta sobre sus remates.",
 
@@ -55,11 +55,11 @@ export const WAMessages = {
 
   // Admin -> Client (Reservation)
   reservationFollowup: (name, lot, title) => 
-    `Hola ${name}, te contacto de Teleremate por tu reserva del lote ${lot}: ${title}. ¿Cómo te gustaría proceder?`,
+    `Hola ${name}, te contacto de Teleremate por tu reserva del artículo ID ${lot}: ${title}. ¿Cómo te gustaría proceder?`,
 
   // Admin -> Client (Purchase)
   purchaseFollowup: (name, lot, title) => 
-    `Hola ${name}, te contacto de Teleremate por tu compra del lote ${lot}: ${title}. ¿Cómo coordinamos el pago y la entrega?`,
+    `Hola ${name}, te contacto de Teleremate por tu compra del artículo ID ${lot}: ${title}. ¿Cómo coordinamos el pago y la entrega?`,
 };
 
 export const TELEREMATE_WA = ADMIN_PHONE;

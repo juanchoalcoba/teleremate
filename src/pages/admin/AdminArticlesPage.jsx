@@ -93,7 +93,7 @@ export default function AdminArticlesPage() {
             Inventario de Artículos
           </h1>
           <p className="text-gray-500 mt-1 text-sm sm:text-base">
-            Gestioná los lotes, subí imágenes y cambiá estados.
+            Gestioná los artículos, subí imágenes y cambiá estados.
           </p>
         </div>
         <Link
@@ -113,7 +113,7 @@ export default function AdminArticlesPage() {
           />
           <input
             type="text"
-            placeholder="Buscar por título o lote..."
+            placeholder="Buscar por título o ID..."
             className="input pl-11 w-full"
             value={search}
             onChange={(e) => {
@@ -153,7 +153,7 @@ export default function AdminArticlesPage() {
                   Artículo
                 </th>
                 <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[10%]">
-                  Lote
+                  ID
                 </th>
                 <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[15%]">
                   Categoría

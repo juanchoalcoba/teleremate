@@ -228,7 +228,7 @@ const PublicLayout = () => {
               />
               <p className="text-gray-400 text-sm leading-relaxed mb-8 pr-4">
                 La plataforma líder en remates online de Durazno y la región.
-                Transparencia, confianza y seguridad en cada lote que adquieres.
+                Transparencia, confianza y seguridad en cada artículo que adquieres.
               </p>
 
               {/* Social Icons */}
@@ -323,7 +323,7 @@ const PublicLayout = () => {
                     href="#"
                     className="text-gray-400 text-sm hover:text-white hover:translate-x-1 inline-flex items-center transition-all duration-300"
                   >
-                    Información de Lotes
+                    Información de Artículos
                   </a>
                 </li>
               </ul>

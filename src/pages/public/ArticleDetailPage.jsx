@@ -126,7 +126,7 @@ export default function ArticleDetailPage() {
 
           <div className="flex-1 bg-white border border-gray-50 rounded-3xl p-6 sm:p-8 mb-6 sm:mb-8">
             <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">
-              Información del lote
+              Información del artículo
             </h3>
             <p className="text-gray-600 leading-relaxed text-sm sm:text-sm md:text-base">
               {article.description}

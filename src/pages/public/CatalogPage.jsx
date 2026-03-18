@@ -60,7 +60,7 @@ export default function CatalogPage() {
                 Nuestro <span className="text-gray-400">Catálogo</span>
               </h1>
               <p className="text-gray-500 max-w-xl text-sm md:text-base leading-relaxed font-medium">
-                Descubra una selección curada de lotes exclusivos, antigüedades y oportunidades únicas. Calidad verificada en cada remate.
+                Descubra una selección curada de artículos exclusivos, antigüedades y oportunidades únicas. Calidad verificada en cada remate.
               </p>
             </div>
             
@@ -82,7 +82,7 @@ export default function CatalogPage() {
           />
           <input
             type="text"
-            placeholder="Buscar por nombre o número de lote..."
+            placeholder="Buscar por nombre o ID..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);

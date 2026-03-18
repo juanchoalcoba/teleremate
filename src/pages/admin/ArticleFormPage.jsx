@@ -196,7 +196,7 @@ export default function ArticleFormPage() {
               </div>
 
               <div>
-                <label className="label-admin">Número de Lote</label>
+                <label className="label-admin">ID del Artículo</label>
                 <input
                   name="lotNumber"
                   value={formData.lotNumber}
@@ -284,7 +284,7 @@ export default function ArticleFormPage() {
           <div className="card-admin p-8">
             <h3 className="font-bold text-gray-900 mb-6 flex items-center gap-2">
               <ImageIcon size={20} className="text-gray-400" /> Imágenes del
-              Lote
+              ID
             </h3>
 
             {isEdit ? (
