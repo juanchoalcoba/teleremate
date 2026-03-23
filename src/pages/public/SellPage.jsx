@@ -134,6 +134,12 @@ const SellPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // Special validation for phone number: ONLY allow digits
+    if (name === "sellerPhone") {
+      const numericValue = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: numericValue }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -252,7 +258,7 @@ const SellPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Nombre Completo</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Nombre Completo *</label>
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
                       <input
@@ -266,7 +272,7 @@ const SellPage = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">WhatsApp / Teléfono</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">WhatsApp / Teléfono *</label>
                     <div className="relative">
                       <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
                       <input
@@ -274,8 +280,9 @@ const SellPage = () => {
                         name="sellerPhone"
                         value={formData.sellerPhone}
                         onChange={handleInputChange}
+                        inputMode="numeric"
                         className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
-                        placeholder="099 000 000"
+                        placeholder="099000000"
                       />
                     </div>
                   </div>
@@ -311,7 +318,7 @@ const SellPage = () => {
 
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Nombre del artículo</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Nombre del artículo *</label>
                     <div className="relative">
                       <Type className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
                       <input
@@ -325,7 +332,7 @@ const SellPage = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Descripción General</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Descripción General *</label>
                     <textarea
                       required
                       name="description"
@@ -375,7 +382,7 @@ const SellPage = () => {
                       </div>
                     </div>
                     <div className="md:col-span-2 space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Precio Estimado (UYU)</label>
+                      <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Precio Estimado (UYU) *</label>
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
                         <input

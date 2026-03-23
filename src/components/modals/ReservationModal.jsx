@@ -24,6 +24,12 @@ export default function ReservationModal({ articleId, onClose, onSuccess }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Numeric only validation for phone
+    if (name === "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: numericValue }));
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -180,6 +186,7 @@ export default function ReservationModal({ articleId, onClose, onSuccess }) {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              inputMode="numeric"
               placeholder="Tu número de teléfono"
               disabled={isLoading}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition disabled:bg-gray-50"
