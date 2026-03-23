@@ -35,7 +35,7 @@ export default function CatalogPage() {
     limit: 12,
   };
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: ["articles", queryParams],
     queryFn: () => getArticles(queryParams),
   });
@@ -129,7 +129,19 @@ export default function CatalogPage() {
         </aside>
 
         <div className="grow">
-          {isLoading ? (
+          {isError ? (
+            <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-red-50/50 rounded-3xl border border-red-100">
+              <Package size={48} className="mb-4 text-red-300" />
+              <p className="font-bold text-red-600 mb-2">Error al cargar los artículos</p>
+              <p className="text-sm text-center max-w-sm mb-6 opacity-80">Hubo un problema de conexión. Por favor, intenta nuevamente.</p>
+              <button
+                onClick={() => refetch()}
+                className="btn-primary"
+              >
+                Reintentar
+              </button>
+            </div>
+          ) : isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 9 }).map((_, i) => (
                 <div

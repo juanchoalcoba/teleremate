@@ -5,7 +5,7 @@ import { getArticles } from "../../services/api";
 import ArticleCard from "../catalog/ArticleCard";
 
 export default function FeaturedArticles() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["articles", "featured"],
     queryFn: () => getArticles({ featured: true, limit: 4 }),
   });
@@ -40,7 +40,14 @@ export default function FeaturedArticles() {
           </Link>
         </div>
 
-      {isLoading ? (
+      {isError ? (
+        <div className="flex flex-col items-center justify-center py-20 bg-red-50/50 rounded-3xl border border-red-100">
+          <p className="font-bold text-red-600 mb-2">Error al cargar los artículos destacados</p>
+          <button onClick={() => refetch()} className="text-sm font-bold text-brand-600 hover:underline">
+            Reintentar
+          </button>
+        </div>
+      ) : isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
