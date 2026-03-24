@@ -42,20 +42,20 @@ export default defineConfig({
         enabled: false // Disabled in dev to prevent CSS/HMR caching issues on remote devices
       },
       manifest: {
-        name: "TeleRemate",
+        id: "/",
+        name: "TeleRemate - Subastas Online",
         short_name: "TeleRemate",
-        description: "Plataforma de Subastas y Ventas Online",
+        description: "La plataforma líder en subastas y ventas online. Reserva, compra y remata artículos exclusivos.",
+        categories: ["business", "shopping"],
+        lang: "es",
+        dir: "auto",
         theme_color: "#000000",
         background_color: "#0a0a0a",
         display: "standalone",
+        orientation: "any",
         start_url: "/",
+        scope: "/",
         icons: [
-          {
-            src: "/pwa-icon.png",
-            sizes: "144x144",
-            type: "image/png",
-            purpose: "any"
-          },
           {
             src: "/pwa-icon.png",
             sizes: "192x192",
