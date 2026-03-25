@@ -39,13 +39,20 @@ export default function AdminArticlesPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin-articles", { search, page, category: categoryFilter }],
+    queryKey: ["admin-articles", { search, page, category: categoryFilter, status: statusFilter }],
     queryFn: () =>
-      getAdminArticles({ search, page, category: categoryFilter, limit: 10 }),
+      getAdminArticles({ 
+        search, 
+        page, 
+        category: categoryFilter, 
+        status: statusFilter, 
+        limit: 10 
+      }),
   });
 
   const deleteMutation = useMutation({
@@ -122,21 +129,37 @@ export default function AdminArticlesPage() {
             }}
           />
         </div>
-        <div className="flex gap-2 sm:gap-4">
+        <div className="flex flex-wrap gap-2 sm:gap-4">
           <select
-            className="input flex-1 sm:w-48"
+            className="input flex-1 sm:w-44"
             value={categoryFilter}
             onChange={(e) => {
               setCategoryFilter(e.target.value);
               setPage(1);
             }}
           >
-            <option value="">Todas las categorías</option>
+            <option value="">Categorías</option>
             <option value="deposito">En Depósito</option>
             <option value="remate">A Rematar</option>
             <option value="inmueble">Inmuebles</option>
             <option value="vehiculo">Vehículos</option>
           </select>
+          
+          <select
+            className="input flex-1 sm:w-44"
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">Todos los Estados</option>
+            <option value="depot">En Depósito</option>
+            <option value="upcoming">Próx. Remate</option>
+            <option value="reserved">Reservados</option>
+            <option value="sold">Vendidos</option>
+          </select>
+
           <button className="btn-secondary px-3 lg:hidden">
             <Filter size={18} />
           </button>

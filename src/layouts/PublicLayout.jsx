@@ -5,7 +5,6 @@ import {
   X,
   Phone,
   Mail,
-  ArrowRight,
   Facebook,
   Instagram,
   MapPin,
@@ -86,6 +85,7 @@ const PublicLayout = () => {
             </Link>
 
             {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-1">
               {navLinks.map(({ to, label }) => {
                 const isActive = pathname === to;
                 return (
@@ -307,6 +307,11 @@ const PublicLayout = () => {
                   </li>
                 ))}
                 <li>
+                  <Link
+                    to="/como-funciona"
+                    className="text-gray-400 text-sm hover:text-white hover:translate-x-1 inline-flex items-center transition-all duration-300"
+                  >
+                    ¿Cómo funciona?
                   </Link>
                 </li>
                 {!isStandalone && (

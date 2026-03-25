@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const usePWA = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstallable, setIsInstallable] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(
+  const [isStandalone] = useState(
     () => window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone
   );
   const [isIOS] = useState(
