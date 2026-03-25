@@ -105,14 +105,6 @@ const PublicLayout = () => {
                   </Link>
                 );
               })}
-              {!isStandalone && (
-                <button
-                  onClick={() => setIsPWAHelpOpen(true)}
-                  className="px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-brand-400 hover:text-brand-300 transition-all border border-brand-500/20 hover:border-brand-500/40 ml-2"
-                >
-                  Instalar App
-                </button>
-              )}
             </nav>
 
             {/* CTA + Hamburger */}
@@ -181,17 +173,6 @@ const PublicLayout = () => {
                 {label}
               </Link>
             ))}
-            {!isStandalone && (
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  setIsPWAHelpOpen(true);
-                }}
-                className="px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest text-brand-400 bg-brand-500/5 border border-brand-500/20 text-left mt-1"
-              >
-                Instalar Aplicación
-              </button>
-            )}
             {/* Social Icons Mobile */}
             <div className="mt-2 flex items-center justify-center gap-4 py-4 border-t border-white/5">
               <a
@@ -444,7 +425,6 @@ const PublicLayout = () => {
         isOpen={isPWAHelpOpen} 
         onClose={() => setIsPWAHelpOpen(false)} 
         isIOS={isIOS}
-        isInstallable={isInstallable}
         handleInstallClick={handleInstallClick}
       />
     </div>
