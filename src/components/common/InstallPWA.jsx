@@ -24,9 +24,8 @@ export default function InstallPWA() {
     // Logic to show the banner
     // Cond: Installable && Not in app already && Hasn't seen it THIS session
     if (isInstallable && !isStandalone && !hasSeenPrompt) {
-      // Delay it slightly for better UX
-      const timer = setTimeout(() => setIsVisible(true), 3000);
-      return () => clearTimeout(timer);
+      // Show immediately
+      setIsVisible(true);
     }
   }, [isInstallable, isStandalone, hasSeenPrompt]);
 
@@ -45,23 +44,23 @@ export default function InstallPWA() {
 
   return (
     <>
-      {/* Non-invasive Bottom Banner */}
+      {/* Non-invasive Bottom Banner (White Theme) */}
       {isVisible && (
-        <div className="fixed bottom-4 left-4 right-4 z-[100] md:left-auto md:right-8 md:bottom-8 md:w-[22rem] animate-in slide-in-from-bottom-12 duration-700 ease-out">
-          <div className="relative overflow-hidden bg-dark-900/95 backdrop-blur-md border border-white/10 rounded-[2rem] p-5 shadow-2xl shadow-black/60">
+        <div className="fixed bottom-4 left-4 right-4 z-100 md:left-auto md:right-8 md:bottom-8 md:w-88 animate-in slide-in-from-bottom-12 duration-700 ease-out">
+          <div className="relative overflow-hidden bg-white border border-gray-200 rounded-4xl p-5 shadow-2xl shadow-black/20">
             {/* Subtle brand glow */}
-            <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-brand-500/10 rounded-full blur-2xl" />
+            <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-brand-500/5 rounded-full blur-2xl" />
             
             <button 
               onClick={handleClose}
-              className="absolute top-3 right-3 p-2 text-white/30 hover:text-white hover:bg-white/10 rounded-full transition-all"
+              className="absolute top-3 right-3 p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-full transition-all"
               aria-label="Cerrar"
             >
               <X size={16} />
             </button>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-brand-500 flex items-center justify-center shrink-0 shadow-lg shadow-brand-500/30 group">
+              <div className="w-14 h-14 rounded-2xl bg-brand-500 flex items-center justify-center shrink-0 shadow-lg shadow-brand-500/20 group">
                 <img 
                   src="/logoprincipal.png" 
                   alt="" 
@@ -69,15 +68,15 @@ export default function InstallPWA() {
                 />
               </div>
               <div className="flex-1 pr-6">
-                <h3 className="text-white font-bold text-sm tracking-tight">
+                <h3 className="text-black font-bold text-sm tracking-tight">
                   TeleRemate App
                 </h3>
-                <p className="text-gray-400 text-[11px] leading-tight mt-0.5">
+                <p className="text-gray-600 text-[11px] leading-tight mt-0.5">
                   Acceso rápido y mejor experiencia. No ocupa espacio.
                 </p>
                 <button
                   onClick={handleOpenModal}
-                  className="mt-2 text-brand-400 text-[11px] font-black uppercase tracking-widest hover:text-brand-300 transition-colors flex items-center gap-1.5"
+                  className="mt-2 text-brand-600 text-[11px] font-black uppercase tracking-widest hover:text-brand-700 transition-colors flex items-center gap-1.5"
                 >
                   <Download size={12} />
                   Instalar ahora
