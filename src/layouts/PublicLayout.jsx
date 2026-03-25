@@ -12,11 +12,15 @@ import {
 import { getWALink, WAMessages, TELEREMATE_WA } from "../utils/whatsapp";
 import TermsModal from "../components/modals/TermsModal";
 import InstallPWA from "../components/common/InstallPWA";
+import PWAHelpModal from "../components/modals/PWAHelpModal";
+import usePWA from "../hooks/usePWA";
 
 const PublicLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isPWAHelpOpen, setIsPWAHelpOpen] = useState(false);
+  const { isStandalone, isIOS, isInstallable, handleInstallClick } = usePWA();
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -101,6 +105,14 @@ const PublicLayout = () => {
                   </Link>
                 );
               })}
+              {!isStandalone && (
+                <button
+                  onClick={() => setIsPWAHelpOpen(true)}
+                  className="px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-brand-400 hover:text-brand-300 transition-all border border-brand-500/20 hover:border-brand-500/40 ml-2"
+                >
+                  Instalar App
+                </button>
+              )}
             </nav>
 
             {/* CTA + Hamburger */}
@@ -169,6 +181,17 @@ const PublicLayout = () => {
                 {label}
               </Link>
             ))}
+            {!isStandalone && (
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  setIsPWAHelpOpen(true);
+                }}
+                className="px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest text-brand-400 bg-brand-500/5 border border-brand-500/20 text-left mt-1"
+              >
+                Instalar Aplicación
+              </button>
+            )}
             {/* Social Icons Mobile */}
             <div className="mt-2 flex items-center justify-center gap-4 py-4 border-t border-white/5">
               <a
@@ -291,6 +314,16 @@ const PublicLayout = () => {
                     ¿Cómo funciona?
                   </Link>
                 </li>
+                {!isStandalone && (
+                  <li>
+                    <button
+                      onClick={() => setIsPWAHelpOpen(true)}
+                      className="text-brand-400 text-sm font-bold hover:text-brand-300 hover:translate-x-1 inline-flex items-center transition-all duration-300"
+                    >
+                      Instalar Aplicación
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -405,6 +438,15 @@ const PublicLayout = () => {
 
       {/* PWA Install Prompt */}
       <InstallPWA />
+
+      {/* PWA Manual Help Modal */}
+      <PWAHelpModal 
+        isOpen={isPWAHelpOpen} 
+        onClose={() => setIsPWAHelpOpen(false)} 
+        isIOS={isIOS}
+        isInstallable={isInstallable}
+        handleInstallClick={handleInstallClick}
+      />
     </div>
   );
 };
