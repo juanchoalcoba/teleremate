@@ -65,19 +65,15 @@ export default function PWAHelpModal({
               <div className="space-y-3">
                 {/* Step 1 */}
                 <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0">
-                    <IOSShareIcon />
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0 font-black text-lg">
+                    ⋯
                   </div>
                   <div className="flex-1">
                     <p className="text-black font-bold text-sm">
-                      Paso 1 — Toca <span className="text-blue-600">"Compartir"</span>
+                      Paso 1 — Tocá los <span className="text-blue-600">tres puntitos</span>
                     </p>
                     <p className="text-gray-500 text-xs mt-0.5 leading-snug">
-                      Es el botón con una caja y una flecha hacia arriba{" "}
-                      <span className="inline-flex items-center font-bold text-blue-600">
-                        <IOSShareIcon />
-                      </span>{" "}
-                      que está en la barra de Safari.
+                      Buscá el botón <span className="font-bold text-black">⋯</span> en la esquina de Safari y tocá <span className="text-blue-600 font-bold">"Compartir"</span> en el menú que aparece.
                     </p>
                   </div>
                 </div>
@@ -92,9 +88,7 @@ export default function PWAHelpModal({
                       Paso 2 — Tocá <span className="text-orange-600">"Agregar a inicio"</span>
                     </p>
                     <p className="text-gray-500 text-xs mt-0.5 leading-snug">
-                      Buscá la opción{" "}
-                      <span className="font-bold text-black">"Agregar a pantalla de inicio"</span>{" "}
-                      y confirmá. ¡Listo!
+                      Seleccioná <span className="font-bold text-black">"Agregar a pantalla de inicio"</span>, confirmá el nombre y listo. ¡Ya tenés el ícono!
                     </p>
                   </div>
                 </div>
