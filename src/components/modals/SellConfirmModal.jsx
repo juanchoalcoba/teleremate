@@ -63,7 +63,7 @@ const SellConfirmModal = ({ isOpen, onClose, onConfirm, isSubmitting }) => {
                 <AlertTriangle size={20} />
               </div>
               <p className="text-gray-700 text-sm sm:text-base font-semibold leading-relaxed">
-                "Los ingresos como <span className="text-gray-900 font-bold italic">inmuebles</span> y <span className="text-gray-900 font-bold italic">vehículos</span> tendrán una comisión del <span className="text-amber-600 font-black">5 %</span>."
+                "Los articulos correspondientes a <span className="text-gray-900 font-bold italic">inmuebles</span> y <span className="text-gray-900 font-bold italic">vehiculos</span> estaran sujetos a un acuerdo de <span className="text-amber-600 font-black">comision a definir</span> luego de su aprobacion."
               </p>
             </div>
           </div>
