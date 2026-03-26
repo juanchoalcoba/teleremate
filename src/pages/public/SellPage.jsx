@@ -24,6 +24,7 @@ import { createSubmission, uploadPublicImages } from "../../services/api";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import SellWarningModal from "../../components/modals/SellWarningModal";
+import SellConfirmModal from "../../components/modals/SellConfirmModal";
 
 // Detect mobile/tablet
 const isMobile = () =>
@@ -143,19 +144,7 @@ const SellPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (step < 3) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setStep(step + 1);
-      return;
-    }
-
-    if (files.length === 0) {
-      toast.error("Por favor, subí al menos una imagen");
-      return;
-    }
-
+  const executeSubmission = async () => {
     setIsSubmitting(true);
     try {
       console.log("Iniciando subida de imágenes...", files.length, "archivos");
@@ -185,7 +174,27 @@ const SellPage = () => {
       toast.error(error.response?.data?.message || "Error al enviar el pedido. Por favor intentá de nuevo.");
     } finally {
       setIsSubmitting(false);
+      setIsConfirmOpen(false);
     }
+  };
+
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (step < 3) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setStep(step + 1);
+      return;
+    }
+
+    if (files.length === 0) {
+      toast.error("Por favor, subí al menos una imagen");
+      return;
+    }
+
+    // Show confirmation modal before executing
+    setIsConfirmOpen(true);
   };
 
   if (step === 4) {
@@ -212,6 +221,12 @@ const SellPage = () => {
   return (
     <div className="min-h-screen bg-gray-50/50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
       <SellWarningModal isOpen={isWarningOpen} onClose={() => setIsWarningOpen(false)} />
+      <SellConfirmModal 
+        isOpen={isConfirmOpen} 
+        onClose={() => setIsConfirmOpen(false)} 
+        onConfirm={executeSubmission}
+        isSubmitting={isSubmitting}
+      />
       <div className="max-w-3xl mx-auto">
         {/* Progress bar */}
         <div className="mb-6 sm:mb-12">
