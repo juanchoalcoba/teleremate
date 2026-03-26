@@ -22,7 +22,7 @@ import { toast } from "react-hot-toast";
 import { getImageUrl } from "../../utils/imageUtils";
 
 const CATEGORY_LABELS = {
-  deposito: "En Depósito",
+  deposito: "Venta Directa",
   remate: "A Rematar",
   inmueble: "Inmuebles",
   vehiculo: "Vehículos",
@@ -125,7 +125,7 @@ export default function AdminArticlesPage() {
             }}
           >
             <option value="">Todas las categorías</option>
-            <option value="deposito">En Depósito</option>
+            <option value="deposito">Venta Directa</option>
             <option value="remate">A Rematar</option>
             <option value="inmueble">Inmuebles</option>
             <option value="vehiculo">Vehículos</option>
@@ -243,7 +243,7 @@ export default function AdminArticlesPage() {
                             })
                           }
                         >
-                          <option value="depot">EN DEPÓSITO</option>
+                          <option value="depot">VENTA DIRECTA</option>
                           <option value="upcoming">PRÓX. REMATE</option>
                           <option value="reserved">RESERVADO</option>
                           <option value="sold">VENDIDO</option>

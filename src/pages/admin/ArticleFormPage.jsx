@@ -22,7 +22,7 @@ import { toast } from "react-hot-toast";
 import { getImageUrl } from "../../utils/imageUtils";
 
 const CATEGORIES = [
-  { value: "deposito", label: "En Depósito" },
+  { value: "deposito", label: "Venta Directa" },
   { value: "remate", label: "A Rematar" },
   { value: "inmueble", label: "Inmuebles" },
   { value: "vehiculo", label: "Vehículos" },
@@ -363,7 +363,7 @@ export default function ArticleFormPage() {
                   onChange={handleChange}
                   className="input-admin text-sm font-bold bg-gray-50 uppercase tracking-wider"
                 >
-                  <option value="depot">EN DEPÓSITO</option>
+                  <option value="depot">VENTA DIRECTA</option>
                   <option value="upcoming">PRÓXIMO REMATE</option>
                   <option value="reserved">RESERVADO</option>
                   <option value="sold">VENDIDO</option>
@@ -461,8 +461,8 @@ export default function ArticleFormPage() {
             <AlertCircle size={20} className="text-blue-500 shrink-0" />
             <p className="text-xs text-blue-700 leading-relaxed font-medium">
               Asegurate de que las fotos sean claras y de buena calidad. El
-              "Precio Estimado" es el precio base que verán los clientes en el
-              sitio web.
+              "Precio Estimado" es el precio que verán los clientes en el
+              sitio web (como Precio o Precio Base según la categoría).
             </p>
           </div>
         </div>

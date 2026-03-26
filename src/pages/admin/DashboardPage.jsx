@@ -95,7 +95,7 @@ export default function DashboardPage() {
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
-          title="En Depósito"
+          title="Venta Directa"
           value={kpis?.totalDepot || 0}
           icon={Package}
           color="blue"

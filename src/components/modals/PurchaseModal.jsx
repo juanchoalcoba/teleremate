@@ -217,7 +217,7 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
               disabled={isLoading}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition disabled:bg-gray-50"
             >
-              <option value="pickup">Retiro en depósito</option>
+              <option value="pickup">Retiro por local</option>
               <option value="delivery">Envío a domicilio</option>
             </select>
           </div>

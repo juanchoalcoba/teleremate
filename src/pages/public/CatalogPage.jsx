@@ -7,7 +7,7 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "",
+    category: "deposito",
     status: "",
     minPrice: "",
     maxPrice: "",
@@ -16,8 +16,7 @@ export default function CatalogPage() {
   const [page, setPage] = useState(1);
 
   const CATEGORY_TABS = [
-    { value: "", label: "Todos", icon: Package },
-    { value: "deposito", label: "En Depósito", icon: Package },
+    { value: "deposito", label: "Venta Directa", icon: Package },
     { value: "remate", label: "A Rematar", icon: Gavel },
     { value: "inmueble", label: "Inmuebles", icon: Package },
     { value: "vehiculo", label: "Vehículos", icon: Package },
@@ -158,7 +157,7 @@ export default function CatalogPage() {
                 onClick={() => {
                   setSearch("");
                   updateFilters({
-                    category: "",
+                    category: "deposito",
                     status: "",
                     minPrice: "",
                     maxPrice: "",

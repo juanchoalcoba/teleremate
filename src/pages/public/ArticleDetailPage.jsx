@@ -19,6 +19,7 @@ import PurchaseModal from "../../components/modals/PurchaseModal";
 import ReservationModal from "../../components/modals/ReservationModal";
 import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
+import { getCategoryLabel, getPriceLabel } from "../../utils/articleUtils";
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
@@ -111,12 +112,7 @@ export default function ArticleDetailPage() {
           <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
             <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full">
               <Tag size={14} className="text-brand-500" />{" "}
-              {({
-                deposito: "En Depósito",
-                remate: "A Rematar",
-                inmueble: "Inmuebles",
-                vehiculo: "Vehículos",
-              }[article.category] || article.category)}
+              {getCategoryLabel(article.category)}
             </div>
             <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full">
               <ShieldCheck size={14} className="text-brand-500" />{" "}
@@ -137,7 +133,7 @@ export default function ArticleDetailPage() {
             <div className="flex items-end justify-between gap-4 mb-8">
               <div>
                 <p className="text-gray-400 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
-                  Inversión estimada
+                  {getPriceLabel(article)}
                 </p>
                 <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
                   UYU $ {article.estimatedPrice?.toLocaleString("es-UY")}
