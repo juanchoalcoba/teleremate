@@ -54,7 +54,7 @@ const SellConfirmModal = ({ isOpen, onClose, onConfirm, isSubmitting }) => {
                 <CheckCircle2 size={20} />
               </div>
               <p className="text-gray-700 text-sm sm:text-base font-semibold leading-relaxed">
-                "Por intermedio de este contrato autorizo a <span className="text-brand-600 font-black">TELEREMATE</span> a vender los artículos aquí detallados descontando el <span className="underline decoration-brand-200 decoration-4">20 %</span>."
+                "Por intermedio de este contrato autorizo a <span className="text-brand-600 font-black">TELEREMATE</span> a vender los artículos aquí detallados descontando el <span className="underline decoration-brand-200 decoration-4">12 %</span>."
               </p>
             </div>
 
