@@ -5,7 +5,7 @@ import Typed from "typed.js";
 
 const UPCOMING_AUCTIONS = [
   "Próximos remates: 11 y 12 de abril",
-  "Próximos remates: 16 y 17 de abril",
+  "Próximos remates: 25 y 26 de abril",
 ];
 
 export default function HeroSection() {
