@@ -4,9 +4,8 @@ import { ArrowRight, Bell } from "lucide-react";
 import Typed from "typed.js";
 
 const UPCOMING_AUCTIONS = [
-  "Próximo remate: 15 de Abril",
-  "Remate de Maquinarias: 22 de Abril",
-  "Gran Liquidación: 2 de Mayo",
+  "Próximos remates: 11 y 12 de abril",
+  "Próximos remates: 16 y 17 de abril",
 ];
 
 export default function HeroSection() {
@@ -46,7 +45,6 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* LEFT: Text + CTA */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-5 xl:col-span-5 w-full">
-          
           {/* Auction Ticker Badge */}
           {UPCOMING_AUCTIONS.length > 0 && (
             <div className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-4 shadow-xl animate-reveal animation-delay-300">
@@ -77,9 +75,7 @@ export default function HeroSection() {
   [text-shadow:0_0_20px_rgba(255,255,255,0.1)] animate-reveal"
             >
               Uruguay
-              <div
-                className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/20 rounded-full overflow-hidden"
-              >
+              <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/20 rounded-full overflow-hidden">
                 <div className="w-full h-full bg-white/40 animate-sweep" />
               </div>
             </span>
@@ -120,7 +116,7 @@ export default function HeroSection() {
           <div className="relative w-full max-w-[280px] sm:max-w-[400px] lg:max-w-[750px] xl:max-w-[850px] mx-auto flex items-center justify-center lg:translate-x-4 xl:translate-x-12 lg:scale-110 xl:scale-125 animate-float">
             {/* Simple static glow ring */}
             <div className="absolute inset-0 rounded-full bg-brand-500/10 blur-[60px] lg:blur-[100px] scale-100 lg:scale-125" />
-            
+
             <img
               src="/logoprincipal.png"
               alt="Teleremate"
