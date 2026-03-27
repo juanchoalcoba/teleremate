@@ -1,17 +1,44 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Bell } from "lucide-react";
+import Typed from "typed.js";
+
+const UPCOMING_AUCTIONS = [
+  "Próximo remate: 15 de Abril",
+  "Remate de Maquinarias: 22 de Abril",
+  "Gran Liquidación: 2 de Mayo",
+];
 
 export default function HeroSection() {
+  const typedRef = useRef(null);
+
+  useEffect(() => {
+    if (UPCOMING_AUCTIONS.length === 0) return;
+
+    const typed = new Typed(typedRef.current, {
+      strings: UPCOMING_AUCTIONS,
+      typeSpeed: 50,
+      backSpeed: 30,
+      backDelay: 2000,
+      loop: true,
+      showCursor: true,
+      cursorChar: "|",
+    });
+
+    return () => {
+      typed.destroy();
+    };
+  }, []);
+
   return (
     <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-16 lg:py-0">
-      {/* Background Image */}
+      {/* Background Image ... */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
           src="/hero-bg.png"
           alt="Remates Teleremate"
           className="w-full h-full object-cover opacity-90 object-center animate-kenburns"
         />
-        {/* Gradient overlay: left dark, right lighter */}
         <div className="absolute inset-0 bg-linear-to-r from-dark-950 via-dark-950/50 to-dark-950/50" />
       </div>
 
@@ -19,6 +46,20 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* LEFT: Text + CTA */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-5 xl:col-span-5 w-full">
+          
+          {/* Auction Ticker Badge */}
+          {UPCOMING_AUCTIONS.length > 0 && (
+            <div className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-4 shadow-xl animate-reveal animation-delay-300">
+              <div className="relative flex items-center justify-center">
+                <div className="absolute inset-0 bg-brand-500/20 blur-sm rounded-full animate-pulse" />
+                <Bell size={12} className="text-brand-500 relative z-10" />
+              </div>
+              <span className="text-white/90 text-[10px] md:text-xs font-black uppercase tracking-[0.1em] min-h-[1.2rem] flex items-center">
+                <span ref={typedRef} />
+              </span>
+            </div>
+          )}
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -112,6 +153,8 @@ export default function HeroSection() {
         .animate-float { animation: float 5s ease-in-out infinite; }
         .animate-sweep { animation: sweep 5s ease-in-out infinite; }
         .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animation-delay-300 { animation-delay: 300ms; }
+        .typed-cursor { color: var(--color-brand-500); font-weight: 900; margin-left: 2px; }
       `}</style>
     </section>
   );
