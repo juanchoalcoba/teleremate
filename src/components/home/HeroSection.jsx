@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Bell } from "lucide-react";
 import Typed from "typed.js";
@@ -8,8 +8,22 @@ const UPCOMING_AUCTIONS = [
   "Próximos remates: 25 y 26 de abril",
 ];
 
+const HERO_IMAGES = [
+  "/bgaura.png",
+  "/hero-bg.png"
+];
+
 export default function HeroSection() {
   const typedRef = useRef(null);
+  const [bgIndex, setBgIndex] = useState(0);
+
+  // Background Loop
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000); // 5 seconds (1s transition + 4s stable)
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     if (UPCOMING_AUCTIONS.length === 0) return;
@@ -32,12 +46,18 @@ export default function HeroSection() {
   return (
     <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-16 lg:py-0">
       {/* Background Image ... */}
+      {/* Background Images Loop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <img
-          src="/hero-bg.png"
-          alt="Remates Teleremate"
-          className="w-full h-full object-cover opacity-90 object-center animate-kenburns"
-        />
+        {HERO_IMAGES.map((src, index) => (
+          <img
+            key={src}
+            src={src}
+            alt="Remates Teleremate"
+            className={`absolute inset-0 w-full h-full object-cover object-center animate-kenburns transition-opacity duration-1000 ease-in-out ${
+              index === bgIndex ? "opacity-90" : "opacity-0"
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-linear-to-r from-dark-950 via-dark-950/50 to-dark-950/50" />
       </div>
 
