@@ -89,7 +89,7 @@ export default function HeroSection() {
 
             <span
               className="relative inline-block sm:scale-100 mt-2 sm:mt-0 animate-reveal
-  bg-gradient-to-r from-white via-sky-200 to-blue-200
+  bg-gradient-to-r from-white via-sky-100 to-blue-200
   bg-clip-text [-webkit-background-clip:text] text-transparent
   [-webkit-text-stroke:1px_black]
   drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]"
