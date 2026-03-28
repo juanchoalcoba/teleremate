@@ -8,10 +8,7 @@ const UPCOMING_AUCTIONS = [
   "Próximos remates: 25 y 26 de abril",
 ];
 
-const HERO_IMAGES = [
-  "/bgaura.png",
-  "/hero-bg.png"
-];
+const HERO_IMAGES = ["/bgaura.png", "/hero-bg.png"];
 
 export default function HeroSection() {
   const typedRef = useRef(null);
@@ -21,7 +18,7 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 5000); // 5 seconds (1s transition + 4s stable)
+    }, 3000); // 5 seconds (1s transition + 4s stable)
     return () => clearInterval(timer);
   }, []);
 
