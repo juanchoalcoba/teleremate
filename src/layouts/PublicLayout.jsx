@@ -20,7 +20,7 @@ const PublicLayout = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isPWAHelpOpen, setIsPWAHelpOpen] = useState(false);
-  const { isStandalone, isIOS, isInstallable, handleInstallClick } = usePWA();
+  const { isStandalone, isIOS, handleInstallClick } = usePWA();
   const { pathname } = useLocation();
 
   useEffect(() => {
