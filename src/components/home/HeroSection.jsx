@@ -88,12 +88,15 @@ export default function HeroSection() {
             <span className="mb-1 lg:mb-0">TELEREMATE</span>
 
             <span
-              className="text-white relative inline-block sm:scale-100 mt-2 sm:mt-0
-  [text-shadow:0_0_20px_rgba(255,255,255,0.1)] animate-reveal"
+              className="relative inline-block sm:scale-100 mt-2 sm:mt-0 animate-reveal
+  bg-gradient-to-r from-white via-sky-200 to-blue-200
+  bg-clip-text [-webkit-background-clip:text] text-transparent
+  [-webkit-text-stroke:1px_black]
+  drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]"
             >
               Uruguay
-              <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/20 rounded-full overflow-hidden">
-                <div className="w-full h-full bg-white/40 animate-sweep" />
+              <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/70 rounded-full overflow-hidden">
+                <div className="w-full h-full bg-white/60 animate-sweep" />
               </div>
             </span>
           </h1>
@@ -108,7 +111,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 w-full">
             <Link
               to="/catalogo"
-              className="w-full sm:w-auto group inline-flex justify-center items-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-4 rounded-xl border border-white/20 transition-all hover:shadow-xl hover:shadow-brand-500/30 active:scale-95"
+              className="w-full sm:w-auto group inline-flex justify-center items-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-4 rounded-2xl border border-white/20 transition-all hover:shadow-xl hover:shadow-brand-500/30 active:scale-95"
             >
               Ver Catálogo
               <ArrowRight
@@ -118,7 +121,7 @@ export default function HeroSection() {
             </Link>
             <Link
               to="/vender"
-              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 border border-white/20 hover:border-white/40 text-white font-bold px-8 py-4 rounded-xl transition-all hover:bg-white/10 active:scale-95 shadow-sm"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 border border-white/20 hover:border-white/40 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:bg-white/10 active:scale-95 shadow-sm"
             >
               Vender
             </Link>
