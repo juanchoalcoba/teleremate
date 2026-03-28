@@ -8,7 +8,7 @@ const UPCOMING_AUCTIONS = [
   "Próximos remates: 25 y 26 de abril",
 ];
 
-const HERO_IMAGES = ["/bgaura.png", "/hero-bg.png"];
+const HERO_IMAGES = ["/bgaura.png", "/hero-bg.png", "/3hero.png"];
 
 export default function HeroSection() {
   const typedRef = useRef(null);
