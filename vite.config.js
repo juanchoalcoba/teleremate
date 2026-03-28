@@ -5,7 +5,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
@@ -15,42 +15,43 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^\/api\/.*/i,
-            handler: 'NetworkFirst',
+            handler: "NetworkFirst",
             options: {
-              cacheName: 'api-cache',
+              cacheName: "api-cache",
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 // 24 hours
+                maxAgeSeconds: 60 * 60 * 24, // 24 hours
               },
               networkTimeoutSeconds: 10,
-            }
+            },
           },
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
-            handler: 'StaleWhileRevalidate',
+            handler: "StaleWhileRevalidate",
             options: {
-              cacheName: 'images-cache',
+              cacheName: "images-cache",
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-              }
-            }
-          }
-        ]
+              },
+            },
+          },
+        ],
       },
       devOptions: {
-        enabled: false // Disabled in dev to prevent CSS/HMR caching issues on remote devices
+        enabled: false, // Disabled in dev to prevent CSS/HMR caching issues on remote devices
       },
       manifest: {
         id: "/",
-        name: "TeleRemate - Subastas Online",
-        short_name: "TeleRemate",
-        description: "La plataforma líder en subastas y ventas online. Reserva, compra y remata artículos exclusivos.",
+        name: "TeleRemate App",
+        short_name: "TeleRemate App",
+        description:
+          "La plataforma líder en subastas y ventas online. Reserva, compra y remata artículos exclusivos.",
         categories: ["business", "shopping"],
         lang: "es",
         dir: "auto",
-        theme_color: "#000000",
-        background_color: "#0a0a0a",
+        theme_color: "#ffffff",
+        background_color: "#ffffff",
         display: "standalone",
         orientation: "any",
         start_url: "/",
@@ -60,23 +61,23 @@ export default defineConfig({
             src: "/iconodefin.png",
             sizes: "192x192",
             type: "image/png",
-            purpose: "any"
+            purpose: "any",
           },
           {
             src: "/iconodefin.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any"
+            purpose: "any",
           },
           {
             src: "/iconodefin.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "maskable"
-          }
-        ]
-      }
-    })
+            purpose: "maskable",
+          },
+        ],
+      },
+    }),
   ],
   server: {
     host: true,
