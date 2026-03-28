@@ -50,7 +50,7 @@ export default defineConfig({
         categories: ["business", "shopping"],
         lang: "es",
         dir: "auto",
-        theme_color: "#ffffff",
+        theme_color: "#0a0a0a",
         background_color: "#ffffff",
         display: "standalone",
         orientation: "any",
