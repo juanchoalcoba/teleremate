@@ -13,6 +13,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import useAuthStore from "../store/authStore";
+import InstallAdminPWA from "../components/common/InstallAdminPWA";
 
 const navItems = [
   { to: "/backoffice", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -131,6 +132,8 @@ export default function AdminLayout() {
           <Outlet />
         </main>
       </div>
+
+      <InstallAdminPWA />
     </div>
   );
 }

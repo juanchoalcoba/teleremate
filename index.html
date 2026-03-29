@@ -1,6 +1,23 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      if (window.location.pathname.startsWith('/backoffice')) {
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = '/manifest-admin.json';
+        link.id = 'admin-manifest';
+        document.head.appendChild(link);
+        
+        const observer = new MutationObserver(() => {
+          document.querySelectorAll('link[rel="manifest"]').forEach(node => {
+            if (node.id !== 'admin-manifest') node.remove();
+          });
+        });
+        observer.observe(document.head, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 2000);
+      }
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/iconodefin.png" />
     <link rel="apple-touch-icon" href="/iconodefin.png" />
