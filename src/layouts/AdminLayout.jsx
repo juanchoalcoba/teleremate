@@ -83,11 +83,11 @@ export default function AdminLayout() {
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
-          {navItems.map(({ to, label, icon: IconComponent, end }) => (
+          {navItems.map((item) => (
             <NavLink
-              key={to}
-              to={to}
-              end={end}
+              key={item.to}
+              to={item.to}
+              end={item.end}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all relative ${
@@ -97,8 +97,8 @@ export default function AdminLayout() {
                 }`
               }
             >
-              <IconComponent size={18} />
-              {label}
+              <item.icon size={18} />
+              {item.label}
               <ChevronRight size={14} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
             </NavLink>
           ))}
