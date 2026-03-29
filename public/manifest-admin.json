@@ -1,7 +1,7 @@
 {
   "id": "/backoffice",
   "name": "Teleremate Admin",
-  "short_name": "Admin",
+  "short_name": "TeleRemate Admin",
   "description": "Panel Administrativo de Teleremate",
   "categories": ["business", "productivity"],
   "lang": "es",
