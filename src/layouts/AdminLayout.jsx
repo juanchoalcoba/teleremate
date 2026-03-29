@@ -83,7 +83,7 @@ export default function AdminLayout() {
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
-          {navItems.map(({ to, label, icon: Icon, end }) => (
+          {navItems.map(({ to, label, icon: IconComponent, end }) => (
             <NavLink
               key={to}
               to={to}
@@ -97,7 +97,7 @@ export default function AdminLayout() {
                 }`
               }
             >
-              <Icon size={18} />
+              <IconComponent size={18} />
               {label}
               <ChevronRight size={14} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
             </NavLink>
