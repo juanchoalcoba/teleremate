@@ -44,7 +44,7 @@ export default defineConfig({
       manifest: {
         id: "/",
         name: "TeleRemate App",
-        short_name: "TeleRemate App",
+        short_name: "TeleRemate",
         description:
           "La plataforma líder en subastas y ventas online. Reserva, compra y remata artículos exclusivos.",
         categories: ["business", "shopping"],
@@ -53,24 +53,24 @@ export default defineConfig({
         theme_color: "#000000",
         background_color: "#ffffff",
         display: "standalone",
-        orientation: "any",
+        orientation: "portrait",
         start_url: "/",
         scope: "/",
         icons: [
           {
-            src: "/iconodefin.png",
+            src: "/pwa-icon.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any",
           },
           {
-            src: "/iconodefin.png",
+            src: "/pwa-icon.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any",
           },
           {
-            src: "/iconodefin.png",
+            src: "/pwa-icon.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",
