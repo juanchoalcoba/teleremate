@@ -20,6 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { getImageUrl } from "../../utils/imageUtils";
+import { getCurrencySymbol } from "../../utils/articleUtils";
 
 const CATEGORY_LABELS = {
   deposito: "Venta Directa",
@@ -222,7 +223,7 @@ export default function AdminArticlesPage() {
                       {item.category}
                     </td>
                     <td className="px-4 py-4 text-xs font-black text-gray-900 whitespace-nowrap">
-                      ${item.estimatedPrice.toLocaleString("es-UY")}
+                      {getCurrencySymbol(item.category)} {item.estimatedPrice.toLocaleString("es-UY")}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <div className="relative group/select w-fit">

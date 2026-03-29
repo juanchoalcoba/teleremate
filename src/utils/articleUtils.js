@@ -18,3 +18,10 @@ export const getPriceLabel = (article) => {
   }
   return "Precio";
 };
+
+export const getCurrencySymbol = (category) => {
+  if (category === "inmueble" || category === "vehiculo") {
+    return "U$S";
+  }
+  return "UYU";
+};

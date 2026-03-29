@@ -19,7 +19,7 @@ import PurchaseModal from "../../components/modals/PurchaseModal";
 import ReservationModal from "../../components/modals/ReservationModal";
 import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
-import { getCategoryLabel, getPriceLabel } from "../../utils/articleUtils";
+import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
@@ -136,7 +136,7 @@ export default function ArticleDetailPage() {
                   {getPriceLabel(article)}
                 </p>
                 <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
-                  UYU $ {article.estimatedPrice?.toLocaleString("es-UY")}
+                  {getCurrencySymbol(article.category)} $ {article.estimatedPrice?.toLocaleString("es-UY")}
                 </p>
               </div>
               <div className="text-right">

@@ -25,6 +25,7 @@ import {
 import { toast } from "react-hot-toast";
 import { getWALink, WAMessages } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
+import { getCurrencySymbol } from "../../utils/articleUtils";
 
 const CATEGORIES = [
   { value: "deposito", label: "Venta Directa" },
@@ -176,7 +177,7 @@ export default function AdminSubmissionsPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className="font-black text-gray-900 text-sm">${sub.estimatedPrice.toLocaleString()}</span>
+                          <span className="font-black text-gray-900 text-sm">{getCurrencySymbol(sub.category)} {sub.estimatedPrice.toLocaleString()}</span>
                         </td>
                         <td className="px-6 py-4">
                           {getStatusBadge(sub.status)}
@@ -282,7 +283,7 @@ export default function AdminSubmissionsPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
                           <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Precio Est.</p>
-                          <p className="text-base font-black text-gray-900">${detail.data.estimatedPrice?.toLocaleString()}</p>
+                          <p className="text-base font-black text-gray-900">{getCurrencySymbol(detail.data.category)} {detail.data.estimatedPrice?.toLocaleString()}</p>
                         </div>
                         <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
                           <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Ubicación</p>

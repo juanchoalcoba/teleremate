@@ -21,6 +21,7 @@ import {
 import { getDashboard } from "../../services/api";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../utils/imageUtils";
+import { getCurrencySymbol } from "../../utils/articleUtils";
 
 // eslint-disable-next-line no-unused-vars
 function KPICard({ title, value, icon: Icon, color, trend }) {
@@ -216,7 +217,7 @@ export default function DashboardPage() {
                     {item.title}
                   </p>
                   <p className="text-xs text-brand-600 font-semibold mt-0.5">
-                    $ {item.estimatedPrice.toLocaleString("es-UY")}
+                    {getCurrencySymbol(item.category)} {item.estimatedPrice.toLocaleString("es-UY")}
                   </p>
                 </div>
                 <ChevronRight
