@@ -11,6 +11,7 @@ import {
 import { login as loginApi } from "../../services/api";
 import useAuthStore from "../../store/authStore";
 import { toast } from "react-hot-toast";
+import InstallAdminPWA from "../../components/common/InstallAdminPWA";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -140,6 +141,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <InstallAdminPWA />
     </div>
   );
 }
