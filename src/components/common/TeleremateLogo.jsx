@@ -64,7 +64,7 @@ const TeleremateLogo = ({
               light ? "text-white" : "text-gray-900"
             }`}
           >
-            Teleremate
+            Teleremate{" "}
           </span>
 
           <span className="text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-0.5">
