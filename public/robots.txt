@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Bloquear crawlers de indexar URLs que contengan vercel.app explícitamente (por si acaso)
+Disallow: /*vercel.app*
+
+# Evitar indexación de panel admin
+Disallow: /backoffice/
+
+Sitemap: https://teleremate.org/sitemap.xml
