@@ -5,28 +5,30 @@ import { useState, useEffect } from "react";
  */
 export default function usePWA() {
   const [installPrompt, setInstallPrompt] = useState(null);
-  const [isStandalone, setIsStandalone] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [hasSeenPrompt, setHasSeenPrompt] = useState(false);
-  const [isInstallable, setIsInstallable] = useState(false);
+  const [isStandalone] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(display-mode: standalone)").matches || 
+      window.navigator.standalone || 
+      (document.referrer && document.referrer.includes("android-app://"));
+  });
+  const [isIOS] = useState(() => {
+    if (typeof navigator === "undefined") return false;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  });
+  const [hasSeenPrompt, setHasSeenPrompt] = useState(() => {
+    if (typeof sessionStorage === "undefined") return false;
+    return !!sessionStorage.getItem("pwa_prompt_seen");
+  });
+  const [isInstallable, setIsInstallable] = useState(() => {
+    if (typeof navigator === "undefined" || typeof window === "undefined") return false;
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches || 
+      window.navigator.standalone || 
+      (document.referrer && document.referrer.includes("android-app://"));
+    return ios && !standalone;
+  });
 
   useEffect(() => {
-    // 1. Detect environment
-    const isStandaloneMode = 
-      window.matchMedia("(display-mode: standalone)").matches || 
-      window.navigator.standalone || 
-      document.referrer.includes("android-app://");
-    
-    const isIOSDevice = 
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    setIsStandalone(isStandaloneMode);
-    setIsIOS(isIOSDevice);
-
-    // 2. Check if user already saw the prompt in this session
-    const seen = sessionStorage.getItem("pwa_prompt_seen");
-    setHasSeenPrompt(!!seen);
-
     // 3. Listen for native install prompt (Android/Chrome)
     const handler = (e) => {
       e.preventDefault();
@@ -35,11 +37,6 @@ export default function usePWA() {
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-
-    // 4. Special case for iOS: It's technically "installable" if not standalone
-    if (isIOSDevice && !isStandaloneMode) {
-      setIsInstallable(true);
-    }
 
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);

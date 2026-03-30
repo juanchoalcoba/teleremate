@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Download, X } from "lucide-react";
 import usePWA from "../../hooks/usePWA";
 import PWAHelpModal from "../modals/PWAHelpModal";
@@ -17,27 +17,17 @@ export default function InstallPWA() {
     handleInstallClick 
   } = usePWA();
 
-  const [isVisible, setIsVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    // Logic to show the banner
-    // Cond: Installable && Not in app already && Hasn't seen it THIS session
-    if (isInstallable && !isStandalone && !hasSeenPrompt) {
-      // Show immediately
-      setIsVisible(true);
-    }
-  }, [isInstallable, isStandalone, hasSeenPrompt]);
+  const isVisible = isInstallable && !isStandalone && !hasSeenPrompt;
 
   const handleClose = () => {
-    setIsVisible(false);
     markAsSeen();
   };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
-    setIsVisible(false); // Hide banner when modal opens
-    markAsSeen();        // Also mark as seen
+    markAsSeen();
   };
 
   if (!isVisible && !isModalOpen) return null;
