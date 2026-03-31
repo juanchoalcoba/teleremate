@@ -223,7 +223,7 @@ export default function AdminArticlesPage() {
                       {item.category}
                     </td>
                     <td className="px-4 py-4 text-xs font-black text-gray-900 whitespace-nowrap">
-                      {getCurrencySymbol(item.category)} {item.estimatedPrice.toLocaleString("es-UY")}
+                      {getCurrencySymbol(item.currency, item.category)} {item.estimatedPrice?.toLocaleString("es-UY")}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <div className="relative group/select w-fit">

@@ -52,6 +52,7 @@ const SellPage = () => {
     title: "",
     description: "",
     estimatedPrice: "",
+    currency: "UYU",
     pickupLocation: "",
     usageYears: "",
     conditionDetails: "",
@@ -397,16 +398,27 @@ const SellPage = () => {
                       </div>
                     </div>
                     <div className="md:col-span-2 space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Precio Estimado (UYU) *</label>
-                      <div className="relative">
-                        <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                      <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-1">Moneda y Precio Estimado *</label>
+                      <div className="flex relative">
+                        <select
+                          name="currency"
+                          value={formData.currency}
+                          onChange={handleInputChange}
+                          className="w-28 pl-4 pr-8 py-3 sm:py-4 bg-gray-50 border border-gray-100 rounded-l-2xl outline-hidden focus:z-10 focus:ring-2 focus:ring-brand-500 font-bold text-gray-900 cursor-pointer appearance-none"
+                        >
+                          <option value="UYU">$ (UYU)</option>
+                          <option value="USD">U$S (USD)</option>
+                        </select>
+                        <div className="absolute left-[72px] top-1/2 -translate-y-1/2 pointer-events-none z-10">
+                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                         <input
                           required
                           type="number"
                           name="estimatedPrice"
                           value={formData.estimatedPrice}
                           onChange={handleInputChange}
-                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
+                          className="w-full pl-5 pr-4 py-3 sm:py-4 bg-white border border-l-0 border-gray-100 rounded-r-2xl focus:z-10 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-medium text-gray-900 shadow-sm outline-hidden"
                           placeholder="25000"
                         />
                       </div>

@@ -217,7 +217,7 @@ export default function DashboardPage() {
                     {item.title}
                   </p>
                   <p className="text-xs text-brand-600 font-semibold mt-0.5">
-                    {getCurrencySymbol(item.category)} {item.estimatedPrice.toLocaleString("es-UY")}
+                    {getCurrencySymbol(item.currency, item.category)} {item.estimatedPrice.toLocaleString("es-UY")}
                   </p>
                 </div>
                 <ChevronRight

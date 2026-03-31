@@ -4,7 +4,7 @@ import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
 
 export default function ArticleCard({ article }) {
-  const { _id, title, price, estimatedPrice, images, status, category } =
+  const { _id, title, price, estimatedPrice, images, status, category, currency } =
     article;
 
   // In the real backend, images might be objects with a 'url' property
@@ -52,7 +52,7 @@ export default function ArticleCard({ article }) {
               {getPriceLabel(article)}
             </p>
             <p className="text-lg font-black text-brand-500">
-              <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(category)}</span>
+              <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
               {(price || estimatedPrice)?.toLocaleString() || "0"}
             </p>
           </div>

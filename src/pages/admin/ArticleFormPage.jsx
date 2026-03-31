@@ -47,6 +47,7 @@ export default function ArticleFormPage() {
     featured: false,
     auctionDate: "",
     reservedUntil: "",
+    currency: "UYU",
   });
 
   const { data: articleData, isLoading: isLoadingArticle } = useQuery({
@@ -71,6 +72,7 @@ export default function ArticleFormPage() {
           featured: art.featured || false,
           auctionDate: art.auctionDate ? art.auctionDate.split("T")[0] : "",
           reservedUntil: art.reservedUntil ? art.reservedUntil.split("T")[0] : "",
+          currency: art.currency || "UYU",
         });
       }, 0);
     }
@@ -236,7 +238,20 @@ export default function ArticleFormPage() {
               </div>
 
               <div>
-                <label className="label-admin">Precio Estimado ($)</label>
+                <label className="label-admin">Moneda</label>
+                <select
+                  name="currency"
+                  value={formData.currency}
+                  onChange={handleChange}
+                  className="input-admin"
+                >
+                  <option value="UYU">UYU ($)</option>
+                  <option value="USD">USD (U$S)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="label-admin">Precio Estimado ({formData.currency === "USD" ? "U$S" : "$"})</label>
                 <input
                   name="estimatedPrice"
                   type="number"
@@ -419,7 +434,7 @@ export default function ArticleFormPage() {
               {formData.status === "sold" && (
                 <div>
                   <label className="label-admin">
-                    Precio Final de Venta ($)
+                    Precio Final de Venta ({formData.currency === "USD" ? "U$S" : "$"})
                   </label>
                   <input
                     name="salePrice"

@@ -136,7 +136,7 @@ export default function ArticleDetailPage() {
                   {getPriceLabel(article)}
                 </p>
                 <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
-                  {getCurrencySymbol(article.category)} $ {article.estimatedPrice?.toLocaleString("es-UY")}
+                  {getCurrencySymbol(article.currency, article.category)} $ {article.estimatedPrice?.toLocaleString("es-UY")}
                 </p>
               </div>
               <div className="text-right">

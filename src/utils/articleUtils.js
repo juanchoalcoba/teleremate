@@ -19,7 +19,11 @@ export const getPriceLabel = (article) => {
   return "Precio";
 };
 
-export const getCurrencySymbol = (category) => {
+export const getCurrencySymbol = (currency, category) => {
+  if (currency === "USD" || currency === "U$S") return "U$S";
+  if (currency === "UYU") return "UYU";
+
+  // Fallback for older articles without explicit currency
   if (category === "inmueble" || category === "vehiculo") {
     return "U$S";
   }
