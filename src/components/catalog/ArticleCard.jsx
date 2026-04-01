@@ -37,26 +37,26 @@ export default function ArticleCard({ article }) {
 
       {/* Content */}
       <div className="p-5 flex flex-col grow">
-        <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-          <Tag size={10} className="text-brand-500" />{" "}
+        <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+          <Tag size={10} className="text-white/40" />{" "}
           {getCategoryLabel(category)}
         </div>
 
-        <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-white mb-4 leading-snug group-hover:text-white/80 transition-colors line-clamp-2">
           {title}
         </h3>
 
-        <div className="mt-auto flex items-end justify-between pt-2 border-t border-gray-100">
+        <div className="mt-auto flex items-end justify-between pt-2 border-t border-white/5">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">
               {getPriceLabel(article)}
             </p>
-            <p className="text-lg font-black text-brand-500">
+            <p className="text-lg font-black text-white">
               <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
               {(price || estimatedPrice)?.toLocaleString() || "0"}
             </p>
           </div>
-          <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-brand-500 group-hover:text-white transition-all">
+          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-white group-hover:text-[#111316] transition-all">
             <ArrowRight size={16} />
           </div>
         </div>

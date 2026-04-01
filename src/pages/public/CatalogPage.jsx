@@ -93,15 +93,15 @@ export default function CatalogPage() {
 
         {/* Category Tabs and Indicator Container */}
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
+          <div className="flex items-center gap-2 p-1.5 bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth shadow-sm">
             {CATEGORY_TABS.map((tab) => (
               <button
                 key={tab.value}
                 onClick={() => updateFilters({ category: tab.value })}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
                   filters.category === tab.value
-                    ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
-                    : "text-gray-500 hover:text-gray-900"
+                    ? "bg-white text-brand-600 shadow-lg ring-1 ring-black/5"
+                    : "text-gray-400 hover:text-gray-900"
                 }`}
               >
                 <tab.icon size={16} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
@@ -111,12 +111,12 @@ export default function CatalogPage() {
           </div>
 
           {/* Dedicated indicator row (Only on Mobile) */}
-          <div className="flex items-center justify-end md:hidden pr-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50/50 backdrop-blur-sm rounded-full border border-gray-100/50 animate-pulse pointer-events-none">
-              <span className="text-[10px] font-black uppercase tracking-widest text-brand-600">
+          <div className="flex items-center justify-center md:hidden">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50/80 backdrop-blur-sm rounded-full border border-gray-100/50 pointer-events-none">
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
                 Desliza para ver más
               </span>
-              <ArrowRight size={12} className="text-brand-500" />
+              <ArrowRight size={12} className="text-gray-300" />
             </div>
           </div>
         </div>
