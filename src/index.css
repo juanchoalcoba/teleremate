@@ -21,18 +21,13 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 
-  --radius-card: 20px;
-  --radius-btn: 12px;
-  
-  /* Modern Shadow System */
-  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.08);
+  --radius-card: 16px;
+  --radius-btn: 8px;
 }
 
 @layer base {
   body {
-    /* Slightly off-white grayish background for card contrast */
-    @apply bg-slate-50/80 text-slate-900 font-sans antialiased;
+    @apply bg-white text-gray-900 font-sans antialiased;
   }
 }
 
@@ -58,12 +53,11 @@
   }
 
   .card-premium {
-    @apply bg-white border border-slate-100 rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1.5;
-    box-shadow: 0 4px 20px -10px rgba(0,0,0,0.05);
+    @apply bg-white border border-gray-100 rounded-2xl overflow-hidden transition-all hover:shadow-2xl hover:shadow-gray-200/50 hover:-translate-y-1;
   }
 
   .input-standard {
-    @apply w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-brand-500 focus:bg-white transition-all font-medium;
+    @apply w-full bg-gray-50 border border-gray-200 rounded-md px-4 py-2 outline-none focus:border-brand-500 transition-all;
   }
 
   .badge-status {

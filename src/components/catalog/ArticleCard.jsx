@@ -15,20 +15,20 @@ export default function ArticleCard({ article }) {
   return (
     <Link to={`/articulo/${_id}`} className="card-premium group block h-full">
       {/* Image Container */}
-      <div className="relative aspect-video overflow-hidden bg-slate-100">
+      <div className="relative aspect-video overflow-hidden bg-gray-50">
         <img
           src={imgSrc}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
           {status === "reserved" && (
-            <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-purple-700 text-[10px] font-black uppercase tracking-widest rounded-full shadow-sm border border-white/20">
+            <span className="badge-status badge-status-reserved">
               Reservado
             </span>
           )}
           {status === "sold" && (
-            <span className="px-3 py-1 bg-red-500/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-sm">
+            <span className="badge-status bg-red-100 text-red-700">
               Vendido
             </span>
           )}
@@ -36,30 +36,28 @@ export default function ArticleCard({ article }) {
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col grow">
-        <div className="flex items-center gap-1.5 mb-3 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-          <Tag size={12} className="text-brand-500 animate-pulse" />{" "}
+      <div className="p-5 flex flex-col grow">
+        <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <Tag size={10} className="text-brand-500" />{" "}
           {getCategoryLabel(category)}
         </div>
 
-        <h3 className="text-[17px] font-bold text-slate-900 mb-5 leading-tight group-hover:text-brand-500 transition-colors line-clamp-2 min-h-[3rem]">
+        <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">
           {title}
         </h3>
 
-        <div className="mt-auto flex items-end justify-between pt-4 border-t border-slate-100/80">
+        <div className="mt-auto flex items-end justify-between pt-2 border-t border-gray-100">
           <div>
-            <p className="text-[9px] font-black uppercase tracking-[0.25em] text-slate-400 mb-1.5">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
               {getPriceLabel(article)}
             </p>
-            <div className="flex items-baseline gap-1">
-              <span className="text-xs font-bold text-slate-400">{getCurrencySymbol(currency, category)}</span>
-              <span className="text-2xl font-black text-brand-500 tracking-tighter">
-                {(price || estimatedPrice)?.toLocaleString() || "0"}
-              </span>
-            </div>
+            <p className="text-lg font-black text-brand-500">
+              <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
+              {(price || estimatedPrice)?.toLocaleString() || "0"}
+            </p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-brand-500/20 transition-all duration-300">
-            <ArrowRight size={20} strokeWidth={2.5} />
+          <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-brand-500 group-hover:text-white transition-all">
+            <ArrowRight size={16} />
           </div>
         </div>
       </div>
