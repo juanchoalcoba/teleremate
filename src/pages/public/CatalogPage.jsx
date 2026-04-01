@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Package, Gavel, ArrowRight, SlidersHorizontal } from "lucide-react";
+import { Search, Package, Gavel, ArrowRight } from "lucide-react";
 import { getArticles } from "../../services/api";
 import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
@@ -42,11 +42,6 @@ export default function CatalogPage() {
   const articles = data?.data?.articles || [];
   const pagination = data?.data?.pagination || {};
 
-  const activeFiltersCount = Object.entries(filters).reduce((acc, [key, value]) => {
-    if (key === "category") return acc; // Category is handled by tabs
-    return value !== "" ? acc + 1 : acc;
-  }, 0);
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-12 relative overflow-hidden rounded-3xl">
@@ -79,10 +74,10 @@ export default function CatalogPage() {
       </div>
 
       <div className="flex flex-col gap-6 mb-12">
-        <div className="relative group">
+        <div className="relative">
           <Search
-            size={20}
-            className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-500 transition-colors"
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
           />
           <input
             type="text"
@@ -92,53 +87,36 @@ export default function CatalogPage() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full pl-14 pr-6 py-4 bg-white border border-gray-100 rounded-2xl outline-none focus:border-brand-500 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.02)] font-medium text-gray-900 placeholder:text-gray-300"
+            className="w-full pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-2xl outline-none focus:border-brand-500 transition-all shadow-sm font-medium"
           />
         </div>
 
-        {/* Category Tabs and Filter Row */}
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-full overflow-x-auto no-scrollbar scroll-smooth">
-              {CATEGORY_TABS.map((tab) => (
-                <button
-                  key={tab.value}
-                  onClick={() => updateFilters({ category: tab.value })}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
-                    filters.category === tab.value
-                      ? "bg-white text-gray-900 shadow-sm ring-1 ring-black/5"
-                      : "text-gray-400 hover:text-gray-600"
-                  }`}
-                >
-                  <tab.icon size={14} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={() => document.getElementById('filter-sidebar-content')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
+        {/* Category Tabs and Indicator Container */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
+            {CATEGORY_TABS.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => updateFilters({ category: tab.value })}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
+                  filters.category === tab.value
+                    ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
               >
-                <SlidersHorizontal size={16} strokeWidth={2.5} />
-                <span className="text-xs font-black uppercase tracking-widest">Filtros</span>
-                {activeFiltersCount > 0 && (
-                  <span className="flex items-center justify-center w-5 h-5 bg-white text-blue-600 rounded-full text-[10px] font-black">
-                    {activeFiltersCount}
-                  </span>
-                )}
+                <tab.icon size={16} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
+                {tab.label}
               </button>
-            </div>
+            ))}
           </div>
 
           {/* Dedicated indicator row (Only on Mobile) */}
-          <div className="flex items-center justify-center md:hidden">
-            <div className="inline-flex items-center gap-3 px-6 py-2 bg-gray-100/30 backdrop-blur-sm rounded-full border border-gray-100/50 pointer-events-none">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+          <div className="flex items-center justify-end md:hidden pr-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50/50 backdrop-blur-sm rounded-full border border-gray-100/50 animate-pulse pointer-events-none">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-600">
                 Desliza para ver más
               </span>
-              <ArrowRight size={14} className="text-brand-500 animate-pulse" />
+              <ArrowRight size={12} className="text-brand-500" />
             </div>
           </div>
         </div>

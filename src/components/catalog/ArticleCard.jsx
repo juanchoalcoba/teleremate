@@ -7,34 +7,28 @@ export default function ArticleCard({ article }) {
   const { _id, title, price, estimatedPrice, images, status, category, currency } =
     article;
 
+  // In the real backend, images might be objects with a 'url' property
   const imgSrc = getImageUrl(
     (typeof images?.[0] === "string" ? images[0] : images?.[0]?.url)
   ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=600";
 
   return (
-    <Link to={`/articulo/${_id}`} className="card-premium-v2 group block h-full">
-      <div className="premium-glow" />
-      
+    <Link to={`/articulo/${_id}`} className="card-premium group block h-full">
       {/* Image Container */}
-      <div className="relative aspect-[4/3] overflow-hidden m-2 rounded-2xl">
+      <div className="relative aspect-video overflow-hidden bg-gray-50">
         <img
           src={imgSrc}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        
-        {/* Subtle Overlay for content at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#171719] via-transparent to-transparent opacity-80" />
-
-        {/* Badges on top of image */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {status === "reserved" && (
-            <span className="bg-purple-500/20 backdrop-blur-md text-purple-200 border border-purple-500/30 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+            <span className="badge-status badge-status-reserved">
               Reservado
             </span>
           )}
           {status === "sold" && (
-            <span className="bg-red-500/20 backdrop-blur-md text-red-100 border border-red-500/30 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+            <span className="badge-status bg-red-100 text-red-700">
               Vendido
             </span>
           )}
@@ -42,33 +36,28 @@ export default function ArticleCard({ article }) {
       </div>
 
       {/* Content */}
-      <div className="px-5 pb-5 pt-2 flex flex-col">
-        <div className="mb-3">
-          <div className="badge-category-pills inline-flex mb-3">
-            <Tag size={10} className="text-white/40" />
-            {getCategoryLabel(category)}
-          </div>
-
-          <h3 className="text-[17px] font-bold text-white mb-4 leading-tight group-hover:text-white transition-colors line-clamp-2 min-h-[3rem]">
-            {title}
-          </h3>
+      <div className="p-5 flex flex-col grow">
+        <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <Tag size={10} className="text-brand-500" />{" "}
+          {getCategoryLabel(category)}
         </div>
 
-        <div className="mt-auto flex items-end justify-between">
-          <div className="flex flex-col">
-            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/30 mb-1">
+        <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">
+          {title}
+        </h3>
+
+        <div className="mt-auto flex items-end justify-between pt-2 border-t border-gray-100">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
               {getPriceLabel(article)}
-            </span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] font-black text-white/40">{getCurrencySymbol(currency, category)}</span>
-              <span className="text-2xl font-black text-white tracking-tighter">
-                {(price || estimatedPrice)?.toLocaleString() || "0"}
-              </span>
-            </div>
+            </p>
+            <p className="text-lg font-black text-brand-500">
+              <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
+              {(price || estimatedPrice)?.toLocaleString() || "0"}
+            </p>
           </div>
-          
-          <div className="btn-next-circle">
-            <ArrowRight size={18} strokeWidth={2.5} />
+          <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-brand-500 group-hover:text-white transition-all">
+            <ArrowRight size={16} />
           </div>
         </div>
       </div>
