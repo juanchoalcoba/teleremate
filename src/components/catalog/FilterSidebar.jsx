@@ -2,7 +2,7 @@ import { useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 
 const CATEGORIES = [
-  { value: "deposito", label: "En Depósito" },
+  { value: "deposito", label: "Venta Directa" },
   { value: "remate", label: "A Rematar" },
   { value: "inmueble", label: "Inmuebles" },
   { value: "vehiculo", label: "Vehículos" },
