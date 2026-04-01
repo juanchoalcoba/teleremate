@@ -20,12 +20,13 @@ export const getPriceLabel = (article) => {
 };
 
 export const getCurrencySymbol = (currency, category) => {
-  if (currency === "USD" || currency === "U$S") return "U$S";
-  if (currency === "UYU") return "UYU";
-
-  // Fallback for older articles without explicit currency
+  // Fallback and Priority for vehicles and real estate
   if (category === "inmueble" || category === "vehiculo") {
     return "U$S";
   }
+
+  if (currency === "USD" || currency === "U$S") return "U$S";
+  if (currency === "UYU") return "UYU";
+
   return "UYU";
 };
