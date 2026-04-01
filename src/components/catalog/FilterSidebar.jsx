@@ -125,15 +125,15 @@ export default function FilterSidebar({ filters, onChange }) {
       </div>
 
       {/* Mobile toggle */}
-      <div className="md:hidden w-full mb-4 flex justify-center">
+      <div className="md:hidden w-full mb-4">
         <button
           onClick={() => setOpen(!open)}
-          className="btn-filter-blue"
+          className="btn-secondary w-full justify-center"
         >
           <SlidersHorizontal size={15} />
           Filtros{" "}
           {hasFilters && (
-            <span className="bg-white text-blue-600 rounded-full w-5 h-5 text-xs flex items-center justify-center shadow-inner font-black">
+            <span className="bg-brand-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
               {
                 [filters.category, filters.status, filters.minPrice].filter(
                   Boolean,
