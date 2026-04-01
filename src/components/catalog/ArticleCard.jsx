@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Tag } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
-import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
 
 export default function ArticleCard({ article }) {
-  const { _id, title, price, estimatedPrice, images, status, category, currency } =
+  const { _id, title, price, estimatedPrice, images, status, category } =
     article;
 
   // In the real backend, images might be objects with a 'url' property
@@ -39,7 +38,12 @@ export default function ArticleCard({ article }) {
       <div className="p-5 flex flex-col grow">
         <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
           <Tag size={10} className="text-brand-500" />{" "}
-          {getCategoryLabel(category)}
+          {({
+            deposito: "En Depósito",
+            remate: "A Rematar",
+            inmueble: "Inmuebles",
+            vehiculo: "Vehículos",
+          }[category] || category || "Sin Categoría")}
         </div>
 
         <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">
@@ -49,10 +53,10 @@ export default function ArticleCard({ article }) {
         <div className="mt-auto flex items-end justify-between pt-2 border-t border-gray-100">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
-              {getPriceLabel(article)}
+              Precio Base
             </p>
             <p className="text-lg font-black text-brand-500">
-              <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
+              <span className="text-xs mr-1 opacity-70">UYU</span>
               {(price || estimatedPrice)?.toLocaleString() || "0"}
             </p>
           </div>

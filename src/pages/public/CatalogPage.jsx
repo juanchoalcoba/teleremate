@@ -1,13 +1,13 @@
 import { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Package, Gavel, ArrowRight } from "lucide-react";
+import { Search, Package, Gavel } from "lucide-react";
 import { getArticles } from "../../services/api";
 import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "deposito",
+    category: "",
     status: "",
     minPrice: "",
     maxPrice: "",
@@ -16,7 +16,8 @@ export default function CatalogPage() {
   const [page, setPage] = useState(1);
 
   const CATEGORY_TABS = [
-    { value: "deposito", label: "Venta Directa", icon: Package },
+    { value: "", label: "Todos", icon: Package },
+    { value: "deposito", label: "En Depósito", icon: Package },
     { value: "remate", label: "A Rematar", icon: Gavel },
     { value: "inmueble", label: "Inmuebles", icon: Package },
     { value: "vehiculo", label: "Vehículos", icon: Package },
@@ -34,7 +35,7 @@ export default function CatalogPage() {
     limit: 12,
   };
 
-  const { data, isLoading, isFetching, isError, refetch } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ["articles", queryParams],
     queryFn: () => getArticles(queryParams),
   });
@@ -59,7 +60,7 @@ export default function CatalogPage() {
                 Nuestro <span className="text-gray-400">Catálogo</span>
               </h1>
               <p className="text-gray-500 max-w-xl text-sm md:text-base leading-relaxed font-medium">
-                Descubra una selección curada de artículos exclusivos, antigüedades y oportunidades únicas. Calidad verificada en cada remate.
+                Descubra una selección curada de lotes exclusivos, antigüedades y oportunidades únicas. Calidad verificada en cada remate.
               </p>
             </div>
             
@@ -81,7 +82,7 @@ export default function CatalogPage() {
           />
           <input
             type="text"
-            placeholder="Buscar por nombre o ID..."
+            placeholder="Buscar por nombre o número de lote..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -91,34 +92,22 @@ export default function CatalogPage() {
           />
         </div>
 
-        {/* Category Tabs and Indicator Container */}
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
-            {CATEGORY_TABS.map((tab) => (
-              <button
-                key={tab.value}
-                onClick={() => updateFilters({ category: tab.value })}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
-                  filters.category === tab.value
-                    ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                <tab.icon size={16} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Dedicated indicator row (Only on Mobile) */}
-          <div className="flex items-center justify-end md:hidden pr-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50/50 backdrop-blur-sm rounded-full border border-gray-100/50 animate-pulse pointer-events-none">
-              <span className="text-[10px] font-black uppercase tracking-widest text-brand-600">
-                Desliza para ver más
-              </span>
-              <ArrowRight size={12} className="text-brand-500" />
-            </div>
-          </div>
+        {/* Category Tabs */}
+        <div className="flex items-center gap-2 p-1.5 bg-gray-50 rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
+          {CATEGORY_TABS.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => updateFilters({ category: tab.value })}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
+                filters.category === tab.value
+                  ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
+                  : "text-gray-500 hover:text-gray-900"
+              }`}
+            >
+              <tab.icon size={16} className={filters.category === tab.value ? "text-brand-500" : "opacity-40"} />
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -128,19 +117,7 @@ export default function CatalogPage() {
         </aside>
 
         <div className="grow">
-          {isError ? (
-            <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-red-50/50 rounded-3xl border border-red-100">
-              <Package size={48} className="mb-4 text-red-300" />
-              <p className="font-bold text-red-600 mb-2">Error al cargar los artículos</p>
-              <p className="text-sm text-center max-w-sm mb-6 opacity-80">Hubo un problema de conexión. Por favor, intenta nuevamente.</p>
-              <button
-                onClick={() => refetch()}
-                className="btn-primary"
-              >
-                Reintentar
-              </button>
-            </div>
-          ) : isLoading ? (
+          {isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 9 }).map((_, i) => (
                 <div
@@ -157,7 +134,7 @@ export default function CatalogPage() {
                 onClick={() => {
                   setSearch("");
                   updateFilters({
-                    category: "deposito",
+                    category: "",
                     status: "",
                     minPrice: "",
                     maxPrice: "",
