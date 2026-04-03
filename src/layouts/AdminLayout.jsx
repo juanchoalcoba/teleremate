@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   Gavel,
@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import InstallAdminPWA from "../components/common/InstallAdminPWA";
-import { messaging, getToken, VAPID_KEY, onMessage } from "../firebase";
-import { toast } from "react-hot-toast";
 
 const navItems = [
   { to: "/backoffice", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -29,43 +27,6 @@ export default function AdminLayout() {
   const { logout, user } = useAuthStore();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [fcmToken, setFcmToken] = useState("");
-
-  useEffect(() => {
-    const requestNotificationPermission = async () => {
-      if (!("Notification" in window)) {
-        console.log("This browser does not support desktop notification");
-        return;
-      }
-
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-          if (token) {
-            console.log("Token de notificaciones:", token);
-            setFcmToken(token);
-          } else {
-            console.log("No registration token available.");
-          }
-        }
-      } catch (error) {
-        console.error("Error getting notification token:", error);
-      }
-    };
-
-    requestNotificationPermission();
-
-    const unsubscribe = onMessage(messaging, (payload) => {
-      console.log("Foreground message received:", payload);
-      toast.success(payload.notification.title + ": " + payload.notification.body, {
-        duration: 5000,
-        position: 'top-right',
-      });
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const handleLogout = () => {
     logout();
@@ -168,35 +129,6 @@ export default function AdminLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen pt-16 lg:pt-0 lg:pl-60 min-w-0 w-full overflow-x-hidden">
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1700px] w-full mx-auto min-w-0 overflow-x-hidden">
-          {fcmToken && (
-            <div className="mb-8 p-6 bg-brand-50 border-2 border-brand-200 rounded-3xl shadow-sm animate-in fade-in slide-in-from-top-4">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center text-white">
-                  <BookmarkCheck size={16} />
-                </div>
-                <h3 className="font-black text-xs uppercase tracking-[0.2em] text-brand-900">
-                  Token de notificaciones (Admin)
-                </h3>
-              </div>
-              <div className="relative group">
-                <code className="block bg-white p-4 rounded-xl border border-brand-100 text-[10px] sm:text-xs font-mono text-brand-700 break-all shadow-inner">
-                  {fcmToken}
-                </code>
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(fcmToken);
-                    toast.success("Token copiado al portapapeles");
-                  }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-500 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold hover:bg-brand-600 transition-colors shadow-sm"
-                >
-                  COPIAR
-                </button>
-              </div>
-              <p className="mt-3 text-[10px] text-brand-600 font-medium italic">
-                * Copiá este token y pegalo en la variable OWNER_TOKEN de Railway para recibir notificaciones en este dispositivo.
-              </p>
-            </div>
-          )}
           <Outlet />
         </main>
       </div>
