@@ -2,7 +2,7 @@ import { Gavel, ShieldCheck, Globe } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section className="py-16 md:py-24 bg-gray-50/50 overflow-hidden relative">
+    <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-gray-50/50 overflow-hidden relative">
       {/* Decorative background element */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
       
@@ -80,7 +80,7 @@ export default function AboutSection() {
       </div>
       
       {/* Subtle bottom separator line */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 md:mt-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12">
         <div className="h-px w-full bg-linear-to-r from-transparent via-gray-200 to-transparent" />
       </div>
     </section>

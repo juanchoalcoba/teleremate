@@ -13,7 +13,7 @@ export default function FeaturedArticles() {
   const articles = data?.data?.articles || [];
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="pt-8 md:pt-12 pb-24 relative overflow-hidden">
       {/* Subtle vertical marker line */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-32 bg-brand-500/10 rounded-r-full hidden lg:block" />
       
