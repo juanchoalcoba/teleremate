@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Gavel,
-  Mail,
+  User,
   Lock,
   Loader2,
   AlertCircle,
@@ -14,7 +14,7 @@ import { toast } from "react-hot-toast";
 import InstallAdminPWA from "../../components/common/InstallAdminPWA";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -28,7 +28,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const { data } = await loginApi({ email, password });
+      const { data } = await loginApi({ email: username, password });
       setAuth(data.token, data.user);
       toast.success("¡Bienvenido, administrador!");
       navigate("/backoffice");
@@ -80,20 +80,20 @@ export default function LoginPage() {
 
               <div className="space-y-1.5">
                 <label className="text-sm font-bold text-gray-700 ml-1">
-                  Correo Electrónico
+                  Nombre de usuario
                 </label>
                 <div className="relative group">
-                  <Mail
+                  <User
                     size={20}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-500 transition-colors"
                   />
                   <input
-                    type="email"
+                    type="text"
                     required
-                    placeholder="admin@teleremate.uy"
+                    placeholder="Introduce tu usuario"
                     className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 transition-all"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
               </div>
