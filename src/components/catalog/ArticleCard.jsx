@@ -1,16 +1,24 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Tag } from "lucide-react";
+import { ArrowRight, Tag, MessageCircle } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
+import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 
 export default function ArticleCard({ article }) {
-  const { _id, title, price, estimatedPrice, images, status, category, currency } =
+  const { _id, title, price, estimatedPrice, images, status, category, currency, lotNumber } =
     article;
 
   // In the real backend, images might be objects with a 'url' property
   const imgSrc = getImageUrl(
     (typeof images?.[0] === "string" ? images[0] : images?.[0]?.url)
   ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=600";
+
+  const handleWASlick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const link = getWALink(TELEREMATE_WA, WAMessages.inquiry(lotNumber || "S/N", title));
+    window.open(link, "_blank", "noreferrer");
+  };
 
   return (
     <Link to={`/articulo/${_id}`} className="card-premium group block h-full">
@@ -37,9 +45,25 @@ export default function ArticleCard({ article }) {
 
       {/* Content */}
       <div className="p-5 flex flex-col grow">
-        <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-          <Tag size={10} className="text-brand-500" />{" "}
-          {getCategoryLabel(category)}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <Tag 
+              size={12} 
+              className={category === "deposito" ? "text-green-500" : "text-brand-500"} 
+            />{" "}
+            <span className={category === "deposito" ? "text-green-600/80" : ""}>
+              {getCategoryLabel(category)}
+            </span>
+          </div>
+
+          <button
+            onClick={handleWASlick}
+            className="flex items-center gap-1 p-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-500 hover:text-white transition-all transform hover:scale-110 active:scale-95 group/wa shadow-xs"
+            title="Consultar por WhatsApp"
+          >
+            <MessageCircle size={14} className="shrink-0" />
+            <span className="text-[8px] font-black uppercase tracking-tighter">Consultar</span>
+          </button>
         </div>
 
         <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">
