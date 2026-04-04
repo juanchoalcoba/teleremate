@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Tag } from "lucide-react";
+import { ArrowRight, Tag, Share2 } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
+import { toast } from "react-hot-toast";
 
 export default function ArticleCard({ article }) {
   const { _id, title, price, estimatedPrice, images, status, category, currency } =
@@ -11,6 +12,33 @@ export default function ArticleCard({ article }) {
   const imgSrc = getImageUrl(
     (typeof images?.[0] === "string" ? images[0] : images?.[0]?.url)
   ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=600";
+
+  const handleShare = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const shareUrl = `${window.location.origin}/articulo/${_id}`;
+    const shareData = {
+      title: title,
+      text: "Mirá este artículo en Teleremate",
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Enlace copiado al portapapeles", {
+          icon: "🔗",
+        });
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error("Error sharing:", err);
+      }
+    }
+  };
 
   return (
     <Link to={`/articulo/${_id}`} className="card-premium group block h-full">
@@ -37,14 +65,29 @@ export default function ArticleCard({ article }) {
 
       {/* Content */}
       <div className="p-5 flex flex-col grow">
-        <div className="flex items-center gap-1.5 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-          <Tag 
-            size={12} 
-            className={category === "deposito" ? "text-green-500" : "text-brand-500"} 
-          />{" "}
-          <span className={category === "deposito" ? "text-green-600/80" : ""}>
-            {getCategoryLabel(category)}
-          </span>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <Tag
+              size={12}
+              className={
+                category === "deposito" ? "text-green-500" : "text-brand-500"
+              }
+            />{" "}
+            <span
+              className={category === "deposito" ? "text-green-600/80" : ""}
+            >
+              {getCategoryLabel(category)}
+            </span>
+          </div>
+
+          <button
+            onClick={handleShare}
+            className="p-2 -m-2 text-gray-400 hover:text-brand-500 transition-all hover:scale-110 active:scale-95 sm:opacity-0 group-hover:opacity-100 focus:opacity-100"
+            aria-label="Compartir producto"
+            title="Compartir"
+          >
+            <Share2 size={16} />
+          </button>
         </div>
 
         <h3 className="text-base font-bold text-gray-900 mb-4 leading-snug group-hover:text-brand-500 transition-colors line-clamp-2">

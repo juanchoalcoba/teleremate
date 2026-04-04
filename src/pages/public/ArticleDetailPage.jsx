@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -32,6 +33,20 @@ export default function ArticleDetailPage() {
     queryFn: () => getArticleById(id),
   });
 
+  const article = data?.data;
+
+  const absoluteUrl = useMemo(() => `${window.location.origin}/articulo/${id}`, [id]);
+  
+  const shareDescription = useMemo(() => {
+    if (!article) return "Consultá este artículo en Teleremate";
+    return `Consultá por este artículo en Teleremate. ${getPriceLabel(article)}: ${getCurrencySymbol(article.currency, article.category)} ${article.estimatedPrice?.toLocaleString("es-UY")}`;
+  }, [article]);
+
+  const currentImage = useMemo(() => {
+    if (!article) return "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=800";
+    return getImageUrl(article.images?.[activeImageIdx]?.url) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=800";
+  }, [article, activeImageIdx]);
+
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 animate-pulse">
@@ -47,7 +62,7 @@ export default function ArticleDetailPage() {
     );
   }
 
-  if (error || !data?.data) {
+  if (error || !article) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
         <Info size={48} className="mx-auto text-gray-300 mb-4" />
@@ -59,13 +74,26 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const article = data.data;
-  const currentImage = getImageUrl(
-    article.images?.[activeImageIdx]?.url
-  ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=800";
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <Helmet>
+        <title>{article.title} | Teleremate</title>
+        <meta name="description" content={shareDescription} />
+        
+        {/* Open Graph Tags */}
+        <meta property="og:title" content={`${article.title} | Teleremate`} />
+        <meta property="og:description" content={shareDescription} />
+        <meta property="og:image" content={currentImage} />
+        <meta property="og:url" content={absoluteUrl} />
+        <meta property="og:type" content="product" />
+        
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={shareDescription} />
+        <meta name="twitter:image" content={currentImage} />
+      </Helmet>
+
       <Link
         to="/catalogo"
         className="flex items-center text-gray-500 hover:text-brand-600 mb-8 font-medium"
@@ -89,9 +117,9 @@ export default function ArticleDetailPage() {
             <div className="grid grid-cols-5 gap-3 mt-4">
               {article.images.map((img, idx) => (
                 <button
-                  key={idx}
-                  onClick={() => setActiveImageIdx(idx)}
-                  className={`aspect-square rounded-2xl overflow-hidden border-2 transition-all ${activeImageIdx === idx ? "border-brand-500 shadow-md ring-2 ring-brand-50" : "border-transparent opacity-60 hover:opacity-100"}`}
+                   key={idx}
+                   onClick={() => setActiveImageIdx(idx)}
+                   className={`aspect-square rounded-2xl overflow-hidden border-2 transition-all ${activeImageIdx === idx ? "border-brand-500 shadow-md ring-2 ring-brand-50" : "border-transparent opacity-60 hover:opacity-100"}`}
                 >
                   <img
                     src={getImageUrl(img.url)}
@@ -143,7 +171,7 @@ export default function ArticleDetailPage() {
                 {article.category === "remate" ? (
                   <>
                     <p className="text-brand-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
-                      Fecha de Remate
+                       Fecha de Remate
                     </p>
                     <div className="flex items-center gap-2 text-brand-400 font-black italic justify-end">
                       <Calendar size={18} />{" "}
@@ -152,16 +180,18 @@ export default function ArticleDetailPage() {
                         : "Fecha a confirmar"}
                     </div>
                   </>
-                ) : article.reservedUntil && (
-                  <>
-                    <p className="text-orange-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
-                      Reservado hasta
-                    </p>
-                    <div className="flex items-center gap-2 text-orange-400 font-bold italic justify-end animate-pulse">
-                      <Calendar size={18} />{" "}
-                      {new Date(article.reservedUntil).toLocaleDateString("es-UY", { timeZone: 'UTC' })}
-                    </div>
-                  </>
+                ) : (
+                  article.reservedUntil && (
+                    <>
+                      <p className="text-orange-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
+                        Reservado hasta
+                      </p>
+                      <div className="flex items-center gap-2 text-orange-400 font-bold italic justify-end animate-pulse">
+                        <Calendar size={18} />{" "}
+                        {new Date(article.reservedUntil).toLocaleDateString("es-UY", { timeZone: 'UTC' })}
+                      </div>
+                    </>
+                  )
                 )}
               </div>
             </div>
@@ -194,7 +224,7 @@ export default function ArticleDetailPage() {
                       className={`flex items-center justify-center gap-1 px-3 py-2 text-sm font-semibold rounded-lg transition-all transform ${
                         article.hasActiveReservation || article.hasActivePurchase
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
-                          : "bg-gradient-to-r from-brand-500 to-brand-600 text-white hover:shadow-lg hover:scale-105 active:scale-95"
+                          : "bg-linear-to-r from-brand-500 to-brand-600 text-white hover:shadow-lg hover:scale-105 active:scale-95"
                       }`}
                     >
                       <BookmarkPlus size={18} /> Reservar
@@ -205,7 +235,7 @@ export default function ArticleDetailPage() {
                       className={`flex items-center justify-center gap-1 px-3 py-2 text-sm font-semibold rounded-lg transition-all transform ${
                         article.hasActiveReservation || article.hasActivePurchase
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
-                          : "bg-gradient-to-r from-green-500 to-green-600 text-white hover:shadow-lg hover:scale-105 active:scale-95"
+                          : "bg-linear-to-r from-green-500 to-green-600 text-white hover:shadow-lg hover:scale-105 active:scale-95"
                       }`}
                     >
                       <ShoppingCart size={18} /> Comprar
