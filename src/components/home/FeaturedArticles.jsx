@@ -101,7 +101,7 @@ export default function FeaturedArticles() {
                   spaceBetween: 24,
                 },
               }}
-              className="pb-14 featured-swiper"
+              className="pb-20 featured-swiper"
             >
               {articles.map((a) => (
                 <SwiperSlide key={a._id} className="h-auto py-2">
