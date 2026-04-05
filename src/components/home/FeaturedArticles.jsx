@@ -101,7 +101,7 @@ export default function FeaturedArticles() {
                   spaceBetween: 24,
                 },
               }}
-              className="pb-20 featured-swiper"
+              className="featured-swiper"
             >
               {articles.map((a) => (
                 <SwiperSlide key={a._id} className="h-auto py-2">
@@ -114,11 +114,14 @@ export default function FeaturedArticles() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+        .featured-swiper {
+          padding-bottom: 60px !important;
+        }
         .featured-swiper .swiper-pagination-bullet-active {
           background-color: #18181b !important;
         }
         .featured-swiper .swiper-pagination {
-          bottom: 0 !important;
+          bottom: 0px !important;
         }
         .featured-swiper .swiper-slide {
           height: auto;
