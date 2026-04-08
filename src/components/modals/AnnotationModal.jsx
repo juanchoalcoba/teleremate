@@ -52,6 +52,7 @@ export default function AnnotationModal({ articleId, onClose, onSuccess }) {
       }, 2000);
     },
     onError: (error) => {
+      console.error("❌ Error en registro de anotación:", error);
       toast.error(error.response?.data?.message || "Error al procesar la solicitud");
     },
   });
