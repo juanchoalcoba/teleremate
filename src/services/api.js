@@ -33,6 +33,7 @@ export const getArticleById = (id) => api.get(`/articles/${id}`);
 export const createReservation = (data) => api.post("/reservations", data);
 export const createPurchase = (data) => api.post("/purchases", data);
 export const createSubmission = (data) => api.post("/submissions", data);
+export const createAnnotation = (data) => api.post("/annotations", data);
 export const uploadPublicImages = (files) => {
   const fd = new FormData();
   files.forEach((f) => fd.append("images", f));
@@ -57,6 +58,11 @@ export const updatePurchaseStatus = (id, data) =>
   api.put(`/backoffice/purchases/${id}`, data);
 export const deletePurchase = (id) =>
   api.delete(`/backoffice/purchases/${id}`);
+
+export const getAdminAnnotations = (params) =>
+  api.get("/backoffice/annotations", { params });
+export const deleteAdminAnnotation = (id) =>
+  api.delete(`/backoffice/annotations/${id}`);
 
 // ─── Auth ─────────────────────────────────────────────────
 export const login = (data) => api.post("/auth/login", data);

@@ -11,6 +11,7 @@ import {
   BookmarkCheck,
   ShoppingCart,
   ClipboardList,
+  Users,
 } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import InstallAdminPWA from "../components/common/InstallAdminPWA";
@@ -21,6 +22,7 @@ const navItems = [
   { to: "/backoffice/reservas", label: "Reservas", icon: BookmarkCheck },
   { to: "/backoffice/compras", label: "Compras", icon: ShoppingCart },
   { to: "/backoffice/pedidos", label: "Pedidos", icon: ClipboardList },
+  { to: "/backoffice/anotaciones", label: "Anotaciones", icon: Users },
 ];
 
 export default function AdminLayout() {

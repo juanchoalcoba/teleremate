@@ -18,6 +18,7 @@ import {
 import { getArticleById } from "../../services/api";
 import PurchaseModal from "../../components/modals/PurchaseModal";
 import ReservationModal from "../../components/modals/ReservationModal";
+import AnnotationModal from "../../components/modals/AnnotationModal";
 import { getWALink, WAMessages, TELEREMATE_WA } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
@@ -27,6 +28,7 @@ export default function ArticleDetailPage() {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showAnnotationModal, setShowAnnotationModal] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["article", id],
@@ -243,6 +245,14 @@ export default function ArticleDetailPage() {
                   </div>
                 </>
               )}
+              {article.category === "remate" && article.status !== "sold" && (
+                <button
+                  onClick={() => setShowAnnotationModal(true)}
+                  className="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-4 rounded-2xl shadow-xl shadow-brand-500/20 active:scale-95 transition-all mb-3 flex items-center justify-center gap-2"
+                >
+                  <BookmarkPlus size={20} /> ANOTARME AL REMATE
+                </button>
+              )}
               <a
                 href={getWALink(TELEREMATE_WA, WAMessages.inquiry(article.lotNumber, article.title))}
                 target="_blank"
@@ -257,6 +267,12 @@ export default function ArticleDetailPage() {
       </div>
 
       {/* Modals */}
+      {showAnnotationModal && (
+        <AnnotationModal
+          articleId={id}
+          onClose={() => setShowAnnotationModal(false)}
+        />
+      )}
       {showReservationModal && (
         <ReservationModal
           articleId={id}

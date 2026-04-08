@@ -60,6 +60,10 @@ export const WAMessages = {
   // Admin -> Client (Purchase)
   purchaseFollowup: (name, lot, title) => 
     `Hola ${name}, te contacto de Teleremate por tu compra del artículo ID ${lot}: ${title}. ¿Cómo coordinamos el pago y la entrega?`,
+
+  // Admin -> Client (Annotation)
+  annotationFollowup: (name, lot, title) => 
+    `Hola ${name}, te contacto de Teleremate porque te anotaste en el artículo ID ${lot}: ${title}. ¿En qué podemos ayudarte?`,
 };
 
 export const TELEREMATE_WA = ADMIN_PHONE;
