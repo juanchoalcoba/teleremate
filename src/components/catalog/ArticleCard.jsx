@@ -3,13 +3,10 @@ import { ArrowRight, Tag, Share2 } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
-import AnnotationModal from "../modals/AnnotationModal";
 
 export default function ArticleCard({ article }) {
   const { _id, title, price, estimatedPrice, images, status, category, currency } =
     article;
-  const [showAnnotationModal, setShowAnnotationModal] = useState(false);
 
   // In the real backend, images might be objects with a 'url' property
   const imgSrc = getImageUrl(
@@ -64,24 +61,7 @@ export default function ArticleCard({ article }) {
             </span>
           )}
         </div>
-
-        {/* Annotation Button Overlay for Remate */}
-        {category === "remate" && status !== "sold" && (
-          <div className="absolute inset-x-0 bottom-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowAnnotationModal(true);
-              }}
-              className="w-full bg-brand-500 text-white py-2.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-xl shadow-brand-500/40 hover:bg-brand-600 transition-colors"
-            >
-              Anotarme
-            </button>
-          </div>
-        )}
       </div>
-
       {/* Content */}
       <div className="p-5 flex flex-col grow">
         <div className="flex items-center justify-between mb-2">
@@ -129,12 +109,6 @@ export default function ArticleCard({ article }) {
         </div>
       </div>
 
-      {showAnnotationModal && (
-        <AnnotationModal
-          articleId={_id}
-          onClose={() => setShowAnnotationModal(false)}
-        />
-      )}
     </Link>
   );
 }
