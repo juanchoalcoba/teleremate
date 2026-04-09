@@ -1,4 +1,3 @@
-/* eslint-disable */
 /* global clients */
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
