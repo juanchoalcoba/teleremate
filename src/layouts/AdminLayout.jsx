@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import InstallAdminPWA from "../components/common/InstallAdminPWA";
+import NotificationToggle from "../components/admin/NotificationToggle";
 
 const navItems = [
   { to: "/backoffice", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -117,6 +118,9 @@ export default function AdminLayout() {
                 Administrador
               </p>
             </div>
+          </div>
+          <div className="mb-4">
+            <NotificationToggle />
           </div>
           <button
             onClick={handleLogout}
