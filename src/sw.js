@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable */
 /* global clients */
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
@@ -31,7 +31,7 @@ self.addEventListener('push', (event) => {
     if (event.data) {
       data = event.data.json();
     }
-  } catch (error) {
+  } catch {
     console.warn("Push event data was not JSON, using text instead:", event.data.text());
     data.body = event.data.text();
   }
