@@ -22,6 +22,8 @@ const NotificationToggle = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log('[PUSH] NotificationToggle component rendering...');
+
   useEffect(() => {
     checkSubscriptionStatus();
   }, []);

@@ -84,6 +84,10 @@ export default function AdminLayout() {
             </div>
           </div>
         </div>
+        
+        <div className="px-4 pt-4">
+          <NotificationToggle />
+        </div>
 
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => (
@@ -118,9 +122,6 @@ export default function AdminLayout() {
                 Administrador
               </p>
             </div>
-          </div>
-          <div className="mb-4">
-            <NotificationToggle />
           </div>
           <button
             onClick={handleLogout}
