@@ -9,6 +9,7 @@ self.addEventListener('push', (event) => {
       data = event.data.json();
     }
   } catch (e) {
+    console.warn('[PUSH-SW] Error parsing JSON, using text or default', e);
     if (event.data) {
         data.body = event.data.text();
     }
@@ -18,17 +19,20 @@ self.addEventListener('push', (event) => {
     body: data.body,
     icon: '/icon-192.png',
     badge: '/iconodefin.png',
+    tag: 'teleremate-alert', // Crucial para Android
+    renotify: true,          // Asegura que el móvil reaccione
+    requireInteraction: true,
     data: {
       url: data.url || '/'
     },
-    vibrate: [100, 50, 100],
+    vibrate: [200, 100, 200, 100, 200], // Vibración más notable
     actions: [
-      { action: 'open', title: 'Ver detalle' }
+      { action: 'open', title: 'Abrir App' }
     ]
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    self.registration.showNotification(data.title || "Teleremate", options)
   );
 });
 
