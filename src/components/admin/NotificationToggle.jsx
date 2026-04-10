@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import { subscribePush } from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -67,7 +67,7 @@ const NotificationToggle = () => {
       const subscription = await registration.pushManager.subscribe(subscribeOptions);
 
       // Send to backend using the unified API service
-      await api.subscribePush(subscription);
+      await subscribePush(subscription);
 
       setIsSubscribed(true);
     } catch (err) {
