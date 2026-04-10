@@ -33,11 +33,22 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(data.title || "Teleremate", options)
+      .then(() => {
+        // Establecer el punto rojo (Badge) en el icono de la App
+        if ('setAppBadge' in navigator) {
+          navigator.setAppBadge(1).catch(err => console.log('Error setting badge:', err));
+        }
+      })
   );
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  
+  // Limpiar el badge al hacer click
+  if ('clearAppBadge' in navigator) {
+    navigator.clearAppBadge().catch(err => console.log('Error clearing badge:', err));
+  }
   const urlToOpen = event.notification.data.url || '/';
 
   event.waitUntil(

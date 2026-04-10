@@ -44,6 +44,7 @@ export default defineConfig({
       },
       manifest: {
         id: "/",
+        gcm_sender_id: "103953800507",
         name: "TeleRemate App",
         short_name: "TeleRemate",
         description:
