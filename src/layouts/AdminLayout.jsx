@@ -88,8 +88,8 @@ export default function AdminLayout() {
         </div>
         
         {/* Scrollable Section */}
-        <div className="flex-1 overflow-y-auto sidebar-scroll">
-          <div className="px-4 pt-4">
+        <div className="flex-1 overflow-y-auto min-h-0 sidebar-scroll">
+          <div className="px-4 py-3">
             <NotificationToggle />
           </div>
 

@@ -104,39 +104,32 @@ const NotificationToggle = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 bg-slate-800/50 p-3 rounded-xl border border-slate-700 shadow-inner">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Centro de Alertas</span>
-          <span className={`text-[11px] font-medium ${isSubscribed ? 'text-green-400' : 'text-slate-500'}`}>
-            {isSubscribed ? '● Suscripto' : '○ Desactivado'}
-          </span>
-        </div>
-        {!isSubscribed && (
-          <span className="animate-pulse w-2 h-2 bg-amber-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.5)]"></span>
-        )}
-      </div>
-      
+    <div className="px-1 py-1">
       <button
         onClick={isSubscribed ? unsubscribeUser : subscribeUser}
         disabled={loading}
-        className={`w-full px-3 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
+        title={isSubscribed ? 'Notificaciones Activas' : 'Activar Notificaciones'}
+        className={`w-full px-3 py-2 rounded-xl text-[10px] font-bold transition-all duration-300 flex items-center justify-between gap-2 ${
           isSubscribed
-            ? 'bg-rose-500/10 text-rose-400 hover:bg-rose-500/30 border border-rose-500/30'
-            : 'bg-brand-500 text-white hover:bg-brand-600 shadow-lg shadow-brand-500/20'
+            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+            : 'bg-brand-500 text-white hover:bg-brand-600 shadow-md shadow-brand-500/10'
         } disabled:opacity-50`}
       >
-        {loading ? (
-          <span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
-        ) : (
-          isSubscribed ? 'Desactivar Notificaciones' : '🔔 Activar Notificaciones'
-        )}
+        <div className="flex items-center gap-2">
+          {loading ? (
+            <span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <span className={`w-1.5 h-1.5 rounded-full ${isSubscribed ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}`}></span>
+          )}
+          <span>{isSubscribed ? 'ALERTAS: ON' : 'ACTIVAR PUSH'}</span>
+        </div>
+        {!loading && !isSubscribed && <span className="text-[8px] opacity-50 font-black">CLICK</span>}
       </button>
 
       {error && error !== 'Push No Soportado' && (
-        <span className="text-[10px] text-center text-rose-400 bg-rose-400/10 px-1.5 py-1 rounded border border-rose-400/20">
+        <p className="text-[8px] text-center text-rose-400 mt-1 uppercase font-black truncate">
           {error}
-        </span>
+        </p>
       )}
     </div>
   );
