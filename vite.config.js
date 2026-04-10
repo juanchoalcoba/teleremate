@@ -8,39 +8,15 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.js",
       registerType: "autoUpdate",
-      workbox: {
-        importScripts: ["/push-sw.js"],
-        navigateFallbackDenylist: [/^\/api/],
-        cleanupOutdatedCaches: true,
-        runtimeCaching: [
-          {
-            urlPattern: /^\/api\/.*/i,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "api-cache",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24, // 24 hours
-              },
-              networkTimeoutSeconds: 10,
-            },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "images-cache",
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-              },
-            },
-          },
-        ],
+      injectManifest: {
+        injectionPoint: undefined,
       },
       devOptions: {
-        enabled: false, // Disabled in dev to prevent CSS/HMR caching issues on remote devices
+        enabled: false,
       },
       manifest: {
         id: "/",
