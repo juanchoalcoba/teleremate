@@ -14,6 +14,7 @@ import { getAdminResidences } from "../../services/api";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCurrencySymbol } from "../../utils/articleUtils";
+import { getWALink, WAMessages } from "../../utils/whatsapp";
 
 export default function AdminResidencesPage() {
   const { data: articles, isLoading } = useQuery({
@@ -21,11 +22,6 @@ export default function AdminResidencesPage() {
     queryFn: getAdminResidences,
     select: (res) => res.data,
   });
-
-  const getWhatsAppLink = (phone, message) => {
-    const cleanPhone = phone.replace(/\D/g, "");
-    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
-  };
 
   return (
     <div className="space-y-6">
@@ -106,7 +102,7 @@ export default function AdminResidencesPage() {
                            </p>
                          </div>
                          <a 
-                           href={getWhatsAppLink(item.metadata?.sellerPhone || "", `Hola ${item.metadata?.sellerName}, te contacto desde Teleremate por tu artículo: ${item.title}`)}
+                           href={getWALink(item.metadata?.sellerPhone || "", WAMessages.sellerFollowup(item.metadata?.sellerName, item.title))}
                            target="_blank"
                            rel="noreferrer"
                            className="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white transition-all shadow-sm"
@@ -130,7 +126,7 @@ export default function AdminResidencesPage() {
                             </p>
                           </div>
                           <a 
-                            href={getWhatsAppLink(item.customerInfo.phone, `Hola ${item.customerInfo.fullName}, te contacto desde Teleremate por tu ${item.customerInfo.type === 'buyer' ? 'compra' : 'reserva'} de: ${item.title}`)}
+                            href={getWALink(item.customerInfo.phone, item.customerInfo.type === 'buyer' ? WAMessages.purchaseFollowup(item.customerInfo.fullName, item.lotNumber, item.title) : WAMessages.reservationFollowup(item.customerInfo.fullName, item.lotNumber, item.title))}
                             target="_blank"
                             rel="noreferrer"
                             className="w-8 h-8 rounded-full bg-brand-500 text-white flex items-center justify-center hover:bg-brand-600 transition-all shadow-md shadow-brand-500/20"
