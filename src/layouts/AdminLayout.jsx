@@ -87,32 +87,36 @@ export default function AdminLayout() {
           </div>
         </div>
         
-        <div className="px-4 pt-4">
-          <NotificationToggle />
+        {/* Scrollable Section */}
+        <div className="flex-1 overflow-y-auto sidebar-scroll">
+          <div className="px-4 pt-4">
+            <NotificationToggle />
+          </div>
+
+          <nav className="p-4 space-y-1">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                onClick={() => setSidebarOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all relative ${
+                    isActive
+                      ? "bg-brand-500 text-white shadow-lg shadow-brand-500/20"
+                      : "text-gray-400 hover:bg-dark-800 hover:text-white"
+                  }`
+                }
+              >
+                <item.icon size={18} />
+                {item.label}
+                <ChevronRight size={14} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              onClick={() => setSidebarOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all relative ${
-                  isActive
-                    ? "bg-brand-500 text-white shadow-lg shadow-brand-500/20"
-                    : "text-gray-400 hover:bg-dark-800 hover:text-white"
-                }`
-              }
-            >
-              <item.icon size={18} />
-              {item.label}
-              <ChevronRight size={14} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-            </NavLink>
-          ))}
-        </nav>
-
+        {/* Footer Section */}
         <div className="p-4 border-t border-dark-700 bg-dark-950/30">
           <div className="flex items-center gap-3 mb-4 px-2">
             <div className="w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center text-xs font-bold">
