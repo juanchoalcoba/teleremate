@@ -22,6 +22,7 @@ import ReservationsPage from "./pages/admin/ReservationsPage";
 import PurchasesPage from "./pages/admin/PurchasesPage";
 import AdminSubmissionsPage from "./pages/admin/AdminSubmissionsPage";
 import AdminAnnotationsPage from "./pages/admin/AdminAnnotationsPage";
+import AdminResidencesPage from "./pages/admin/AdminResidencesPage";
 
 // Features
 import SellPage from "./pages/public/SellPage";
@@ -82,6 +83,7 @@ function App() {
               <Route path="compras" element={<PurchasesPage />} />
               <Route path="pedidos" element={<AdminSubmissionsPage />} />
               <Route path="anotaciones" element={<AdminAnnotationsPage />} />
+              <Route path="domicilios" element={<AdminResidencesPage />} />
             </Route>
 
             {/* 404 Redirect */}

@@ -84,6 +84,8 @@ export const approveSubmission = (id, data) =>
 export const rejectSubmission = (id) =>
   api.put(`/backoffice/submissions/${id}/reject`);
 
+export const getAdminResidences = () => api.get("/backoffice/residences");
+
 export const uploadImages = (id, files) => {
   const fd = new FormData();
   files.forEach((f) => fd.append("images", f));

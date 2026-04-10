@@ -12,6 +12,7 @@ import {
   ShoppingCart,
   ClipboardList,
   Users,
+  Home,
 } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import InstallAdminPWA from "../components/common/InstallAdminPWA";
@@ -22,6 +23,7 @@ const navItems = [
   { to: "/backoffice/articulos", label: "Inventario", icon: Package },
   { to: "/backoffice/reservas", label: "Reservas", icon: BookmarkCheck },
   { to: "/backoffice/compras", label: "Compras", icon: ShoppingCart },
+  { to: "/backoffice/domicilios", label: "Domicilios", icon: Home },
   { to: "/backoffice/pedidos", label: "Pedidos", icon: ClipboardList },
   { to: "/backoffice/anotaciones", label: "Anotaciones", icon: Users },
 ];
