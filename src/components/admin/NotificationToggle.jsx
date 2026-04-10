@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { subscribePush, testPush } from '../../services/api';
+import { subscribePush, testPush, getPushCount } from '../../services/api';
+import useAuthStore from '../../store/authStore';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -23,12 +24,24 @@ const NotificationToggle = () => {
   const [loading, setLoading] = useState(true);
   const [testing, setTesting] = useState(false);
   const [error, setError] = useState(null);
+  const [deviceCount, setDeviceCount] = useState(0);
+  const { user } = useAuthStore();
 
   console.log('[PUSH] NotificationToggle component rendering...');
 
   useEffect(() => {
     checkSubscriptionStatus();
+    fetchDeviceCount();
   }, []);
+
+  const fetchDeviceCount = async () => {
+    try {
+      const res = await getPushCount();
+      setDeviceCount(res.data.count);
+    } catch (err) {
+      console.error('Error fetching count', err);
+    }
+  };
 
   const checkSubscriptionStatus = async () => {
     try {
@@ -68,9 +81,10 @@ const NotificationToggle = () => {
       const subscription = await registration.pushManager.subscribe(subscribeOptions);
 
       // Send to backend using the unified API service
-      await subscribePush(subscription);
+      await subscribePush(subscription, user?.email);
 
       setIsSubscribed(true);
+      fetchDeviceCount();
     } catch (err) {
       console.error('Failed to subscribe the user: ', err);
       setError(err.message === 'Permiso denegado' ? 'Permiso Bloqueado' : 'Error al Activar');
@@ -87,6 +101,7 @@ const NotificationToggle = () => {
       if (subscription) {
         await subscription.unsubscribe();
         setIsSubscribed(false);
+        fetchDeviceCount();
       }
     } catch (err) {
       console.error('Error unsubscribing', err);
@@ -143,13 +158,20 @@ const NotificationToggle = () => {
       </button>
 
       {isSubscribed && (
-        <button
-          onClick={handleTest}
-          disabled={testing || loading}
-          className="w-full py-1 text-[8px] font-black text-slate-500 hover:text-brand-500 uppercase tracking-widest transition-colors flex items-center justify-center gap-1 border border-slate-700/50 rounded-lg bg-slate-800/20"
-        >
-          {testing ? 'Enviando...' : '⚡ Probar en este equipo'}
-        </button>
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={handleTest}
+            disabled={testing || loading}
+            className="w-full py-1 text-[8px] font-black text-slate-500 hover:text-brand-500 uppercase tracking-widest transition-colors flex items-center justify-center gap-1 border border-slate-700/50 rounded-lg bg-slate-800/20"
+          >
+            {testing ? 'Enviando...' : '⚡ Probar en este equipo'}
+          </button>
+          
+          <div className="flex justify-between items-center px-1">
+             <span className="text-[7px] text-slate-500 uppercase font-bold">Base de datos:</span>
+             <span className="text-[7px] bg-brand-500/20 text-brand-400 px-1 rounded font-black">{deviceCount} EQUIPOS</span>
+          </div>
+        </div>
       )}
 
       {error && error !== 'Push No Soportado' && (
