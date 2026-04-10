@@ -25,6 +25,7 @@ const NotificationToggle = () => {
   const [testing, setTesting] = useState(false);
   const [error, setError] = useState(null);
   const [deviceCount, setDeviceCount] = useState(0);
+  const [swVersion, setSwVersion] = useState('Buscando...');
   const { user } = useAuthStore();
 
   console.log('[PUSH] NotificationToggle component rendering...');
@@ -60,6 +61,15 @@ const NotificationToggle = () => {
       setError('Error de Estado');
     } finally {
       setLoading(false);
+      // Detectar estado del worker para diagnóstico
+      try {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg?.active) setSwVersion('Activo');
+        else if (reg?.installing || reg?.waiting) setSwVersion('Actualizando...');
+        else setSwVersion('Sin Worker');
+      } catch (e) {
+        setSwVersion('Error SW');
+      }
     }
   };
 
@@ -170,6 +180,10 @@ const NotificationToggle = () => {
           <div className="flex justify-between items-center px-1">
              <span className="text-[7px] text-slate-500 uppercase font-bold">Base de datos:</span>
              <span className="text-[7px] bg-brand-500/20 text-brand-400 px-1 rounded font-black">{deviceCount} EQUIPOS</span>
+          </div>
+          <div className="flex justify-between items-center px-1">
+             <span className="text-[7px] text-slate-500 uppercase font-bold">Service Worker:</span>
+             <span className="text-[7px] text-gray-400 font-medium italic">{swVersion}</span>
           </div>
         </div>
       )}

@@ -1,7 +1,8 @@
-// Este archivo maneja las notificaciones de forma independiente para evitar errores de compilación
-console.log('[PUSH-SW] Script de notificaciones cargado');
+// v1.0.6 - Refuerzo de rutas absolutas para Android
+console.log('[PUSH-SW] Script de notificaciones cargado v1.0.6');
 
 self.addEventListener('push', (event) => {
+  const baseUrl = self.location.origin;
   let data = { title: "Nuevo Evento", body: "Tienes una nueva notificación de Teleremate." };
   
   try {
@@ -17,15 +18,15 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: '/icon-192.png',
-    badge: '/iconodefin.png',
-    tag: 'teleremate-alert', // Crucial para Android
-    renotify: true,          // Asegura que el móvil reaccione
+    icon: `${baseUrl}/icon-192.png`,
+    badge: `${baseUrl}/iconodefin.png`,
+    tag: 'teleremate-alert',
+    renotify: true,
     requireInteraction: true,
     data: {
       url: data.url || '/'
     },
-    vibrate: [200, 100, 200, 100, 200], // Vibración más notable
+    vibrate: [200, 100, 200, 100, 200],
     actions: [
       { action: 'open', title: 'Abrir App' }
     ]
