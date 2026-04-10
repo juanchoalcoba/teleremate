@@ -19,7 +19,6 @@ self.addEventListener('push', (event) => {
   const options = {
     body: data.body,
     icon: `${baseUrl}/icon-192.png`,
-    badge: `${baseUrl}/iconodefin.png`,
     tag: 'teleremate-alert',
     renotify: true,
     requireInteraction: true,
@@ -32,15 +31,20 @@ self.addEventListener('push', (event) => {
     ]
   };
 
-  event.waitUntil(
-    self.registration.showNotification(data.title || "Teleremate", options)
-      .then(() => {
-        // Establecer el punto rojo (Badge) en el icono de la App
-        if ('setAppBadge' in navigator) {
-          navigator.setAppBadge(1).catch(err => console.log('Error setting badge:', err));
-        }
-      })
-  );
+  const promiseChain = self.registration.showNotification(data.title || "Teleremate", options)
+    .then(() => {
+      // Establecer el punto rojo (Badge) en el icono de la App
+      if ('setAppBadge' in navigator) {
+        navigator.setAppBadge(1).catch(err => console.log('Error setting app badge:', err));
+      }
+    })
+    .catch((err) => {
+      console.error('[PUSH-SW] Error showing notification:', err);
+      // Fallback simple por si fallan las opciones avanzadas
+      return self.registration.showNotification("Notificación", { body: "Tienes un mensaje nuevo" });
+    });
+
+  event.waitUntil(promiseChain);
 });
 
 self.addEventListener('notificationclick', (event) => {
