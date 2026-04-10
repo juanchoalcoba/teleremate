@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { subscribePush } from '../../services/api';
+import { subscribePush, testPush } from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -21,6 +21,7 @@ function urlBase64ToUint8Array(base64String) {
 const NotificationToggle = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [testing, setTesting] = useState(false);
   const [error, setError] = useState(null);
 
   console.log('[PUSH] NotificationToggle component rendering...');
@@ -95,6 +96,21 @@ const NotificationToggle = () => {
     }
   };
 
+  const handleTest = async () => {
+    setTesting(true);
+    try {
+      await testPush({
+        title: "🔔 Prueba Teleremate",
+        body: "Si ves esto, tu celular está recibiendo notificaciones correctamente.",
+        url: "/backoffice"
+      });
+    } catch (err) {
+      console.error('Test notification failed', err);
+    } finally {
+      setTesting(false);
+    }
+  };
+
   if (error === 'Push No Soportado') {
     return (
       <div className="p-2 text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-md">
@@ -104,7 +120,7 @@ const NotificationToggle = () => {
   }
 
   return (
-    <div className="px-1 py-1">
+    <div className="px-1 py-1 space-y-2">
       <button
         onClick={isSubscribed ? unsubscribeUser : subscribeUser}
         disabled={loading}
@@ -125,6 +141,16 @@ const NotificationToggle = () => {
         </div>
         {!loading && !isSubscribed && <span className="text-[8px] opacity-50 font-black">CLICK</span>}
       </button>
+
+      {isSubscribed && (
+        <button
+          onClick={handleTest}
+          disabled={testing || loading}
+          className="w-full py-1 text-[8px] font-black text-slate-500 hover:text-brand-500 uppercase tracking-widest transition-colors flex items-center justify-center gap-1 border border-slate-700/50 rounded-lg bg-slate-800/20"
+        >
+          {testing ? 'Enviando...' : '⚡ Probar en este equipo'}
+        </button>
+      )}
 
       {error && error !== 'Push No Soportado' && (
         <p className="text-[8px] text-center text-rose-400 mt-1 uppercase font-black truncate">
