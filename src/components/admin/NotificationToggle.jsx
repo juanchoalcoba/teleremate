@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import api from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -65,18 +66,8 @@ const NotificationToggle = () => {
 
       const subscription = await registration.pushManager.subscribe(subscribeOptions);
 
-      // Send to backend
-      const response = await fetch('/api/notifications/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(subscription),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al guardar suscripción en servidor');
-      }
+      // Send to backend using the unified API service
+      await api.subscribePush(subscription);
 
       setIsSubscribed(true);
     } catch (err) {
