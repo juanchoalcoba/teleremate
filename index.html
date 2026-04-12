@@ -14,19 +14,16 @@
       });
 
       if (window.location.pathname.startsWith('/backoffice')) {
+        // Remove any existing manifests first
+        document.querySelectorAll('link[rel="manifest"]').forEach(node => node.remove());
+        
         const link = document.createElement('link');
         link.rel = 'manifest';
         link.href = '/backoffice/manifest.webmanifest';
         link.id = 'admin-manifest';
         document.head.appendChild(link);
         
-        const observer = new MutationObserver(() => {
-          document.querySelectorAll('link[rel="manifest"]').forEach(node => {
-            if (node.id !== 'admin-manifest') node.remove();
-          });
-        });
-        observer.observe(document.head, { childList: true, subtree: true });
-        setTimeout(() => observer.disconnect(), 2000);
+        console.log('[PWA] Admin manifest loaded for /backoffice');
       }
     </script>
     <meta charset="UTF-8" />
