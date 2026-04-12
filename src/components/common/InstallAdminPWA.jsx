@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Download, X } from "lucide-react";
+import { Download, X, Smartphone } from "lucide-react";
 import usePWA from "../../hooks/usePWA";
 import PWAHelpModal from "../modals/PWAHelpModal";
 
@@ -15,6 +15,8 @@ export default function InstallAdminPWA() {
     handleInstallClick 
   } = usePWA();
 
+  const hasInstallPrompt = isInstallable || Boolean(window.__pwaInstallPrompt);
+
   const [isVisible, setIsVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,11 +24,11 @@ export default function InstallAdminPWA() {
     // Isolated prompt tracking for Admin using a different key
     const seenAdmin = sessionStorage.getItem("admin_pwa_prompt_seen");
     
-    if (isInstallable && !isStandalone && !seenAdmin) {
+    if (!hasInstallPrompt && !isStandalone && !seenAdmin) {
       const timer = setTimeout(() => setIsVisible(true), 100);
       return () => clearTimeout(timer);
     }
-  }, [isInstallable, isStandalone]);
+  }, [hasInstallPrompt, isStandalone]);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -39,8 +41,15 @@ export default function InstallAdminPWA() {
     sessionStorage.setItem("admin_pwa_prompt_seen", "true");
   };
 
-  // We only render this inside /backoffice naturally.
-  if (!isVisible && !isModalOpen) return null;
+  // When the native prompt is available, clicking "Instalar" triggers it directly
+  // Otherwise, open the help modal with manual instructions
+  const handlePrimaryAction = () => {
+    if (hasInstallPrompt) {
+      handleInstallClick();
+      return;
+    }
+    handleOpenModal();
+  };
 
   return (
     <>
@@ -72,14 +81,20 @@ export default function InstallAdminPWA() {
                   Teleremate Admin
                 </h3>
                 <p className="text-gray-400 text-[11px] leading-tight mt-0.5">
-                  Instala el panel de gestión como App nativa.
+                  {hasInstallPrompt
+                    ? "Instala el panel de gestión como App nativa."
+                    : "Toca instalar y sigue la guía si el prompt nativo no aparece."}
                 </p>
                 <button
-                  onClick={handleOpenModal}
+                  onClick={handlePrimaryAction}
                   className="mt-2 text-brand-400 text-[11px] font-black uppercase tracking-widest hover:text-brand-300 transition-colors flex items-center gap-1.5"
                 >
-                  <Download size={12} />
-                  Instalar Panel
+                  {hasInstallPrompt ? (
+                    <Download size={12} />
+                  ) : (
+                    <Smartphone size={12} />
+                  )}
+                  {hasInstallPrompt ? "Instalar Panel" : "Cómo instalar"}
                 </button>
               </div>
             </div>

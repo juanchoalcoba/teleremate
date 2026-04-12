@@ -43,7 +43,7 @@ export default defineConfig({
         enabled: false, // Disabled in dev to prevent CSS/HMR caching issues on remote devices
       },
       manifest: {
-        id: "/",
+        id: "teleRemate-root",
         name: "TeleRemate App",
         short_name: "TeleRemate",
         description:

@@ -2,10 +2,21 @@
 <html lang="en">
   <head>
     <script>
+      window.__pwaInstallPrompt = window.__pwaInstallPrompt || null;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        const isAdminPath = window.location.pathname.startsWith('/backoffice');
+        if (!isAdminPath) {
+          e.preventDefault();
+          window.__pwaInstallPrompt = e;
+        }
+        // For admin path, let the browser handle the native prompt
+      });
+
       if (window.location.pathname.startsWith('/backoffice')) {
         const link = document.createElement('link');
         link.rel = 'manifest';
-        link.href = '/manifest-admin.json';
+        link.href = '/backoffice/manifest.webmanifest';
         link.id = 'admin-manifest';
         document.head.appendChild(link);
         
