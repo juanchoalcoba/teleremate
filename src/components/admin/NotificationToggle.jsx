@@ -37,7 +37,19 @@ const NotificationToggle = () => {
         return;
       }
 
-      const registration = await navigator.serviceWorker.ready;
+      // For admin path, ensure we use the admin service worker
+      const isAdminPath = window.location.pathname.startsWith('/backoffice');
+      const swPath = isAdminPath ? '/backoffice/sw.js' : '/sw.js';
+      const scope = isAdminPath ? '/backoffice/' : '/';
+
+      let registration = await navigator.serviceWorker.getRegistration(scope);
+      if (!registration) {
+        // Try to register if not found
+        registration = await navigator.serviceWorker.register(swPath, { scope });
+        await navigator.serviceWorker.ready; // Wait for it to be ready
+        registration = await navigator.serviceWorker.getRegistration(scope);
+      }
+
       const subscription = await registration.pushManager.getSubscription();
       
       setIsSubscribed(!!subscription);
@@ -58,7 +70,18 @@ const NotificationToggle = () => {
         throw new Error('Permiso denegado');
       }
 
-      const registration = await navigator.serviceWorker.ready;
+      // For admin path, ensure we use the admin service worker
+      const isAdminPath = window.location.pathname.startsWith('/backoffice');
+      const swPath = isAdminPath ? '/backoffice/sw.js' : '/sw.js';
+      const scope = isAdminPath ? '/backoffice/' : '/';
+
+      let registration = await navigator.serviceWorker.getRegistration(scope);
+      if (!registration) {
+        registration = await navigator.serviceWorker.register(swPath, { scope });
+        await navigator.serviceWorker.ready;
+        registration = await navigator.serviceWorker.getRegistration(scope);
+      }
+
       const subscribeOptions = {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
@@ -81,11 +104,17 @@ const NotificationToggle = () => {
   const unsubscribeUser = async () => {
     setLoading(true);
     try {
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
-      if (subscription) {
-        await subscription.unsubscribe();
-        setIsSubscribed(false);
+      // For admin path, ensure we use the admin service worker
+      const isAdminPath = window.location.pathname.startsWith('/backoffice');
+      const scope = isAdminPath ? '/backoffice/' : '/';
+
+      const registration = await navigator.serviceWorker.getRegistration(scope);
+      if (registration) {
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+          await subscription.unsubscribe();
+          setIsSubscribed(false);
+        }
       }
     } catch (err) {
       console.error('Error unsubscribing', err);

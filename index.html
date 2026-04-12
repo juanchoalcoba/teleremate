@@ -24,6 +24,17 @@
         document.head.appendChild(link);
         
         console.log('[PWA] Admin manifest loaded for /backoffice');
+        
+        // Register admin service worker for admin scope
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/backoffice/sw.js', { scope: '/backoffice/' })
+            .then(registration => {
+              console.log('[PWA] Admin SW registered:', registration.scope);
+            })
+            .catch(error => {
+              console.error('[PWA] Admin SW registration failed:', error);
+            });
+        }
       }
     </script>
     <meta charset="UTF-8" />
