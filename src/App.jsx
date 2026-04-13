@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import SmoothScroll from "./components/common/SmoothScroll";
@@ -12,7 +12,6 @@ import AdminLayout from "./layouts/AdminLayout";
 import HomePage from "./pages/public/HomePage";
 import CatalogPage from "./pages/public/CatalogPage";
 import ArticleDetailPage from "./pages/public/ArticleDetailPage";
-import SellPage from "./pages/public/SellPage";
 
 // Admin Pages
 import LoginPage from "./pages/admin/LoginPage";
@@ -25,12 +24,18 @@ import AdminSubmissionsPage from "./pages/admin/AdminSubmissionsPage";
 import AdminAnnotationsPage from "./pages/admin/AdminAnnotationsPage";
 import AdminResidencesPage from "./pages/admin/AdminResidencesPage";
 
-// Auth
+// Features
+import SellPage from "./pages/public/SellPage";
+
+// Auth Guard
 import useAuthStore from "./store/authStore";
 
-// --------------------
-// Query Client
-// --------------------
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuthStore();
+  if (!isAuthenticated) return <Navigate to="/backoffice/login" replace />;
+  return children;
+};
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -40,87 +45,52 @@ const queryClient = new QueryClient({
   },
 });
 
-// --------------------
-// Protected Route
-// --------------------
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
-  if (!isAuthenticated) return <Navigate to="/backoffice/login" replace />;
-  return children;
-};
-
-// --------------------
-// SEO Controller (clave)
-// --------------------
-function SEOController() {
-  const location = useLocation();
-  const isAdmin = location.pathname.startsWith("/backoffice");
-
-  // ❗ SOLO aplicar canonical a la app pública
-  if (isAdmin) return null;
-
-  return <DynamicCanonical />;
-}
-
-// --------------------
-// Routes Component
-// --------------------
-function AppRoutes() {
-  return (
-    <>
-      <SEOController />
-
-      <SmoothScroll>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<PublicLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="catalogo" element={<CatalogPage />} />
-            <Route path="articulo/:id" element={<ArticleDetailPage />} />
-            <Route path="vender" element={<SellPage />} />
-          </Route>
-
-          {/* Admin Auth */}
-          <Route path="/backoffice/login" element={<LoginPage />} />
-
-          {/* Admin Protected */}
-          <Route
-            path="/backoffice"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<DashboardPage />} />
-            <Route path="articulos" element={<AdminArticlesPage />} />
-            <Route path="articulos/nuevo" element={<ArticleFormPage />} />
-            <Route path="articulos/editar/:id" element={<ArticleFormPage />} />
-            <Route path="reservas" element={<ReservationsPage />} />
-            <Route path="compras" element={<PurchasesPage />} />
-            <Route path="pedidos" element={<AdminSubmissionsPage />} />
-            <Route path="anotaciones" element={<AdminAnnotationsPage />} />
-            <Route path="domicilios" element={<AdminResidencesPage />} />
-          </Route>
-
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </SmoothScroll>
-    </>
-  );
-}
-
-// --------------------
-// Main App
-// --------------------
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+        <DynamicCanonical />
+        <SmoothScroll>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<PublicLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="catalogo" element={<CatalogPage />} />
+              <Route path="articulo/:id" element={<ArticleDetailPage />} />
+              <Route path="vender" element={<SellPage />} />
+            </Route>
 
+            {/* Admin Auth */}
+            <Route path="/backoffice/login" element={<LoginPage />} />
+
+            {/* Admin Routes */}
+            <Route
+              path="/backoffice"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<DashboardPage />} />
+              <Route path="articulos" element={<AdminArticlesPage />} />
+              <Route path="articulos/nuevo" element={<ArticleFormPage />} />
+              <Route
+                path="articulos/editar/:id"
+                element={<ArticleFormPage />}
+              />
+              <Route path="reservas" element={<ReservationsPage />} />
+              <Route path="compras" element={<PurchasesPage />} />
+              <Route path="pedidos" element={<AdminSubmissionsPage />} />
+              <Route path="anotaciones" element={<AdminAnnotationsPage />} />
+              <Route path="domicilios" element={<AdminResidencesPage />} />
+            </Route>
+
+            {/* 404 Redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </SmoothScroll>
+      </BrowserRouter>
       <Toaster position="top-right" />
     </QueryClientProvider>
   );
