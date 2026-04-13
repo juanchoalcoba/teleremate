@@ -278,3 +278,5 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
     </div>
   );
 }
+
+//cambio
