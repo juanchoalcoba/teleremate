@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { subscribePush } from '../../services/api';
+import { subscribePush, testPush, getPushCount } from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -22,12 +22,44 @@ const NotificationToggle = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [subscriptionCount, setSubscriptionCount] = useState(0);
+  const [testingNotification, setTestingNotification] = useState(false);
 
   console.log('[PUSH] NotificationToggle component rendering...');
 
   useEffect(() => {
     checkSubscriptionStatus();
+    fetchSubscriptionCount();
   }, []);
+
+  const fetchSubscriptionCount = async () => {
+    try {
+      const response = await getPushCount();
+      setSubscriptionCount(response.data.count);
+    } catch (err) {
+      console.error('Error fetching subscription count:', err);
+    }
+  };
+
+  const testNotification = async () => {
+    setTestingNotification(true);
+    try {
+      await testPush({
+        title: "Test de Notificación",
+        body: "Esta es una notificación de prueba desde el panel admin",
+        url: "/backoffice/"
+      });
+      // Temporarily show success message
+      setError("Notificación de prueba enviada!");
+      setTimeout(() => setError(null), 3000);
+    } catch (err) {
+      console.error('Error testing notification:', err);
+      setError("Error al enviar notificación de prueba");
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setTestingNotification(false);
+    }
+  };
 
   const checkSubscriptionStatus = async () => {
     try {
@@ -93,6 +125,7 @@ const NotificationToggle = () => {
       await subscribePush(subscription);
 
       setIsSubscribed(true);
+      fetchSubscriptionCount(); // Update count after subscribing
     } catch (err) {
       console.error('Failed to subscribe the user: ', err);
       setError(err.message === 'Permiso denegado' ? 'Permiso Bloqueado' : 'Error al Activar');
@@ -114,6 +147,7 @@ const NotificationToggle = () => {
         if (subscription) {
           await subscription.unsubscribe();
           setIsSubscribed(false);
+          fetchSubscriptionCount(); // Update count after unsubscribing
         }
       }
     } catch (err) {
@@ -159,6 +193,22 @@ const NotificationToggle = () => {
         <p className="text-[8px] text-center text-rose-400 mt-1 uppercase font-black truncate">
           {error}
         </p>
+      )}
+
+      {isSubscribed && (
+        <div className="mt-2 space-y-1">
+          <div className="text-[9px] text-center text-slate-400">
+            📱 {subscriptionCount} equipo{subscriptionCount !== 1 ? 's' : ''} registrado{subscriptionCount !== 1 ? 's' : ''}
+          </div>
+          
+          <button
+            onClick={testNotification}
+            disabled={testingNotification}
+            className="w-full px-2 py-1 bg-slate-600 text-white text-[8px] rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
+          >
+            {testingNotification ? 'Enviando...' : 'Probar en este equipo'}
+          </button>
+        </div>
       )}
     </div>
   );

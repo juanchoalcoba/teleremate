@@ -101,5 +101,6 @@ export const deleteImage = (id, filename) =>
 export const subscribePush = (subscription) =>
   api.post("/notifications/subscribe", subscription);
 export const testPush = (data) => api.post("/notifications/test-notify", data);
+export const getPushCount = () => api.get("/notifications/count");
 
 export default api;
