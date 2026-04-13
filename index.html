@@ -2,57 +2,51 @@
 <html lang="en">
   <head>
     <script>
+      // Store install prompt safely (only for user app)
       window.__pwaInstallPrompt = window.__pwaInstallPrompt || null;
 
       window.addEventListener('beforeinstallprompt', (e) => {
         const isAdminPath = window.location.pathname.startsWith('/backoffice');
+
         if (!isAdminPath) {
+          // Prevent automatic mini-infobar only for user app
           e.preventDefault();
           window.__pwaInstallPrompt = e;
+          console.log('[PWA] User install prompt captured');
+        } else {
+          console.log('[PWA] Admin path - native prompt allowed');
         }
-        // For admin path, let the browser handle the native prompt
       });
-
-      if (window.location.pathname.startsWith('/backoffice')) {
-        // Remove any existing manifests first
-        document.querySelectorAll('link[rel="manifest"]').forEach(node => node.remove());
-        
-        const link = document.createElement('link');
-        link.rel = 'manifest';
-        link.href = '/backoffice/manifest.webmanifest';
-        link.id = 'admin-manifest';
-        document.head.appendChild(link);
-        
-        console.log('[PWA] Admin manifest loaded for /backoffice');
-        
-        // Register admin service worker for admin scope
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/backoffice/sw.js', { scope: '/backoffice/' })
-            .then(registration => {
-              console.log('[PWA] Admin SW registered:', registration.scope);
-            })
-            .catch(error => {
-              console.error('[PWA] Admin SW registration failed:', error);
-            });
-        }
-      }
     </script>
+
     <meta charset="UTF-8" />
+
+    <!-- FAVICONS -->
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="48x48" href="/iconodefin.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/iconodefin.png" />
     <link rel="apple-touch-icon" href="/iconodefin.png" />
+
+    <!-- PWA BASE (USER APP ONLY) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#000000" />
+
+    <!-- MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO -->
     <title>TeleRemate • Subastas Online</title>
     <meta name="description" content="TeleRemate Uruguay. La plataforma más confiable para subastas locales. Fácil, seguro y totalmente transparente. Años de experiencia." />
     <link rel="canonical" id="canonical-tag" href="https://teleremate.org/" />
-    <meta name="mobile-web-app-capable" content="yes" />
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- APP -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
