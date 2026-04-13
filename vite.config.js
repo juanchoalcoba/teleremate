@@ -11,8 +11,14 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         importScripts: ["/push-sw.js"],
-        navigateFallbackDenylist: [/^\/api/],
         cleanupOutdatedCaches: true,
+
+        // 🔥 CLAVE: excluir admin completamente
+        navigateFallbackDenylist: [
+          /^\/api/,
+          /^\/backoffice/   // ✅ FIX CRÍTICO
+        ],
+
         runtimeCaching: [
           {
             urlPattern: /^\/api\/.*/i,
@@ -21,7 +27,7 @@ export default defineConfig({
               cacheName: "api-cache",
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24, // 24 hours
+                maxAgeSeconds: 60 * 60 * 24,
               },
               networkTimeoutSeconds: 10,
             },
@@ -33,79 +39,43 @@ export default defineConfig({
               cacheName: "images-cache",
               expiration: {
                 maxEntries: 100,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+                maxAgeSeconds: 30 * 24 * 60 * 60,
               },
             },
           },
         ],
       },
+
       devOptions: {
-        enabled: false, // Disabled in dev to prevent CSS/HMR caching issues on remote devices
+        enabled: false,
       },
+
       manifest: {
-        id: "teleRemate-root",
+        id: "teleremate-root",
         name: "TeleRemate App",
         short_name: "TeleRemate",
         description:
-          "La plataforma líder en subastas y ventas online. Reserva, compra y remata artículos exclusivos.",
-        categories: ["business", "shopping"],
-        lang: "es",
-        dir: "auto",
+          "La plataforma líder en subastas y ventas online.",
         theme_color: "#000000",
         background_color: "#ffffff",
         display: "standalone",
-        orientation: "portrait",
-        start_url: "/",
-        scope: "/",
+
+        start_url: "/",     // ✅ OK
+        scope: "/",         // ✅ OK
+
         icons: [
           {
             src: "/icon-192.png",
             sizes: "192x192",
             type: "image/png",
-            purpose: "any",
           },
           {
             src: "/icon-512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any",
-          },
-          {
-            src: "/icon-512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "maskable",
-          },
-        ],
-        screenshots: [
-          {
-            src: "/screenshot-mobile.png",
-            sizes: "1080x1920",
-            type: "image/png",
-            form_factor: "narrow",
-          },
-          {
-            src: "/screenshot-desktop.png",
-            sizes: "1920x1080",
-            type: "image/png",
-            form_factor: "wide",
           },
         ],
       },
     }),
   ],
-  server: {
-    host: true,
-    port: 5173,
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:8080",
-        changeOrigin: true,
-      },
-      "/uploads": {
-        target: "http://127.0.0.1:8080",
-        changeOrigin: true,
-      },
-    },
-  },
 });

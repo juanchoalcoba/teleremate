@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 
-export default function usePWA() {
+export default function useAdminPWA() {
   const [installPrompt, setInstallPrompt] = useState(null);
 
   const [isStandalone] = useState(() => {
     if (typeof window === "undefined") return false;
     return (
       window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone ||
-      (document.referrer &&
-        document.referrer.includes("android-app://"))
+      window.navigator.standalone
     );
   });
 
@@ -18,19 +16,14 @@ export default function usePWA() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent);
   });
 
-  const [hasSeenPrompt, setHasSeenPrompt] = useState(() => {
-    if (typeof sessionStorage === "undefined") return false;
-    return !!sessionStorage.getItem("pwa_prompt_seen");
-  });
-
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
     const handler = (e) => {
       const isAdmin = window.location.pathname.startsWith("/backoffice");
 
-      // 🔥 CLAVE: bloquear en admin
-      if (isAdmin) return;
+      // 🔥 SOLO ADMIN
+      if (!isAdmin) return;
 
       e.preventDefault();
       setInstallPrompt(e);
@@ -43,20 +36,15 @@ export default function usePWA() {
       window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
-  // iOS fallback
+  // iOS fallback admin
   useEffect(() => {
     if (isIOS && !isStandalone) {
       const isAdmin = window.location.pathname.startsWith("/backoffice");
-      if (!isAdmin) {
+      if (isAdmin) {
         setIsInstallable(true);
       }
     }
   }, [isIOS, isStandalone]);
-
-  const markAsSeen = () => {
-    sessionStorage.setItem("pwa_prompt_seen", "true");
-    setHasSeenPrompt(true);
-  };
 
   const handleInstallClick = async () => {
     if (!installPrompt) return;
@@ -74,8 +62,6 @@ export default function usePWA() {
     isStandalone,
     isIOS,
     isInstallable,
-    hasSeenPrompt,
-    markAsSeen,
     handleInstallClick,
   };
 }
