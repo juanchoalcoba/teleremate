@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Bell } from "lucide-react";
 import Typed from "typed.js";
 
-const UPCOMING_AUCTIONS = [
-  "Próximos remates: 11 y 12 de abril",
-  "Próximos remates: 25 y 26 de abril",
-];
+const UPCOMING_AUCTIONS = ["Próximos remates: 25 y 26 de abril"];
 
 const HERO_IMAGES = ["/bgaura.png", "/hero-bg.png", "/3hero.png"];
 
@@ -113,7 +110,7 @@ export default function HeroSection() {
               to="/catalogo"
               className="w-full sm:w-auto group inline-flex justify-center items-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-4 rounded-2xl border border-white/20 transition-all hover:shadow-xl hover:shadow-brand-500/30 active:scale-95"
             >
-              Ver Catálogo
+              Ver Catálogos
               <ArrowRight
                 size={18}
                 className="group-hover:translate-x-1 transition-transform"
@@ -123,7 +120,7 @@ export default function HeroSection() {
               to="/vender"
               className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 border border-white/20 hover:border-white/40 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:bg-white/10 active:scale-95 shadow-sm"
             >
-              Vender
+              VENDER
             </Link>
           </div>
 
