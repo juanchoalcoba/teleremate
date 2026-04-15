@@ -100,7 +100,10 @@ export const deleteImage = (id, filename) =>
 // ─── Notifications ────────────────────────────────────────
 export const subscribePush = (subscription) =>
   api.post("/notifications/subscribe", subscription);
+export const subscribeAdminPush = (subscription) =>
+  api.post("/notifications/subscribe-admin", subscription);
 export const testPush = (data) => api.post("/notifications/test-notify", data);
+export const testAdminPush = (data) => api.post("/notifications/test-notify", data); // Wait, notifications.js uses test-notify and discriminates based on url
 export const getPushCount = () => api.get("/notifications/count");
 
 export default api;

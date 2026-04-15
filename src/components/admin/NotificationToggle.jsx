@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { subscribePush, testPush, getPushCount } from '../../services/api';
+import { subscribePush, subscribeAdminPush, testPush, getPushCount } from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -71,7 +71,7 @@ const NotificationToggle = () => {
 
       // For admin path, ensure we use the admin service worker
       const isAdminPath = window.location.pathname.startsWith('/backoffice');
-      const swPath = isAdminPath ? '/backoffice/sw.js' : '/sw.js';
+      const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
       const scope = isAdminPath ? '/backoffice/' : '/';
 
       let registration = await navigator.serviceWorker.getRegistration(scope);
@@ -104,7 +104,7 @@ const NotificationToggle = () => {
 
       // For admin path, ensure we use the admin service worker
       const isAdminPath = window.location.pathname.startsWith('/backoffice');
-      const swPath = isAdminPath ? '/backoffice/sw.js' : '/sw.js';
+      const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
       const scope = isAdminPath ? '/backoffice/' : '/';
 
       let registration = await navigator.serviceWorker.getRegistration(scope);
@@ -122,7 +122,11 @@ const NotificationToggle = () => {
       const subscription = await registration.pushManager.subscribe(subscribeOptions);
 
       // Send to backend using the unified API service
-      await subscribePush(subscription);
+      if (isAdminPath) {
+        await subscribeAdminPush(subscription);
+      } else {
+        await subscribePush(subscription);
+      }
 
       setIsSubscribed(true);
       fetchSubscriptionCount(); // Update count after subscribing

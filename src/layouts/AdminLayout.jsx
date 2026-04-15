@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   Gavel,
@@ -37,6 +37,34 @@ export default function AdminLayout() {
     logout();
     navigate("/login");
   };
+
+  useEffect(() => {
+    // Replace manifest for Admin
+    document.querySelectorAll('link[rel="manifest"]').forEach(node => node.remove());
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = '/manifest-admin.json';
+    link.id = 'admin-manifest';
+    document.head.appendChild(link);
+    console.log('[PWA] Admin manifest loaded for /backoffice');
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice/' })
+        .then(registration => {
+          console.log('[PWA] Admin SW registered:', registration.scope);
+        })
+        .catch(error => {
+          console.error('[PWA] Admin SW registration failed:', error);
+        });
+    }
+
+    return () => {
+      // Clean up the admin manifest if unmounting
+      if (document.getElementById('admin-manifest')) {
+         document.getElementById('admin-manifest').remove();
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex bg-gray-50 overflow-x-hidden w-full">

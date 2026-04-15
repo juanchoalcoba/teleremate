@@ -12,30 +12,6 @@
         }
         // For admin path, let the browser handle the native prompt
       });
-
-      if (window.location.pathname.startsWith('/backoffice')) {
-        // Remove any existing manifests first
-        document.querySelectorAll('link[rel="manifest"]').forEach(node => node.remove());
-        
-        const link = document.createElement('link');
-        link.rel = 'manifest';
-        link.href = '/backoffice/manifest.webmanifest';
-        link.id = 'admin-manifest';
-        document.head.appendChild(link);
-        
-        console.log('[PWA] Admin manifest loaded for /backoffice');
-        
-        // Register admin service worker for admin scope
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/backoffice/sw.js', { scope: '/backoffice/' })
-            .then(registration => {
-              console.log('[PWA] Admin SW registered:', registration.scope);
-            })
-            .catch(error => {
-              console.error('[PWA] Admin SW registration failed:', error);
-            });
-        }
-      }
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
