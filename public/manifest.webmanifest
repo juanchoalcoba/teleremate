@@ -1,7 +1,7 @@
 {
-  "id": "teleremate-root",
-  "name": "TeleRemate App",
-  "short_name": "TeleRemate",
+  "id": "teleremate-public",
+  "name": "Teleremate Uruguay",
+  "short_name": "Teleremate",
   "description": "La plataforma líder en subastas y ventas online.",
   "theme_color": "#000000",
   "background_color": "#ffffff",

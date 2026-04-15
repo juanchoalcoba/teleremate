@@ -79,21 +79,19 @@ export default function InstallAdminPWA() {
 
               <div className="flex-1 pr-6 relative z-10">
                 <h3 className="text-white font-bold text-sm tracking-tight">
-                  Teleremate Admin
+                  Panel Administrador
                 </h3>
 
                 <p className="text-gray-400 text-[11px] leading-tight mt-0.5">
-                  {hasInstallPrompt
-                    ? "Instala el panel como app nativa."
-                    : (isIOS ? "Toca compartir y 'Añadir a inicio'." : "Instala desde el menú del navegador.")}
+                  Gestioná todo Teleremate desde tu inicio.
                 </p>
 
                 <button
                   onClick={handlePrimaryAction}
-                  className="mt-2 text-brand-400 text-[11px] font-black uppercase tracking-widest hover:text-brand-300 transition-colors flex items-center gap-1.5"
+                  className="mt-3 w-full bg-white text-dark-900 h-10 rounded-xl font-black text-[10px] uppercase tracking-wider hover:bg-white/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xl"
                 >
-                  {hasInstallPrompt ? <Download size={12} /> : <Smartphone size={12} />}
-                  {hasInstallPrompt ? "Instalar Panel" : (isIOS ? "Instrucciones" : "Cómo instalar")}
+                  <Download size={14} />
+                  INSTALAR PANEL AHORA
                 </button>
               </div>
             </div>

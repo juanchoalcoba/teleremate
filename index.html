@@ -20,13 +20,17 @@
       // 2. Inyección Agresiva de Manifiestos sincronizada con la ruta
       (function() {
         var isAdm = window.location.pathname.startsWith('/backoffice');
-        var manifestPath = isAdm ? '/manifest-admin.json' : '/manifest.webmanifest';
+        var now = Date.now();
+        var manifestPath = isAdm 
+          ? '/manifest-admin.json?v=' + now 
+          : '/manifest.webmanifest?v=' + now;
         
         // Eliminar cualquier manifiesto previo para evitar confusiones de Chrome
         var existing = document.querySelectorAll('link[rel="manifest"]');
         existing.forEach(el => el.remove());
 
         var m = document.createElement('link');
+        m.id = 'pwa-manifest-link';
         m.rel = 'manifest';
         m.href = manifestPath;
         document.head.appendChild(m);
