@@ -18,7 +18,6 @@ export default function InstallAdminPWA() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // Si ya estamos en modo standalone, NUNCA mostramos el banner.
     if (isStandalone) {
       setIsVisible(false);
       return;
@@ -27,71 +26,62 @@ export default function InstallAdminPWA() {
     const seenAdmin = localStorage.getItem("admin_pwa_prompt_dismissed");
     if (seenAdmin) return;
 
-    // ✅ REGLA DE EXPERTO: Mostramos el banner siempre en el Admin (con delay)
-    // para asegurar que el usuario tenga el camino de instalación manual si el nativo falla.
-    const timer = setTimeout(() => setIsVisible(true), 1500);
-    return () => clearTimeout(timer);
-  }, [isStandalone]);
+    // Solo mostrar si es instalable nativamente o es iOS
+    if (hasInstallPrompt || isIOS) {
+      const timer = setTimeout(() => setIsVisible(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [hasInstallPrompt, isStandalone, isIOS]);
 
   const handleClose = () => {
     setIsVisible(false);
     localStorage.setItem("admin_pwa_prompt_dismissed", "true");
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setIsVisible(false);
-    localStorage.setItem("admin_pwa_prompt_dismissed", "true");
-  };
-
   const handlePrimaryAction = () => {
     if (hasInstallPrompt) {
-      handleInstallClick(); // ✅ ahora es el prompt correcto (admin)
-    } else {
-      handleOpenModal();
+      handleInstallClick();
+    } else if (isIOS) {
+      setIsModalOpen(true);
     }
   };
+
+  if (isStandalone) return null;
+  if (!isVisible && !isModalOpen) return null;
 
   return (
     <>
       {isVisible && (
         <div className="fixed bottom-4 left-4 right-4 z-100 md:left-auto md:right-8 md:bottom-8 md:w-88 animate-in slide-in-from-bottom-12 duration-700 ease-out">
-          <div className="relative overflow-hidden bg-dark-900 border border-dark-700 rounded-4xl p-5 shadow-2xl shadow-black/50">
-
-            <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-brand-500/10 rounded-full blur-2xl" />
-
+          <div className="relative overflow-hidden bg-brand-600 border border-brand-500 rounded-4xl p-5 shadow-2xl shadow-black/40">
+            
             <button 
               onClick={handleClose}
-              className="absolute top-3 right-3 p-2 text-gray-500 hover:text-white hover:bg-white/10 rounded-full transition-all"
-              aria-label="Cerrar"
+              className="absolute top-3 right-3 p-2 text-white/50 hover:text-white rounded-full transition-all"
             >
               <X size={16} />
             </button>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-dark-800 border border-dark-700 flex items-center justify-center shrink-0 shadow-lg relative overflow-hidden">
-                <img 
-                  src="/admin-icon-192.png" 
-                  alt="" 
-                  className="w-10 h-10 object-contain rounded-lg"
-                />
+              <div className="w-14 h-14 rounded-2xl bg-brand-500 flex items-center justify-center shrink-0 shadow-lg border border-white/10">
+                <Smartphone className="text-white" size={28} />
               </div>
 
-              <div className="flex-1 pr-6 relative z-10">
+              <div className="flex-1 pr-6">
                 <h3 className="text-white font-bold text-sm tracking-tight">
                   Panel Administrador
                 </h3>
 
-                <p className="text-gray-400 text-[11px] leading-tight mt-0.5">
-                  Gestioná todo Teleremate desde tu inicio.
+                <p className="text-gray-300 text-[11px] leading-tight mt-0.5">
+                  {hasInstallPrompt ? "Instalá el panel nativo ahora." : "Instrucciones para iPhone."}
                 </p>
 
                 <button
                   onClick={handlePrimaryAction}
-                  className="mt-3 w-full bg-white text-dark-900 h-10 rounded-xl font-black text-[10px] uppercase tracking-wider hover:bg-white/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xl"
+                  className="mt-3 w-full bg-white text-brand-600 h-10 rounded-xl font-black text-[10px] uppercase tracking-wider active:scale-[0.95] transition-all flex items-center justify-center gap-2 shadow-xl shadow-black/20"
                 >
-                  <Download size={14} />
-                  INSTALAR PANEL AHORA
+                  {hasInstallPrompt ? <Download size={14} /> : <Smartphone size={14} />}
+                  {hasInstallPrompt ? "INSTALAR PANEL" : "CÓMO INSTALAR"}
                 </button>
               </div>
             </div>
@@ -108,4 +98,4 @@ export default function InstallAdminPWA() {
       />
     </>
   );
-}
+}

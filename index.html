@@ -2,37 +2,21 @@
 <html lang="en">
   <head>
     <script>
-      // 1. Aislamiento de Prompts de Instalación
-      window.__pwaInstallPrompt = null; 
-
+      // 1. Manejo simple del aviso de instalación
+      window.__pwaInstallPrompt = null;
       window.addEventListener('beforeinstallprompt', (e) => {
-        const isAdminPath = window.location.pathname.startsWith('/backoffice');
-        
-        // Si estamos en la web pública, guardamos el prompt para el botón manual de clientes
-        if (!isAdminPath) {
+        if (!window.location.pathname.startsWith('/backoffice')) {
           e.preventDefault();
           window.__pwaInstallPrompt = e;
-        } 
-        // Si estamos en el Admin, NO hacemos preventDefault() aquí por defecto 
-        // (Dejamos que useAdminPwa lo maneje con precisión)
+        }
       });
 
-      // 2. Inyección Agresiva de Manifiestos sincronizada con la ruta
+      // 2. Inyección estática del manifiesto según la ruta de entrada
       (function() {
         var isAdm = window.location.pathname.startsWith('/backoffice');
-        var now = Date.now();
-        var manifestPath = isAdm 
-          ? '/manifest-admin.json?v=' + now 
-          : '/manifest.webmanifest?v=' + now;
-        
-        // Eliminar cualquier manifiesto previo para evitar confusiones de Chrome
-        var existing = document.querySelectorAll('link[rel="manifest"]');
-        existing.forEach(el => el.remove());
-
         var m = document.createElement('link');
-        m.id = 'pwa-manifest-link';
         m.rel = 'manifest';
-        m.href = manifestPath;
+        m.href = isAdm ? '/manifest-admin.json' : '/manifest.webmanifest';
         document.head.appendChild(m);
       })();
     </script>
