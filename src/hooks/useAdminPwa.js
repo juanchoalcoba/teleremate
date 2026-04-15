@@ -24,15 +24,30 @@ export default function useAdminPWA() {
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    const handler = (e) => {
-      const isAdmin = window.location.pathname.startsWith("/backoffice");
+    // 🛡️ GUARDIÁN DE CONTEXTO: Limpiar cualquier prompt residual de la web pública
+    const isAdmin = window.location.pathname.startsWith("/backoffice");
+    if (isAdmin && window.__pwaInstallPrompt) {
+      console.log("[PWA-ADMIN] Limpiando prompt residual de clientes para evitar conflicto.");
+      window.__pwaInstallPrompt = null;
+    }
 
-      // 🔥 SOLO ADMIN
-      if (!isAdmin) return;
+    const handler = (e) => {
+      const currentPath = window.location.pathname;
+      const isCurrentlyAdmin = currentPath.startsWith("/backoffice");
+
+      // BLOQUEO DE SEGURIDAD: Solo capturar si el manifest inyectado es el de admin
+      const manifestLink = document.querySelector('link[rel="manifest"]');
+      const isCorrectManifest = manifestLink?.href.includes('manifest-admin.json');
+
+      if (!isCurrentlyAdmin || !isCorrectManifest) {
+        console.warn("[PWA-ADMIN] Ignorando prompt inapropiado para el contexto actual.");
+        return;
+      }
 
       e.preventDefault();
       setInstallPrompt(e);
       setIsInstallable(true);
+      console.log("[PWA-ADMIN] Prompt de instalación de Panel Administrador capturado correctamente.");
     };
 
     window.addEventListener("beforeinstallprompt", handler);

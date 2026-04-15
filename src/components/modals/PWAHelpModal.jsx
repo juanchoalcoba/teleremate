@@ -103,27 +103,72 @@ export default function PWAHelpModal({
               </div>
             ) : (
               <div className="space-y-5">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center">
-                    <Smartphone className="mx-auto mb-2 text-brand-600" size={24} />
-                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Mobile Ready</p>
+                {!isInstallable && (
+                  <div className="space-y-3">
+                    {/* Manual Android Step 1 */}
+                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                      <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-600 shrink-0 font-black text-lg">
+                        ⋮
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-black font-bold text-sm">
+                          Paso 1 — Menú de Chrome
+                        </p>
+                        <p className="text-gray-500 text-[11px] mt-0.5 leading-tight">
+                          Toca los <span className="font-bold text-black">tres puntos (⋮)</span> en la esquina superior derecha del navegador.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Manual Android Step 2 */}
+                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                      <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-600 shrink-0">
+                        <PlusSquare size={20} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-black font-bold text-sm">
+                          Paso 2 — Instalar aplicación
+                        </p>
+                        <p className="text-gray-500 text-[11px] mt-0.5 leading-tight">
+                          Busca <span className="font-bold text-brand-600">"Instalar aplicación"</span> o "Agregar a la pantalla de inicio".
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={onClose}
+                      className="w-full mt-2 bg-black hover:bg-gray-900 active:scale-[0.98] text-white font-black h-14 rounded-2xl transition-all text-sm tracking-wide"
+                    >
+                      Entendido ✓
+                    </button>
                   </div>
-                  <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center">
-                    <CheckCircle2 className="mx-auto mb-2 text-brand-600" size={24} />
-                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Sin Descargas</p>
-                  </div>
-                </div>
-                
-                <button
-                  onClick={() => {
-                    handleInstallClick();
-                    onClose();
-                  }}
-                  className="w-full flex items-center justify-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-black h-14 rounded-2xl transition-all shadow-xl shadow-brand-500/20 group active:scale-[0.98]"
-                >
-                  <Download size={20} className="group-hover:translate-y-0.5 transition-transform" />
-                  INSTALAR AHORA
-                </button>
+                )}
+
+                {isInstallable && (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center">
+                        <Smartphone className="mx-auto mb-2 text-brand-600" size={24} />
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Panel Admin</p>
+                      </div>
+                      <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center">
+                        <Download className="mx-auto mb-2 text-brand-600" size={24} />
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Nativo</p>
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={() => {
+                        handleInstallClick();
+                        onClose();
+                      }}
+                      className="w-full flex items-center justify-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-black h-14 rounded-2xl transition-all shadow-xl shadow-brand-500/20 group active:scale-[0.98]"
+                    >
+                      <Download size={20} className="group-hover:translate-y-0.5 transition-transform" />
+                      INSTALAR PANEL AHORA
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>

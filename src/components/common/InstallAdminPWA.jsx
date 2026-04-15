@@ -18,20 +18,25 @@ export default function InstallAdminPWA() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // If we are already in standalone mode, we NEVER show the banner.
+    // Si ya estamos en modo standalone, NUNCA mostramos el banner.
     if (isStandalone) {
       setIsVisible(false);
       return;
     }
 
     const seenAdmin = localStorage.getItem("admin_pwa_prompt_dismissed");
+    if (seenAdmin) return;
 
-    // Show banner only if no native prompt is available AND not standalone AND not dismissed
-    if (!hasInstallPrompt && !seenAdmin) {
-      const timer = setTimeout(() => setIsVisible(true), 2000);
+    // ✅ REGLA DE ORO: Solo mostramos el banner automáticamente si:
+    // 1. Hay un prompt nativo listo (Android/Chrome lo permite)
+    // 2. O si es iOS (donde siempre es manual)
+    const shouldShowAutomatically = hasInstallPrompt || isIOS;
+
+    if (shouldShowAutomatically) {
+      const timer = setTimeout(() => setIsVisible(true), 1500);
       return () => clearTimeout(timer);
     }
-  }, [hasInstallPrompt, isStandalone]);
+  }, [hasInstallPrompt, isStandalone, isIOS]);
 
   const handleClose = () => {
     setIsVisible(false);

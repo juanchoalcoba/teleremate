@@ -2,23 +2,33 @@
 <html lang="en">
   <head>
     <script>
-      window.__pwaInstallPrompt = window.__pwaInstallPrompt || null;
+      // 1. Aislamiento de Prompts de Instalación
+      window.__pwaInstallPrompt = null; 
 
       window.addEventListener('beforeinstallprompt', (e) => {
         const isAdminPath = window.location.pathname.startsWith('/backoffice');
+        
+        // Si estamos en la web pública, guardamos el prompt para el botón manual de clientes
         if (!isAdminPath) {
           e.preventDefault();
           window.__pwaInstallPrompt = e;
-        }
+        } 
+        // Si estamos en el Admin, NO hacemos preventDefault() aquí por defecto 
+        // (Dejamos que useAdminPwa lo maneje con precisión)
       });
 
-      // 🔥 FIX CLAVE SÍNCRONO: Al inhabilitar la auto-inyección de manifests estáticos,
-      // aquí lo inyectamos de la nada antes de que Chrome respire:
+      // 2. Inyección Agresiva de Manifiestos sincronizada con la ruta
       (function() {
         var isAdm = window.location.pathname.startsWith('/backoffice');
+        var manifestPath = isAdm ? '/manifest-admin.json' : '/manifest.webmanifest';
+        
+        // Eliminar cualquier manifiesto previo para evitar confusiones de Chrome
+        var existing = document.querySelectorAll('link[rel="manifest"]');
+        existing.forEach(el => el.remove());
+
         var m = document.createElement('link');
         m.rel = 'manifest';
-        m.href = isAdm ? '/manifest-admin.json' : '/manifest.webmanifest';
+        m.href = manifestPath;
         document.head.appendChild(m);
       })();
     </script>
