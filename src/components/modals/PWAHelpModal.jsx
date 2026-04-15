@@ -9,6 +9,7 @@ export default function PWAHelpModal({
   isOpen, 
   onClose, 
   isIOS, 
+  isInstallable,
   handleInstallClick 
 }) {
   if (!isOpen) return null;

@@ -27,16 +27,11 @@ export default function InstallAdminPWA() {
     const seenAdmin = localStorage.getItem("admin_pwa_prompt_dismissed");
     if (seenAdmin) return;
 
-    // ✅ REGLA DE ORO: Solo mostramos el banner automáticamente si:
-    // 1. Hay un prompt nativo listo (Android/Chrome lo permite)
-    // 2. O si es iOS (donde siempre es manual)
-    const shouldShowAutomatically = hasInstallPrompt || isIOS;
-
-    if (shouldShowAutomatically) {
-      const timer = setTimeout(() => setIsVisible(true), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasInstallPrompt, isStandalone, isIOS]);
+    // ✅ REGLA DE EXPERTO: Mostramos el banner siempre en el Admin (con delay)
+    // para asegurar que el usuario tenga el camino de instalación manual si el nativo falla.
+    const timer = setTimeout(() => setIsVisible(true), 1500);
+    return () => clearTimeout(timer);
+  }, [isStandalone]);
 
   const handleClose = () => {
     setIsVisible(false);
