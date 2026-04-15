@@ -38,27 +38,8 @@ export default function AdminLayout() {
     navigate("/login");
   };
 
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      // Purge old redundant workers globally
-      navigator.serviceWorker.getRegistrations().then(registrations => {
-        for (let reg of registrations) {
-          if (reg.active && reg.active.scriptURL.includes('/backoffice/sw.js')) {
-            console.warn('[PWA] Unregistering obsolete global ghost SW:', reg.active.scriptURL);
-            reg.unregister();
-          }
-        }
-      });
+  // Service worker logic and cleanup moved to NotificationToggle.jsx to avoid redundancy.
 
-      navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice/' })
-        .then(registration => {
-          console.log('[PWA] Admin SW registered:', registration.scope);
-        })
-        .catch(error => {
-          console.error('[PWA] Admin SW registration failed:', error);
-        });
-    }
-  }, []);
 
   return (
     <div className="min-h-screen flex bg-gray-50 overflow-x-hidden w-full">

@@ -86,8 +86,23 @@ const NotificationToggle = () => {
       if (!registration || (registration.active && !registration.active.scriptURL.includes(swPath.substring(1)))) {
         console.log('[PUSH] Registering fresh service worker:', swPath);
         registration = await navigator.serviceWorker.register(swPath, { scope });
-        await navigator.serviceWorker.ready;
+      }
+      
+      // ✅ FIX CRÍTICA: Esperar OBLIGATORIAMENTE que pase a 'activated'
+      if (registration.installing || registration.waiting) {
+        const worker = registration.installing || registration.waiting;
+        await new Promise(resolve => {
+          if (worker.state === 'activated') {
+            resolve();
+          } else {
+            worker.addEventListener('statechange', e => {
+              if (e.target.state === 'activated') resolve();
+            });
+          }
+        });
         registration = await navigator.serviceWorker.getRegistration(scope);
+      } else {
+        await navigator.serviceWorker.ready;
       }
 
       const subscription = await registration.pushManager.getSubscription();
@@ -126,8 +141,23 @@ const NotificationToggle = () => {
       let registration = await navigator.serviceWorker.getRegistration(scope);
       if (!registration || (registration.active && !registration.active.scriptURL.includes(swPath.substring(1)))) {
         registration = await navigator.serviceWorker.register(swPath, { scope });
-        await navigator.serviceWorker.ready;
+      }
+
+      // ✅ FIX CRÍTICA: Esperar OBLIGATORIAMENTE que pase a 'activated' antes de suscribir a Push
+      if (registration.installing || registration.waiting) {
+        const worker = registration.installing || registration.waiting;
+        await new Promise(resolve => {
+          if (worker.state === 'activated') {
+            resolve();
+          } else {
+            worker.addEventListener('statechange', e => {
+              if (e.target.state === 'activated') resolve();
+            });
+          }
+        });
         registration = await navigator.serviceWorker.getRegistration(scope);
+      } else {
+        await navigator.serviceWorker.ready;
       }
 
       const subscribeOptions = {

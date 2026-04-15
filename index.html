@@ -12,34 +12,14 @@
         }
       });
 
-      // 🔥 FIX CLAVE SÍNCRONO: Interceptar manifest antes del parsing heurístico de Chrome
+      // 🔥 FIX CLAVE SÍNCRONO: Al inhabilitar la auto-inyección de manifests estáticos,
+      // aquí lo inyectamos de la nada antes de que Chrome respire:
       (function() {
-        if (window.location.pathname.startsWith('/backoffice')) {
-          var observer = new MutationObserver(function(mutations) {
-            for (var i = 0; i < mutations.length; i++) {
-              for (var j = 0; j < mutations[i].addedNodes.length; j++) {
-                var node = mutations[i].addedNodes[j];
-                if (node.tagName === 'LINK' && node.rel === 'manifest') {
-                  node.href = '/manifest-admin.json';
-                  observer.disconnect();
-                }
-              }
-            }
-          });
-          observer.observe(document.documentElement, { childList: true, subtree: true });
-          
-          window.addEventListener('DOMContentLoaded', function() {
-            var m = document.querySelector('link[rel="manifest"]');
-            if (m) {
-              m.href = '/manifest-admin.json';
-            } else {
-              var link = document.createElement('link');
-              link.rel = 'manifest';
-              link.href = '/manifest-admin.json';
-              document.head.appendChild(link);
-            }
-          });
-        }
+        var isAdm = window.location.pathname.startsWith('/backoffice');
+        var m = document.createElement('link');
+        m.rel = 'manifest';
+        m.href = isAdm ? '/manifest-admin.json' : '/manifest.webmanifest';
+        document.head.appendChild(m);
       })();
     </script>
     <meta charset="UTF-8" />
