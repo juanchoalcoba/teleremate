@@ -18,24 +18,30 @@ export default function InstallAdminPWA() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const seenAdmin = sessionStorage.getItem("admin_pwa_prompt_seen");
+    // If we are already in standalone mode, we NEVER show the banner.
+    if (isStandalone) {
+      setIsVisible(false);
+      return;
+    }
 
-    // ✅ Mostrar banner SOLO si no hay prompt nativo
-    if (!hasInstallPrompt && !isStandalone && !seenAdmin) {
-      const timer = setTimeout(() => setIsVisible(true), 150);
+    const seenAdmin = localStorage.getItem("admin_pwa_prompt_dismissed");
+
+    // Show banner only if no native prompt is available AND not standalone AND not dismissed
+    if (!hasInstallPrompt && !seenAdmin) {
+      const timer = setTimeout(() => setIsVisible(true), 2000);
       return () => clearTimeout(timer);
     }
   }, [hasInstallPrompt, isStandalone]);
 
   const handleClose = () => {
     setIsVisible(false);
-    sessionStorage.setItem("admin_pwa_prompt_seen", "true");
+    localStorage.setItem("admin_pwa_prompt_dismissed", "true");
   };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setIsVisible(false);
-    sessionStorage.setItem("admin_pwa_prompt_seen", "true");
+    localStorage.setItem("admin_pwa_prompt_dismissed", "true");
   };
 
   const handlePrimaryAction = () => {

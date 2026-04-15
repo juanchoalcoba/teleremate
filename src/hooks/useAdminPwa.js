@@ -5,7 +5,12 @@ export default function useAdminPWA() {
 
   const [isStandalone] = useState(() => {
     if (typeof window === "undefined") return false;
+    
+    // Check if URL has the specific PWA start parameter
+    const isPwaUrl = window.location.search.includes('pwa=admin');
+    
     return (
+      isPwaUrl ||
       window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone
     );
