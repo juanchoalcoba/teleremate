@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { subscribePush, subscribeAdminPush, testPush, getPushCount } from '../../services/api';
+import { subscribePush, subscribeAdminPush, testPush, testPushOnDevice, getPushCount } from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -44,17 +44,27 @@ const NotificationToggle = () => {
   const testNotification = async () => {
     setTestingNotification(true);
     try {
-      await testPush({
+      const isAdminPath = window.location.pathname.startsWith('/backoffice');
+      const scope = isAdminPath ? '/backoffice/' : '/';
+      const reg = await navigator.serviceWorker.getRegistration(scope);
+      const subscription = await reg?.pushManager.getSubscription();
+
+      if (!subscription) {
+        throw new Error("No hay suscripción activa en este equipo.");
+      }
+
+      await testPushOnDevice({
+        subscription,
         title: "Test de Notificación",
-        body: "Esta es una notificación de prueba desde el panel admin",
+        body: "¡Funciona! Esta es una prueba solo para tu equipo desde el panel admin.",
         url: "/backoffice/"
       });
       // Temporarily show success message
-      setError("Notificación de prueba enviada!");
+      setError("¡Recibida! Test enviado a este equipo.");
       setTimeout(() => setError(null), 3000);
     } catch (err) {
       console.error('Error testing notification:', err);
-      setError("Error al enviar notificación de prueba");
+      setError(err.message || "Error al enviar test");
       setTimeout(() => setError(null), 3000);
     } finally {
       setTestingNotification(false);

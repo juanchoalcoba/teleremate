@@ -79,7 +79,7 @@ export default function InstallAdminPWA() {
                 <p className="text-gray-400 text-[11px] leading-tight mt-0.5">
                   {hasInstallPrompt
                     ? "Instala el panel como app nativa."
-                    : "Toca instalar y sigue la guía manual."}
+                    : (isIOS ? "Toca compartir y 'Añadir a inicio'." : "Instala desde el menú del navegador.")}
                 </p>
 
                 <button
@@ -87,7 +87,7 @@ export default function InstallAdminPWA() {
                   className="mt-2 text-brand-400 text-[11px] font-black uppercase tracking-widest hover:text-brand-300 transition-colors flex items-center gap-1.5"
                 >
                   {hasInstallPrompt ? <Download size={12} /> : <Smartphone size={12} />}
-                  {hasInstallPrompt ? "Instalar Panel" : "Cómo instalar"}
+                  {hasInstallPrompt ? "Instalar Panel" : (isIOS ? "Instrucciones" : "Cómo instalar")}
                 </button>
               </div>
             </div>

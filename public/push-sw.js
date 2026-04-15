@@ -17,28 +17,28 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: '/icon-192.png',
+    icon: '/admin-icon-192.png',
     badge: '/iconodefin.png',
-    tag: 'teleremate-alert', // Crucial para Android
-    renotify: true,          // Asegura que el móvil reaccione
+    tag: 'teleremate-admin-alert',
+    renotify: true,
     requireInteraction: true,
     data: {
-      url: data.url || '/'
+      url: data.url || '/backoffice/'
     },
-    vibrate: [200, 100, 200, 100, 200], // Vibración más notable
+    vibrate: [200, 100, 200],
     actions: [
-      { action: 'open', title: 'Abrir App' }
+      { action: 'open', title: 'Ver Panel' }
     ]
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "Teleremate", options)
+    self.registration.showNotification(data.title || "TeleRemate Admin", options)
   );
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const urlToOpen = event.notification.data.url || '/';
+  const urlToOpen = new URL(event.notification.data.url || '/backoffice/', self.location.origin).href;
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
