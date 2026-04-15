@@ -74,11 +74,19 @@ const NotificationToggle = () => {
       const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
       const scope = isAdminPath ? '/backoffice/' : '/';
 
+      let registrations = await navigator.serviceWorker.getRegistrations();
+      for (let reg of registrations) {
+        if (reg.active && reg.active.scriptURL.includes('/backoffice/sw.js')) {
+          console.warn('[PUSH] Unregistering obsolete ghost SW:', reg.active.scriptURL);
+          await reg.unregister();
+        }
+      }
+
       let registration = await navigator.serviceWorker.getRegistration(scope);
-      if (!registration) {
-        // Try to register if not found
+      if (!registration || (registration.active && !registration.active.scriptURL.includes(swPath.substring(1)))) {
+        console.log('[PUSH] Registering fresh service worker:', swPath);
         registration = await navigator.serviceWorker.register(swPath, { scope });
-        await navigator.serviceWorker.ready; // Wait for it to be ready
+        await navigator.serviceWorker.ready;
         registration = await navigator.serviceWorker.getRegistration(scope);
       }
 
@@ -107,8 +115,16 @@ const NotificationToggle = () => {
       const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
       const scope = isAdminPath ? '/backoffice/' : '/';
 
+      let registrations = await navigator.serviceWorker.getRegistrations();
+      for (let reg of registrations) {
+        if (reg.active && reg.active.scriptURL.includes('/backoffice/sw.js')) {
+          console.warn('[PUSH] Unregistering obsolete ghost SW before subscribe:', reg.active.scriptURL);
+          await reg.unregister();
+        }
+      }
+
       let registration = await navigator.serviceWorker.getRegistration(scope);
-      if (!registration) {
+      if (!registration || (registration.active && !registration.active.scriptURL.includes(swPath.substring(1)))) {
         registration = await navigator.serviceWorker.register(swPath, { scope });
         await navigator.serviceWorker.ready;
         registration = await navigator.serviceWorker.getRegistration(scope);

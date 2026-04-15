@@ -40,6 +40,16 @@ export default function AdminLayout() {
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
+      // Purge old redundant workers globally
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let reg of registrations) {
+          if (reg.active && reg.active.scriptURL.includes('/backoffice/sw.js')) {
+            console.warn('[PWA] Unregistering obsolete global ghost SW:', reg.active.scriptURL);
+            reg.unregister();
+          }
+        }
+      });
+
       navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice/' })
         .then(registration => {
           console.log('[PWA] Admin SW registered:', registration.scope);
