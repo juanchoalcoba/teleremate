@@ -1,37 +1,36 @@
 import { useState, useEffect } from "react";
 
+/**
+ * Hook to manage PWA installation state and platform detection.
+ */
 export default function usePWA() {
   const [installPrompt, setInstallPrompt] = useState(null);
-
   const [isStandalone] = useState(() => {
     if (typeof window === "undefined") return false;
-    return (
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone ||
-      (document.referrer &&
-        document.referrer.includes("android-app://"))
-    );
+    return window.matchMedia("(display-mode: standalone)").matches || 
+      window.navigator.standalone || 
+      (document.referrer && document.referrer.includes("android-app://"));
   });
-
   const [isIOS] = useState(() => {
     if (typeof navigator === "undefined") return false;
-    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   });
-
   const [hasSeenPrompt, setHasSeenPrompt] = useState(() => {
     if (typeof sessionStorage === "undefined") return false;
     return !!sessionStorage.getItem("pwa_prompt_seen");
   });
-
-  const [isInstallable, setIsInstallable] = useState(false);
+  const [isInstallable, setIsInstallable] = useState(() => {
+    if (typeof navigator === "undefined" || typeof window === "undefined") return false;
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches || 
+      window.navigator.standalone || 
+      (document.referrer && document.referrer.includes("android-app://"));
+    return ios && !standalone;
+  });
 
   useEffect(() => {
+    // 3. Listen for native install prompt (Android/Chrome)
     const handler = (e) => {
-      const isAdmin = window.location.pathname.startsWith("/backoffice");
-
-      // 🔥 CLAVE: bloquear en admin
-      if (isAdmin) return;
-
       e.preventDefault();
       setInstallPrompt(e);
       setIsInstallable(true);
@@ -39,19 +38,8 @@ export default function usePWA() {
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    return () =>
-      window.removeEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
-
-  // iOS fallback
-  useEffect(() => {
-    if (isIOS && !isStandalone) {
-      const isAdmin = window.location.pathname.startsWith("/backoffice");
-      if (!isAdmin) {
-        setIsInstallable(true);
-      }
-    }
-  }, [isIOS, isStandalone]);
 
   const markAsSeen = () => {
     sessionStorage.setItem("pwa_prompt_seen", "true");
@@ -59,14 +47,13 @@ export default function usePWA() {
   };
 
   const handleInstallClick = async () => {
-    if (!installPrompt) return;
-
-    installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
-
-    if (outcome === "accepted") {
-      setInstallPrompt(null);
-      setIsInstallable(false);
+    if (installPrompt) {
+      installPrompt.prompt();
+      const { outcome } = await installPrompt.userChoice;
+      if (outcome === "accepted") {
+        setInstallPrompt(null);
+        setIsInstallable(false);
+      }
     }
   };
 

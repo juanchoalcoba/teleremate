@@ -2,23 +2,21 @@
 <html lang="en">
   <head>
     <script>
-      // 1. Manejo simple del aviso de instalación
-      window.__pwaInstallPrompt = null;
-      window.addEventListener('beforeinstallprompt', (e) => {
-        if (!window.location.pathname.startsWith('/backoffice')) {
-          e.preventDefault();
-          window.__pwaInstallPrompt = e;
-        }
-      });
-
-      // 2. Inyección estática del manifiesto según la ruta de entrada
-      (function() {
-        var isAdm = window.location.pathname.startsWith('/backoffice');
-        var m = document.createElement('link');
-        m.rel = 'manifest';
-        m.href = isAdm ? '/manifest-admin.json' : '/manifest.webmanifest';
-        document.head.appendChild(m);
-      })();
+      if (window.location.pathname.startsWith('/backoffice')) {
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = '/manifest-admin.json';
+        link.id = 'admin-manifest';
+        document.head.appendChild(link);
+        
+        const observer = new MutationObserver(() => {
+          document.querySelectorAll('link[rel="manifest"]').forEach(node => {
+            if (node.id !== 'admin-manifest') node.remove();
+          });
+        });
+        observer.observe(document.head, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 2000);
+      }
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
