@@ -38,6 +38,7 @@ export default function AdminLayout() {
     navigate("/login");
   };
 
+  useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice/' })
         .then(registration => {
@@ -47,9 +48,6 @@ export default function AdminLayout() {
           console.error('[PWA] Admin SW registration failed:', error);
         });
     }
-
-    return () => {
-    };
   }, []);
 
   return (
