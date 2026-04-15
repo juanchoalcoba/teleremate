@@ -1,5 +1,5 @@
 {
-  "id": "/backoffice/",
+  "id": "/backoffice/?pwa=admin",
   "name": "ADMIN TELEREMATE",
   "short_name": "Admin TR",
   "description": "Panel Administrativo de Teleremate",
@@ -8,7 +8,7 @@
   "background_color": "#0f172a",
   "display": "standalone",
 
-  "start_url": "/backoffice/",
+  "start_url": "/backoffice/?pwa=admin",
   "scope": "/backoffice/",
 
   "icons": [

@@ -10,8 +10,37 @@
           e.preventDefault();
           window.__pwaInstallPrompt = e;
         }
-        // For admin path, let the browser handle the native prompt
       });
+
+      // 🔥 FIX CLAVE SÍNCRONO: Interceptar manifest antes del parsing heurístico de Chrome
+      (function() {
+        if (window.location.pathname.startsWith('/backoffice')) {
+          var observer = new MutationObserver(function(mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+              for (var j = 0; j < mutations[i].addedNodes.length; j++) {
+                var node = mutations[i].addedNodes[j];
+                if (node.tagName === 'LINK' && node.rel === 'manifest') {
+                  node.href = '/manifest-admin.json';
+                  observer.disconnect();
+                }
+              }
+            }
+          });
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+          
+          window.addEventListener('DOMContentLoaded', function() {
+            var m = document.querySelector('link[rel="manifest"]');
+            if (m) {
+              m.href = '/manifest-admin.json';
+            } else {
+              var link = document.createElement('link');
+              link.rel = 'manifest';
+              link.href = '/manifest-admin.json';
+              document.head.appendChild(link);
+            }
+          });
+        }
+      })();
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
