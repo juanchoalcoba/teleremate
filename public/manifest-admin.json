@@ -1,26 +1,49 @@
 {
-  "id": "teleremate-admin",
-  "name": "Admin Teleremate",
-  "short_name": "AdminTR",
+  "id": "/backoffice",
+  "name": "ADMIN TELEREMATE",
+  "short_name": "ADMIN TELEREMATE",
   "description": "Panel Administrativo de Teleremate",
-
+  "categories": ["business", "productivity"],
+  "lang": "es",
+  "dir": "auto",
   "theme_color": "#0f172a",
   "background_color": "#0f172a",
   "display": "standalone",
-
-  "start_url": "/backoffice/?pwa=admin",
-  "scope": "/backoffice/",
-
+  "orientation": "portrait",
+  "start_url": "/backoffice",
+  "scope": "/backoffice",
   "icons": [
     {
       "src": "/admin-icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/admin-icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/admin-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }

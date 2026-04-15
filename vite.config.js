@@ -8,44 +8,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.js",
       registerType: "autoUpdate",
-      workbox: {
-        importScripts: ["/push-sw.js"],
-        cleanupOutdatedCaches: true,
-
-        // 🔥 CLAVE: excluir admin completamente
-        navigateFallbackDenylist: [
-          /^\/api/,
-          /^\/backoffice/   // ✅ FIX CRÍTICO
-        ],
-
-        runtimeCaching: [
-          {
-            urlPattern: /^\/api\/.*/i,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "api-cache",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24,
-              },
-              networkTimeoutSeconds: 10,
-            },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "images-cache",
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 30 * 24 * 60 * 60,
-              },
-            },
-          },
-        ],
+      injectManifest: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
       },
-
       manifest: {
         id: "/",
         name: "TeleRemate App",
