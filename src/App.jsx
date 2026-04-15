@@ -45,27 +45,7 @@ const queryClient = new QueryClient({
   },
 });
 
-import React, { useEffect } from "react";
-
 function App() {
-  // 🛡️ REFUERZO DE CONTEXTO PWA: Forzar un Hard Reload al entrar al Admin
-  // Esto asegura que Chrome "limpie la mesa" y acepte el manifiesto del Admin.
-  useEffect(() => {
-    const isBackoffice = window.location.pathname.startsWith('/backoffice');
-    const hasReloaded = sessionStorage.getItem('pwa_admin_context_refreshed');
-
-    if (isBackoffice && !hasReloaded) {
-      console.log("[PWA] Refrescando contexto para aislamiento del Panel Admin...");
-      sessionStorage.setItem('pwa_admin_context_refreshed', 'true');
-      window.location.reload();
-    }
-    
-    // Si sale del backoffice, resetear para la próxima entrada
-    if (!isBackoffice && hasReloaded) {
-      sessionStorage.removeItem('pwa_admin_context_refreshed');
-    }
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
