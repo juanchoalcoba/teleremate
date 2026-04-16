@@ -140,18 +140,17 @@ const NotificationToggle = () => {
       const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
       const scope = isAdminPath ? '/backoffice/' : '/';
 
+      // 🧹 LIMPIEZA AGRESIVA: Desregistrar TODO antes de una nueva suscripción
+      // Esto asegura que no queden "trabajadores fantasma" atendiendo las alertas
       let registrations = await navigator.serviceWorker.getRegistrations();
       for (let reg of registrations) {
-        if (reg.active && reg.active.scriptURL.includes('/backoffice/sw.js')) {
-          console.warn('[PUSH] Unregistering obsolete ghost SW before subscribe:', reg.active.scriptURL);
-          await reg.unregister();
-        }
+        console.warn('[PUSH] Limpiando SW antiguo detectado:', reg.active?.scriptURL);
+        await reg.unregister();
       }
 
-      let registration = await navigator.serviceWorker.getRegistration(scope);
-      if (!registration || (registration.active && !registration.active.scriptURL.includes(swPath.substring(1)))) {
-        registration = await navigator.serviceWorker.register(swPath, { scope });
-      }
+      // Volver a registrar el trabajador correcto
+      console.log('[PUSH] Registrando motor limpio:', swPath);
+      let registration = await navigator.serviceWorker.register(swPath, { scope });
 
       // ✅ FIX CRÍTICA: Esperar OBLIGATORIAMENTE que pase a 'activated' antes de suscribir a Push
       if (registration.installing || registration.waiting) {
