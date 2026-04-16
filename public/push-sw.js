@@ -1,5 +1,5 @@
 // Este archivo maneja las notificaciones de forma independiente para evitar errores de compilación
-console.log('[PUSH-SW] Script de notificaciones cargado');
+console.log('[PUSH-SW] Script de notificaciones cargado - Versión Viernes Estable');
 
 self.addEventListener('push', (event) => {
   let data = { title: "Nuevo Evento", body: "Tienes una nueva notificación de Teleremate." };
@@ -17,28 +17,28 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: '/admin-icon-192.png',
+    icon: '/icon-192.png',
     badge: '/iconodefin.png',
-    tag: 'teleremate-admin-alert',
-    renotify: true,
+    tag: 'teleremate-alert', // Crucial para Android
+    renotify: true,          // Asegura que el móvil reaccione
     requireInteraction: true,
     data: {
-      url: data.url || '/backoffice/'
+      url: data.url || '/'
     },
-    vibrate: [200, 100, 200],
+    vibrate: [200, 100, 200, 100, 200], // Vibración notable (Viernes)
     actions: [
-      { action: 'open', title: 'Ver Panel' }
+      { action: 'open', title: 'Abrir App' }
     ]
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "TeleRemate Admin", options)
+    self.registration.showNotification(data.title || "Teleremate", options)
   );
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const urlToOpen = new URL(event.notification.data.url || '/backoffice/', self.location.origin).href;
+  const urlToOpen = event.notification.data.url || '/';
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
