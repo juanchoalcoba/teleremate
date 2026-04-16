@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { subscribePush, subscribeAdminPush, testPush, testPushOnDevice, getPushCount } from '../../services/api';
+import { subscribeAdminPush, getPushCount, testPushOnDevice } from '../../services/api';
 
 const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
 
@@ -25,8 +25,6 @@ const NotificationToggle = () => {
   const [subscriptionCount, setSubscriptionCount] = useState(0);
   const [testingNotification, setTestingNotification] = useState(false);
 
-  console.log('[PUSH] NotificationToggle component rendering...');
-
   useEffect(() => {
     checkSubscriptionStatus();
     fetchSubscriptionCount();
@@ -37,89 +35,25 @@ const NotificationToggle = () => {
       const response = await getPushCount();
       setSubscriptionCount(response.data.count);
     } catch (err) {
-      console.error('Error fetching subscription count:', err);
-    }
-  };
-
-  const testNotification = async () => {
-    setTestingNotification(true);
-    try {
-      const isAdminPath = window.location.pathname.startsWith('/backoffice');
-      const scope = isAdminPath ? '/backoffice/' : '/';
-      const reg = await navigator.serviceWorker.getRegistration(scope);
-      const subscription = await reg?.pushManager.getSubscription();
-
-      if (!subscription) {
-        throw new Error("No hay suscripción activa en este equipo.");
-      }
-
-      await testPushOnDevice({
-        subscription,
-        title: "Test de Notificación",
-        body: "¡Funciona! Esta es una prueba solo para tu equipo desde el panel admin.",
-        url: "/backoffice/"
-      });
-      // Temporarily show success message
-      setError("¡Recibida! Test enviado a este equipo.");
-      setTimeout(() => setError(null), 3000);
-    } catch (err) {
-      console.error('Error testing notification:', err);
-      setError(err.message || "Error al enviar test");
-      setTimeout(() => setError(null), 3000);
-    } finally {
-      setTestingNotification(false);
+      console.error('Error fetching count:', err);
     }
   };
 
   const checkSubscriptionStatus = async () => {
     try {
       if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-        setError('Push No Soportado');
+        setError('No Soportado');
         setLoading(false);
         return;
       }
 
-      // For admin path, ensure we use the admin service worker
-      const isAdminPath = window.location.pathname.startsWith('/backoffice');
-      const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
-      const scope = isAdminPath ? '/backoffice/' : '/';
-
-      let registrations = await navigator.serviceWorker.getRegistrations();
-      for (let reg of registrations) {
-        if (reg.active && reg.active.scriptURL.includes('/backoffice/sw.js')) {
-          console.warn('[PUSH] Unregistering obsolete ghost SW:', reg.active.scriptURL);
-          await reg.unregister();
-        }
-      }
-
-      let registration = await navigator.serviceWorker.getRegistration(scope);
-      if (!registration || (registration.active && !registration.active.scriptURL.includes(swPath.substring(1)))) {
-        console.log('[PUSH] Registering fresh service worker:', swPath);
-        registration = await navigator.serviceWorker.register(swPath, { scope });
-      }
-      
-      // ✅ FIX CRÍTICA: Esperar OBLIGATORIAMENTE que pase a 'activated'
-      if (registration.installing || registration.waiting) {
-        const worker = registration.installing || registration.waiting;
-        await new Promise(resolve => {
-          if (worker.state === 'activated') {
-            resolve();
-          } else {
-            worker.addEventListener('statechange', e => {
-              if (e.target.state === 'activated') resolve();
-            });
-          }
-        });
-        registration = await navigator.serviceWorker.getRegistration(scope);
-      } else {
-        await navigator.serviceWorker.ready;
-      }
-
+      // Estilo Jueves: Esperar simplemente al SW que ya está registrado por la PWA
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       
       setIsSubscribed(!!subscription);
     } catch (err) {
-      console.error('Error checking subscription status:', err);
+      console.error('Error checking status:', err);
       setError('Error de Estado');
     } finally {
       setLoading(false);
@@ -130,63 +64,30 @@ const NotificationToggle = () => {
     setLoading(true);
     setError(null);
     try {
+      // 1. Pedir permiso
       const permission = await Notification.requestPermission();
       if (permission !== 'granted') {
         throw new Error('Permiso denegado');
       }
 
-      // For admin path, ensure we use the admin service worker
-      const isAdminPath = window.location.pathname.startsWith('/backoffice');
-      const swPath = isAdminPath ? '/push-sw.js' : '/sw.js';
-      const scope = isAdminPath ? '/backoffice/' : '/';
-
-      // 🧹 LIMPIEZA AGRESIVA: Desregistrar TODO antes de una nueva suscripción
-      // Esto asegura que no queden "trabajadores fantasma" atendiendo las alertas
-      let registrations = await navigator.serviceWorker.getRegistrations();
-      for (let reg of registrations) {
-        console.warn('[PUSH] Limpiando SW antiguo detectado:', reg.active?.scriptURL);
-        await reg.unregister();
-      }
-
-      // Volver a registrar el trabajador correcto
-      console.log('[PUSH] Registrando motor limpio:', swPath);
-      let registration = await navigator.serviceWorker.register(swPath, { scope });
-
-      // ✅ FIX CRÍTICA: Esperar OBLIGATORIAMENTE que pase a 'activated' antes de suscribir a Push
-      if (registration.installing || registration.waiting) {
-        const worker = registration.installing || registration.waiting;
-        await new Promise(resolve => {
-          if (worker.state === 'activated') {
-            resolve();
-          } else {
-            worker.addEventListener('statechange', e => {
-              if (e.target.state === 'activated') resolve();
-            });
-          }
-        });
-        registration = await navigator.serviceWorker.getRegistration(scope);
-      } else {
-        await navigator.serviceWorker.ready;
-      }
-
+      // 2. Esperar al Service Worker unificado
+      const registration = await navigator.serviceWorker.ready;
+      
       const subscribeOptions = {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
       };
 
+      // 3. Suscribir
       const subscription = await registration.pushManager.subscribe(subscribeOptions);
 
-      // Send to backend using the unified API service
-      if (isAdminPath) {
-        await subscribeAdminPush(subscription);
-      } else {
-        await subscribePush(subscription);
-      }
+      // 4. Enviar al backend (Admin)
+      await subscribeAdminPush(subscription);
 
       setIsSubscribed(true);
-      fetchSubscriptionCount(); // Update count after subscribing
+      fetchSubscriptionCount();
     } catch (err) {
-      console.error('Failed to subscribe the user: ', err);
+      console.error('Error al suscribir:', err);
       setError(err.message === 'Permiso denegado' ? 'Permiso Bloqueado' : 'Error al Activar');
     } finally {
       setLoading(false);
@@ -196,41 +97,51 @@ const NotificationToggle = () => {
   const unsubscribeUser = async () => {
     setLoading(true);
     try {
-      // For admin path, ensure we use the admin service worker
-      const isAdminPath = window.location.pathname.startsWith('/backoffice');
-      const scope = isAdminPath ? '/backoffice/' : '/';
-
-      const registration = await navigator.serviceWorker.getRegistration(scope);
-      if (registration) {
-        const subscription = await registration.pushManager.getSubscription();
-        if (subscription) {
-          await subscription.unsubscribe();
-          setIsSubscribed(false);
-          fetchSubscriptionCount(); // Update count after unsubscribing
-        }
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      if (subscription) {
+        await subscription.unsubscribe();
+        setIsSubscribed(false);
+        fetchSubscriptionCount();
       }
     } catch (err) {
-      console.error('Error unsubscribing', err);
+      console.error('Error al desactivar:', err);
       setError('Error al Desactivar');
     } finally {
       setLoading(false);
     }
   };
 
-  if (error === 'Push No Soportado') {
-    return (
-      <div className="p-2 text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-md">
-        ⚠️ Notificaciones no compatibles en este navegador/protocolo (usa HTTPS).
-      </div>
-    );
-  }
+  const testNotification = async () => {
+    setTestingNotification(true);
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+
+      if (!subscription) throw new Error("No hay suscripción");
+
+      await testPushOnDevice({
+        subscription,
+        title: "TeleRemate Admin 🔔",
+        body: "¡Prueba exitosa! Motor unificado funcionando.",
+        url: "/backoffice/dashboard"
+      });
+      
+      setError("¡Enviado!");
+      setTimeout(() => setError(null), 3000);
+    } catch (err) {
+      setError("Error de envío");
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setTestingNotification(false);
+    }
+  };
 
   return (
     <div className="px-1 py-1">
       <button
         onClick={isSubscribed ? unsubscribeUser : subscribeUser}
         disabled={loading}
-        title={isSubscribed ? 'Notificaciones Activas' : 'Activar Notificaciones'}
         className={`w-full px-3 py-2 rounded-xl text-[10px] font-bold transition-all duration-300 flex items-center justify-between gap-2 ${
           isSubscribed
             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -245,29 +156,22 @@ const NotificationToggle = () => {
           )}
           <span>{isSubscribed ? 'ALERTAS: ON' : 'ACTIVAR PUSH'}</span>
         </div>
-        {!loading && !isSubscribed && <span className="text-[8px] opacity-50 font-black">CLICK</span>}
       </button>
 
-      {error && error !== 'Push No Soportado' && (
+      {error && (
         <p className="text-[8px] text-center text-rose-400 mt-1 uppercase font-black truncate">
           {error}
         </p>
       )}
 
       {isSubscribed && (
-        <div className="mt-2 space-y-1">
-          <div className="text-[9px] text-center text-slate-400">
-            📱 {subscriptionCount} equipo{subscriptionCount !== 1 ? 's' : ''} registrado{subscriptionCount !== 1 ? 's' : ''}
-          </div>
-          
-          <button
-            onClick={testNotification}
-            disabled={testingNotification}
-            className="w-full px-2 py-1 bg-slate-600 text-white text-[8px] rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
-          >
-            {testingNotification ? 'Enviando...' : 'Probar en este equipo'}
-          </button>
-        </div>
+        <button
+          onClick={testNotification}
+          disabled={testingNotification}
+          className="w-full mt-2 px-2 py-1 bg-slate-600 text-white text-[8px] rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
+        >
+          {testingNotification ? 'Enviando...' : 'Probar en este equipo'}
+        </button>
       )}
     </div>
   );
