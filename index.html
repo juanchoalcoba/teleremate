@@ -1,21 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
+    <script>
+      if (window.location.pathname.startsWith('/backoffice')) {
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = '/manifest-admin.json';
+        link.id = 'admin-manifest';
+        document.head.appendChild(link);
+        
+        const observer = new MutationObserver(() => {
+          document.querySelectorAll('link[rel="manifest"]').forEach(node => {
+            if (node.id !== 'admin-manifest') node.remove();
+          });
+        });
+        observer.observe(document.head, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 2000);
+      }
+    </script>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logoprincipal.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/iconodefin.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/iconodefin.png" />
+    <link rel="apple-touch-icon" href="/iconodefin.png" />
     <meta name="theme-color" content="#000000" />
-    <title>TeleRemate | Subastas y Ventas Online</title>
-    
-    <!-- Fuentes Premium -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Meta Tags SEO -->
-    <meta name="description" content="La plataforma líder en remates online de Durazno y la región. Transparencia, confianza y seguridad en cada artículo." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TeleRemate • Subastas Online</title>
+    <meta name="description" content="TeleRemate Uruguay. La plataforma más confiable para subastas locales. Fácil, seguro y totalmente transparente. Años de experiencia." />
+    <link rel="canonical" id="canonical-tag" href="https://teleremate.org/" />
+    <meta name="mobile-web-app-capable" content="yes" />
   </head>
-  <body class="bg-dark-950 text-white selection:bg-brand-500/30 selection:text-brand-200">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
