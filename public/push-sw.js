@@ -39,14 +39,23 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    Promise.all([
+      self.registration.showNotification(data.title, options),
+      // App Badging API: Poner el puntito rojo en el icono de la App
+      (self.navigator && self.navigator.setAppBadge) ? self.navigator.setAppBadge(1) : Promise.resolve()
+    ])
   );
 });
 
 
+
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  // Asegurar que la URL sea absoluta
+  
+  // Limpiar el badge al entrar
+  if ('clearAppBadge' in navigator) {
+    navigator.clearAppBadge();
+  }
   const urlToOpen = new URL(event.notification.data.url || '/backoffice/', self.location.origin).href;
 
   event.waitUntil(

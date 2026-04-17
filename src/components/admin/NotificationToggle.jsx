@@ -47,8 +47,9 @@ const NotificationToggle = () => {
         return;
       }
 
-      // Estilo Jueves: Esperar simplemente al SW que ya está registrado por la PWA
-      const registration = await navigator.serviceWorker.ready;
+      // IMPORTANTE: Registramos el SW explícitamente con el scope del Admin
+      // Esto separa legalmente el canal del Admin del canal del sitio público
+      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
       const subscription = await registration.pushManager.getSubscription();
       
       setIsSubscribed(!!subscription);
@@ -70,8 +71,9 @@ const NotificationToggle = () => {
         throw new Error('Permiso denegado');
       }
 
-      // 2. Esperar al Service Worker unificado
-      const registration = await navigator.serviceWorker.ready;
+      // 2. Registrar/Obtener el Service Worker con Scope Aislado
+      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      await navigator.serviceWorker.ready; // Asegurar que esté activo
       
       const subscribeOptions = {
         userVisibleOnly: true,
@@ -97,7 +99,7 @@ const NotificationToggle = () => {
   const unsubscribeUser = async () => {
     setLoading(true);
     try {
-      const registration = await navigator.serviceWorker.ready;
+      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
       const subscription = await registration.pushManager.getSubscription();
       if (subscription) {
         await subscription.unsubscribe();
@@ -115,7 +117,7 @@ const NotificationToggle = () => {
   const testNotification = async () => {
     setTestingNotification(true);
     try {
-      const registration = await navigator.serviceWorker.ready;
+      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
       const subscription = await registration.pushManager.getSubscription();
 
       if (!subscription) throw new Error("No hay suscripción");
