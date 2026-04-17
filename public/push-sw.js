@@ -56,21 +56,32 @@ self.addEventListener('notificationclick', (event) => {
   if ('clearAppBadge' in navigator) {
     navigator.clearAppBadge();
   }
+
+  // Asegurar que la URL sea absoluta y apunte al admin
   const urlToOpen = new URL(event.notification.data.url || '/backoffice/', self.location.origin).href;
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
-      // Intentar enfocar una pestaña abierta
+      // 1. Buscar cualquier ventana que ya esté en el Panel Admin (scope /backoffice)
       for (let i = 0; i < windowClients.length; i++) {
         const client = windowClients[i];
-        if (client.url === urlToOpen && 'focus' in client) {
-          return client.focus();
+        // Comprobar si la ventana pertenece al Admin
+        if (client.url.includes('/backoffice') && 'focus' in client) {
+          // Si encontramos la ventana, la enfocamos
+          return client.focus().then(() => {
+            // Y si no está exactamente en la URL de la notificación, la navegamos ahí
+            if (client.url !== urlToOpen) {
+              return client.navigate(urlToOpen);
+            }
+          });
         }
       }
-      // Si no hay pestaña abierta, abrir una nueva
+      
+      // 2. Si no hay ventana de Admin abierta, abrir una nueva
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
     })
   );
 });
+
