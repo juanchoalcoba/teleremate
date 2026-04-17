@@ -5,29 +5,20 @@ import Typed from "typed.js";
 
 const UPCOMING_AUCTIONS = ["Próximos remates: 25 y 26 de abril"];
 
-// ✅ WebP optimizado
 const HERO_IMAGES = ["/bgaura.webp", "/hero-bg.webp", "/3hero.webp"];
 
 export default function HeroSection() {
   const typedRef = useRef(null);
   const [bgIndex, setBgIndex] = useState(0);
 
-  // 🔁 Cambio de fondo
+  // Background Loop
   useEffect(() => {
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 4000);
+    }, 3000); // 5 seconds (1s transition + 4s stable)
     return () => clearInterval(timer);
   }, []);
 
-  // ⚡ Precarga de la siguiente imagen
-  useEffect(() => {
-    const nextIndex = (bgIndex + 1) % HERO_IMAGES.length;
-    const img = new Image();
-    img.src = HERO_IMAGES[nextIndex];
-  }, [bgIndex]);
-
-  // ⌨️ Typed
   useEffect(() => {
     if (UPCOMING_AUCTIONS.length === 0) return;
 
@@ -41,86 +32,142 @@ export default function HeroSection() {
       cursorChar: "|",
     });
 
-    return () => typed.destroy();
+    return () => {
+      typed.destroy();
+    };
   }, []);
 
   return (
     <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-16 lg:py-0">
-      {/* ✅ UNA sola imagen (no map) */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={HERO_IMAGES[bgIndex]}
-          alt="Remates Teleremate"
-          className="w-full h-full object-cover object-center animate-kenburns transition-opacity duration-1000 ease-in-out opacity-90"
-          loading="eager"
-          fetchpriority="high"
-        />
+      {/* Background Image ... */}
+      {/* Background Images Loop */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {HERO_IMAGES.map((src, index) => (
+          <img
+            key={src}
+            src={src}
+            alt="Remates Teleremate"
+            className={`absolute inset-0 w-full h-full object-cover object-center animate-kenburns transition-opacity duration-1000 ease-in-out ${
+              index === bgIndex ? "opacity-90" : "opacity-0"
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-linear-to-r from-dark-950 via-dark-950/50 to-dark-950/50" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-        {/* LEFT */}
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:col-span-5">
-          {/* Ticker */}
+        {/* LEFT: Text + CTA */}
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-5 xl:col-span-5 w-full">
+          {/* Auction Ticker Badge */}
           {UPCOMING_AUCTIONS.length > 0 && (
-            <div className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-4">
-              <Bell size={12} className="text-brand-500" />
-              <span className="text-white/90 text-xs font-black uppercase tracking-[0.1em]">
+            <div className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-4 shadow-xl animate-reveal animation-delay-300">
+              <div className="relative flex items-center justify-center">
+                <div className="absolute inset-0 bg-brand-500/20 blur-sm rounded-full animate-pulse" />
+                <Bell size={12} className="text-brand-500 relative z-10" />
+              </div>
+              <span className="text-white/90 text-[10px] md:text-xs font-black uppercase tracking-[0.1em] min-h-[1.2rem] flex items-center">
                 <span ref={typedRef} />
               </span>
             </div>
           )}
 
-          {/* Title */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-6">
-            TELEREMATE <br />
-            <span className="text-blue-200">Uruguay</span>
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-gray-100 text-[10px] md:text-xs font-bold uppercase tracking-widest">
+              Plataforma de Remates y Venta directa
+            </span>
+          </div>
+
+          {/* Heading */}
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
+            <span className="mb-1 lg:mb-0">TELEREMATE </span>
+
+            <span
+              className="relative inline-block sm:scale-100 mt-2 sm:mt-0 animate-reveal
+  bg-gradient-to-r from-white via-sky-100 to-blue-200
+  bg-clip-text [-webkit-background-clip:text] text-transparent
+  [-webkit-text-stroke:1px_black]
+  drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]"
+            >
+              Uruguay
+              <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/70 rounded-full overflow-hidden">
+                <div className="w-full h-full bg-white/60 animate-sweep" />
+              </div>
+            </span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-gray-300 text-base md:text-xl mb-8 max-w-md">
-            La plataforma más confiable para subastas locales.
+          <p className="text-gray-300 text-base md:text-xl leading-relaxed mb-8 max-w-md font-normal mx-auto lg:mx-0">
+            La plataforma más confiable para subastas locales. Fácil, seguro y
+            totalmente transparente.
           </p>
 
-          {/* CTAs */}
-          <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 w-full">
             <Link
               to="/catalogo"
-              className="bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-4 rounded-2xl flex items-center gap-2"
+              className="w-full sm:w-auto group inline-flex justify-center items-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-4 rounded-2xl border border-white/20 transition-all hover:shadow-xl hover:shadow-brand-500/30 active:scale-95"
             >
-              Ver Catálogos <ArrowRight size={18} />
+              Ver Catálogos
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </Link>
-
             <Link
               to="/vender"
-              className="bg-white/5 border border-white/20 text-white font-bold px-8 py-4 rounded-2xl"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 border border-white/20 hover:border-white/40 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:bg-white/10 active:scale-95 shadow-sm"
             >
               VENDER
             </Link>
           </div>
+
+          {/* Mini stats */}
         </div>
 
-        {/* RIGHT */}
-        <div className="hidden lg:flex justify-center lg:col-span-7">
-          <img
-            src="/logoprincipal.png"
-            alt="Teleremate"
-            className="max-w-[700px] object-contain"
-          />
+        {/* RIGHT: Logo Visual */}
+        <div className="hidden lg:flex flex-col items-center justify-center relative z-0 lg:col-span-7 xl:col-span-7 w-full lg:pl-16 mt-8 lg:mt-0">
+          {/* Constrained layout for Image */}
+          <div className="relative w-full max-w-[280px] sm:max-w-[400px] lg:max-w-[750px] xl:max-w-[850px] mx-auto flex items-center justify-center lg:translate-x-4 xl:translate-x-12 lg:scale-110 xl:scale-125 animate-float">
+            {/* Simple static glow ring */}
+            <div className="absolute inset-0 rounded-full bg-brand-500/10 blur-[60px] lg:blur-[100px] scale-100 lg:scale-125" />
+
+            <img
+              src="/logoprincipal.png"
+              alt="Teleremate"
+              className="relative z-10 w-full object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.08)] brightness-110"
+            />
+          </div>
         </div>
       </div>
-
-      {/* Animaciones */}
+      {/* Custom Styles for Hero Animations */}
       <style>{`
         @keyframes kenburns {
           0% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          50% { transform: scale(1.08); }
           100% { transform: scale(1); }
         }
-        .animate-kenburns {
-          animation: kenburns 20s ease-in-out infinite;
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
         }
+        @keyframes sweep {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        @keyframes reveal {
+          0% { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+          100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        .animate-kenburns { animation: kenburns 30s ease-in-out infinite; }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+        .animate-sweep { animation: sweep 5s ease-in-out infinite; }
+        .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animation-delay-300 { animation-delay: 300ms; }
+        .typed-cursor { color: var(--color-brand-500); font-weight: 900; margin-left: 2px; }
       `}</style>
     </section>
   );
