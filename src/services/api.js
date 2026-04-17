@@ -98,8 +98,8 @@ export const deleteImage = (id, filename) =>
   api.delete(`/backoffice/articles/${id}/images/${filename}`);
 
 // ─── Notifications ────────────────────────────────────────
-export const subscribePush = (subscription) =>
-  api.post("/notifications/subscribe", subscription);
+// export const subscribePush = (subscription) =>
+//   api.post("/notifications/subscribe", subscription);
 export const subscribeAdminPush = (subscription) =>
   api.post("/notifications/subscribe-admin", subscription);
 export const testPushOnDevice = (data) => 

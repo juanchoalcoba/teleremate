@@ -3,14 +3,20 @@
 console.log('[PUSH-SW] Motor de notificaciones activado - Versión Admin');
 
 self.addEventListener('push', (event) => {
-  let data = { title: "Nuevo Evento", body: "Tienes una nueva notificación de Teleremate." };
+  let data = { 
+    title: "TeleRemate Admin 🔔", 
+    body: "Nueva actualización en el panel de gestión." 
+  };
   
   try {
     if (event.data) {
-      data = event.data.json();
+      const payload = event.data.json();
+      data.title = payload.title || data.title;
+      data.body = payload.body || data.body;
+      data.url = payload.url || '/backoffice/';
     }
   } catch (e) {
-    console.warn('[PUSH-SW] Error de parseo, usando texto o fallback', e);
+    console.warn('[PUSH-SW] Error de parseo, usando fallback', e);
     if (event.data) {
         data.body = event.data.text();
     }
@@ -18,24 +24,25 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: '/admin-icon-192.png', // Icono específico del Admin (Restaurado de Miércoles Mañana)
+    icon: '/admin-icon-192.png',
     badge: '/iconodefin.png',
-    tag: 'teleremate-admin-alert', // TAG Único para evitar colisiones con el sitio público
+    tag: 'teleremate-admin-alert', // TAG Único para evitar colisiones
     renotify: true,
     requireInteraction: true,
     data: {
       url: data.url || '/backoffice/'
     },
-    vibrate: [300, 100, 300], // Patrón de vibración de alta intensidad
+    vibrate: [300, 100, 300],
     actions: [
       { action: 'open', title: 'Ver en Panel' }
     ]
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "TeleRemate Admin", options)
+    self.registration.showNotification(data.title, options)
   );
 });
+
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
