@@ -11,6 +11,7 @@ export default function CatalogPage() {
     status: "",
     minPrice: "",
     maxPrice: "",
+    auctionDate: "",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -97,7 +98,7 @@ export default function CatalogPage() {
             {CATEGORY_TABS.map((tab) => (
               <button
                 key={tab.value}
-                onClick={() => updateFilters({ category: tab.value })}
+                onClick={() => updateFilters({ category: tab.value, auctionDate: "" })}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
                   filters.category === tab.value
                     ? "bg-white text-brand-600 shadow-sm ring-1 ring-gray-100"
@@ -109,6 +110,29 @@ export default function CatalogPage() {
               </button>
             ))}
           </div>
+
+          {/* Sub-tabs for "A Rematar" */}
+          {filters.category === "remate" && (
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+              {[
+                { label: "Todos", value: "" },
+                { label: "Sábado 25 de Abril", value: "2026-04-25T00:00:00.000Z" },
+                { label: "Domingo 26 de Abril", value: "2026-04-26T00:00:00.000Z" },
+              ].map((sub) => (
+                <button
+                  key={sub.label}
+                  onClick={() => updateFilters({ auctionDate: sub.value })}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                    (filters.auctionDate || "") === sub.value
+                      ? "bg-brand-500 text-white border-brand-500 shadow-sm"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-brand-300 hover:text-brand-600"
+                  }`}
+                >
+                  {sub.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Dedicated indicator row (Only on Mobile) */}
           <div className="flex items-center justify-end md:hidden pr-2">
