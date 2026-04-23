@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Bell } from "lucide-react";
+import { ArrowRight, Bell, Gavel } from "lucide-react";
 import Typed from "typed.js";
 
 const UPCOMING_AUCTIONS = ["Próximos remates: 25 y 26 de abril"];
@@ -72,12 +72,19 @@ export default function HeroSection() {
             </div>
           )}
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-gray-100 text-[10px] md:text-xs font-bold uppercase tracking-widest">
-              Plataforma de Remates y Venta directa
-            </span>
+          {/* Credencial de Rematador Profesional */}
+          <div className="inline-flex items-center gap-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-3 mb-8 shadow-2xl hover:border-brand-500/30 transition-all group animate-reveal">
+            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-500 group-hover:rotate-12 transition-transform">
+              <Gavel size={20} />
+            </div>
+            <div className="flex flex-col pr-4">
+              <span className="text-[9px] text-brand-400 font-black uppercase tracking-[0.2em] mb-1 leading-none">
+                Rematador Público
+              </span>
+              <span className="text-white text-base md:text-lg font-black tracking-tight leading-none uppercase">
+                Rodrigo Baez de los Reyes
+              </span>
+            </div>
           </div>
 
           {/* Heading */}
