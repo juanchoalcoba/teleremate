@@ -130,7 +130,7 @@ const NotificationToggle = () => {
         subscription,
         title: "TeleRemate Admin 🔔",
         body: "¡Prueba exitosa! Motor unificado funcionando.",
-        url: "/backoffice/dashboard"
+        url: "/backoffice"
       });
       
       setError("¡Enviado!");
