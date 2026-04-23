@@ -25,7 +25,7 @@ self.addEventListener('push', (event) => {
   const options = {
     body: data.body,
     icon: '/iconodefin.png',
-    badge: '/badge-icon.png',
+    badge: '/badge-gavel.svg',
     tag: 'teleremate-admin-alert', // TAG Único para evitar colisiones
     renotify: true,
     requireInteraction: true,
