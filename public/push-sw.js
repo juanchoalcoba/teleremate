@@ -38,11 +38,19 @@ self.addEventListener('push', (event) => {
     ]
   };
 
+  const safeSetBadge = () => {
+    try {
+      if (self.navigator && self.navigator.setAppBadge) {
+        return self.navigator.setAppBadge(1).catch(() => Promise.resolve());
+      }
+    } catch (e) {}
+    return Promise.resolve();
+  };
+
   event.waitUntil(
     Promise.all([
       self.registration.showNotification(data.title, options),
-      // App Badging API: Poner el puntito rojo en el icono de la App
-      (self.navigator && self.navigator.setAppBadge) ? self.navigator.setAppBadge(1) : Promise.resolve()
+      safeSetBadge()
     ])
   );
 });

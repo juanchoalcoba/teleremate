@@ -47,9 +47,12 @@ const NotificationToggle = () => {
         return;
       }
 
-      // IMPORTANTE: Registramos el SW explícitamente con el scope del Admin
-      // Esto separa legalmente el canal del Admin del canal del sitio público
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      if (Notification.permission === 'denied') {
+        setError('Bloqueado (Revisa el candadito 🔒)');
+      }
+
+      // Usar el Service Worker principal de la PWA
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       
       setIsSubscribed(!!subscription);
@@ -71,9 +74,8 @@ const NotificationToggle = () => {
         throw new Error('Permiso denegado');
       }
 
-      // 2. Registrar/Obtener el Service Worker con Scope Aislado
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
-      await navigator.serviceWorker.ready; // Asegurar que esté activo
+      // 2. Usar el Service Worker principal (VitePWA)
+      const registration = await navigator.serviceWorker.ready;
       
       const subscribeOptions = {
         userVisibleOnly: true,
@@ -90,7 +92,7 @@ const NotificationToggle = () => {
       fetchSubscriptionCount();
     } catch (err) {
       console.error('Error al suscribir:', err);
-      setError(err.message === 'Permiso denegado' ? 'Permiso Bloqueado' : 'Error al Activar');
+      setError(err.message === 'Permiso denegado' ? 'Bloqueado (Revisa el candadito 🔒)' : 'Error al Activar');
     } finally {
       setLoading(false);
     }
@@ -99,7 +101,7 @@ const NotificationToggle = () => {
   const unsubscribeUser = async () => {
     setLoading(true);
     try {
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       if (subscription) {
         await subscription.unsubscribe();
@@ -117,7 +119,7 @@ const NotificationToggle = () => {
   const testNotification = async () => {
     setTestingNotification(true);
     try {
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
 
       if (!subscription) throw new Error("No hay suscripción");
@@ -161,7 +163,7 @@ const NotificationToggle = () => {
       </button>
 
       {error && (
-        <p className="text-[8px] text-center text-rose-400 mt-1 uppercase font-black truncate">
+        <p className="text-[8px] text-center text-rose-400 mt-1 uppercase font-black">
           {error}
         </p>
       )}
