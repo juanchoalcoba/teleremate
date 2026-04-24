@@ -85,11 +85,11 @@ export default function HeroSection() {
 
           {/* Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-4 lg:mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
-            {/* Imagen exclusiva para celulares - ULTRA GRANDE Y COMPACTA */}
+            {/* Imagen exclusiva para celulares - TAMAÑO MÁXIMO */}
             <img 
               src="/LOGOTRANSPARENTE.png" 
               alt="Teleremate" 
-              className="block lg:hidden w-full max-w-[480px] h-auto object-contain -mt-8 -mb-14 animate-reveal drop-shadow-[0_0_40px_rgba(255,255,255,0.2)] scale-110" 
+              className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-12 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125" 
             />
 
             {/* Texto exclusivo para Desktop y Pantallas Grandes */}
