@@ -48,12 +48,11 @@ const NotificationToggle = () => {
       }
 
       if (Notification.permission === 'denied') {
-        setError('Bloqueado (Revisa el candadito 🔒)');
+        setError('Bloqueado en Navegador');
       }
 
-      // IMPORTANTE: Registramos el SW explícitamente con el scope del Admin
-      // Esto separa legalmente el canal del Admin del canal del sitio público
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      // IMPORTANTE: Usamos el SW unificado que ya registra VitePWA
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       
       setIsSubscribed(!!subscription);
@@ -75,9 +74,8 @@ const NotificationToggle = () => {
         throw new Error('Permiso denegado');
       }
 
-      // 2. Registrar/Obtener el Service Worker con Scope Aislado
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
-      await navigator.serviceWorker.ready; // Asegurar que esté activo
+      // 2. Obtener el Service Worker Unificado
+      const registration = await navigator.serviceWorker.ready;
       
       const subscribeOptions = {
         userVisibleOnly: true,
@@ -94,7 +92,7 @@ const NotificationToggle = () => {
       fetchSubscriptionCount();
     } catch (err) {
       console.error('Error al suscribir:', err);
-      setError(err.message === 'Permiso denegado' ? 'Bloqueado (Revisa el candadito 🔒)' : 'Error al Activar');
+      setError(err.message === 'Permiso denegado' ? 'Bloqueado (Revisa el candado)' : 'Error al Activar');
     } finally {
       setLoading(false);
     }
@@ -103,7 +101,7 @@ const NotificationToggle = () => {
   const unsubscribeUser = async () => {
     setLoading(true);
     try {
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       if (subscription) {
         await subscription.unsubscribe();
@@ -118,10 +116,42 @@ const NotificationToggle = () => {
     }
   };
 
+  const emergencyReset = async () => {
+    if (!confirm("Esto reseteará todas las notificaciones en este equipo para resolver conflictos. ¿Continuar?")) return;
+    
+    setLoading(true);
+    try {
+      // 1. Desuscribir si es posible
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      if (subscription) await subscription.unsubscribe();
+
+      // 2. Desregistrar TODOS los service workers para limpiar scopes duplicados
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (let reg of registrations) {
+        await reg.unregister();
+      }
+
+      // 3. Limpiar cachés de la app
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+      }
+
+      alert("Limpieza completada. Por favor, recarga la página y vuelve a Activar Push.");
+      window.location.reload();
+    } catch (err) {
+      console.error('Error en reset:', err);
+      alert("Hubo un error en la limpieza.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const testNotification = async () => {
     setTestingNotification(true);
     try {
-      const registration = await navigator.serviceWorker.register('/push-sw.js', { scope: '/backoffice' });
+      const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
 
       if (!subscription) throw new Error("No hay suscripción");
@@ -171,13 +201,22 @@ const NotificationToggle = () => {
       )}
 
       {isSubscribed && (
-        <button
-          onClick={testNotification}
-          disabled={testingNotification}
-          className="w-full mt-2 px-2 py-1 bg-slate-600 text-white text-[8px] rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors"
-        >
-          {testingNotification ? 'Enviando...' : 'Probar en este equipo'}
-        </button>
+        <div className="flex flex-col gap-1 mt-2">
+          <button
+            onClick={testNotification}
+            disabled={testingNotification}
+            className="w-full px-2 py-1 bg-slate-600 text-white text-[8px] rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors uppercase font-black"
+          >
+            {testingNotification ? 'Enviando...' : 'Probar en este equipo'}
+          </button>
+          
+          <button
+            onClick={emergencyReset}
+            className="w-full px-2 py-1 bg-rose-500/10 text-rose-400 text-[7px] rounded-lg border border-rose-500/20 hover:bg-rose-500/20 transition-all uppercase font-bold"
+          >
+            Resetear Configuración
+          </button>
+        </div>
       )}
     </div>
   );
