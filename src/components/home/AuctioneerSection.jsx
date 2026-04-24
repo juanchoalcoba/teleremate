@@ -36,8 +36,12 @@ export default function AuctioneerSection() {
                 Rodrigo Baez <br className="hidden md:block" />
                 <span className="text-gray-500">de los Reyes</span>
               </h2>
-              <p className="text-brand-200 font-bold text-sm md:text-lg uppercase tracking-widest">
-                Rematador Público
+              <p className="text-brand-200 font-bold text-sm md:text-lg uppercase tracking-widest flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1">
+                <span>Rematador Público</span>
+                <span className="hidden md:inline text-white/20">•</span>
+                <span>Tasador</span>
+                <span className="hidden md:inline text-white/20">•</span>
+                <span>Operador Inmobiliario</span>
               </p>
             </div>
             
@@ -51,8 +55,8 @@ export default function AuctioneerSection() {
                <div className="flex -space-x-2">
                   <div className="w-8 h-8 rounded-full border-2 border-dark-950 bg-brand-500 flex items-center justify-center text-[10px] font-black text-white">UY</div>
                </div>
-               <span className="text-gray-500 font-bold text-xs uppercase tracking-tighter">
-                  Matrícula Profesional Avalada
+               <span className="text-gray-500 font-bold text-[10px] md:text-xs uppercase tracking-tight leading-tight">
+                  Matricula 6230 - Inscripto en el Registro Nacional de Rematadores
                </span>
             </div>
           </div>
