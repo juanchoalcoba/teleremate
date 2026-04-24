@@ -107,23 +107,28 @@ export default function HeroSection() {
             totalmente transparente.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 w-full">
+          {/* CTA Buttons Renovados */}
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 w-full mt-4">
+            {/* BOTÓN: VER CATÁLOGOS */}
             <Link
               to="/catalogo"
-              className="w-full sm:w-auto group inline-flex justify-center items-center gap-3 bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-4 rounded-2xl border border-white/20 transition-all hover:shadow-xl hover:shadow-brand-500/30 active:scale-95"
+              className="relative w-full sm:w-auto group overflow-hidden inline-flex justify-center items-center gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 bg-[length:200%_auto] hover:bg-[right_center] text-white font-black px-10 py-5 rounded-full transition-all duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_35px_rgba(249,115,22,0.5)] active:scale-95 tracking-[0.05em] uppercase text-sm"
             >
+              {/* Efecto de brillo animado */}
+              <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
+              
               Ver Catálogos
-              <ArrowRight
-                size={18}
-                className="group-hover:translate-x-1 transition-transform"
-              />
+              <div className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform">
+                <ArrowRight size={18} />
+              </div>
             </Link>
+
+            {/* BOTÓN: VENDER */}
             <Link
               to="/vender"
-              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 border border-white/20 hover:border-white/40 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:bg-white/10 active:scale-95 shadow-sm"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/30 text-white font-black px-10 py-5 rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase tracking-[0.05em] text-sm"
             >
-              VENDER
+              Vender Artículo
             </Link>
           </div>
 
@@ -165,10 +170,14 @@ export default function HeroSection() {
           0% { opacity: 0; transform: translateY(10px); filter: blur(4px); }
           100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
+        @keyframes shine {
+          100% { transform: translateX(100%); }
+        }
         .animate-kenburns { animation: kenburns 30s ease-in-out infinite; }
         .animate-float { animation: float 5s ease-in-out infinite; }
         .animate-sweep { animation: sweep 5s ease-in-out infinite; }
         .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .group-hover\:animate-shine { animation: shine 0.8s ease-in-out; }
         .animation-delay-300 { animation-delay: 300ms; }
         .typed-cursor { color: var(--color-brand-500); font-weight: 900; margin-left: 2px; }
       `}</style>
