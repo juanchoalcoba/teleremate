@@ -107,18 +107,18 @@ export default function HeroSection() {
             totalmente transparente.
           </p>
 
-          {/* CTA Buttons Renovados */}
+          {/* CTA Buttons - Híbridos (Premium en móvil, Original en Desktop) */}
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 w-full mt-4">
             {/* BOTÓN: VER CATÁLOGOS */}
             <Link
               to="/catalogo"
-              className="relative w-full sm:w-auto group overflow-hidden inline-flex justify-center items-center gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 bg-[length:200%_auto] hover:bg-[right_center] text-white font-black px-10 py-5 rounded-full transition-all duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_35px_rgba(249,115,22,0.5)] active:scale-95 tracking-[0.05em] uppercase text-sm"
+              className="relative w-auto min-w-[220px] sm:w-auto sm:min-w-0 group overflow-hidden inline-flex justify-center items-center gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 bg-[length:200%_auto] sm:bg-brand-500 sm:bg-none hover:bg-[right_center] text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] sm:shadow-none hover:shadow-[0_0_35px_rgba(249,115,22,0.5)] sm:hover:shadow-xl sm:hover:shadow-brand-500/30 active:scale-95 uppercase sm:normal-case text-sm"
             >
-              {/* Efecto de brillo animado */}
-              <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
+              {/* El brillo animado */}
+              <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine sm:hidden" />
               
               Ver Catálogos
-              <div className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform">
+              <div className="bg-white/20 sm:bg-transparent rounded-full p-1 sm:p-0 group-hover:translate-x-1 transition-transform">
                 <ArrowRight size={18} />
               </div>
             </Link>
@@ -126,7 +126,7 @@ export default function HeroSection() {
             {/* BOTÓN: VENDER */}
             <Link
               to="/vender"
-              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/30 text-white font-black px-10 py-5 rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase tracking-[0.05em] text-sm"
+              className="w-auto min-w-[220px] sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-2 sm:border border-white/10 sm:border-white/20 hover:border-white/30 sm:hover:border-white/40 text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm"
             >
               Vender Artículo
             </Link>
@@ -177,7 +177,7 @@ export default function HeroSection() {
         .animate-float { animation: float 5s ease-in-out infinite; }
         .animate-sweep { animation: sweep 5s ease-in-out infinite; }
         .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .group-hover\:animate-shine { animation: shine 0.8s ease-in-out; }
+        .group-hover\\:animate-shine { animation: shine 0.8s ease-in-out; }
         .animation-delay-300 { animation-delay: 300ms; }
         .typed-cursor { color: var(--color-brand-500); font-weight: 900; margin-left: 2px; }
       `}</style>
