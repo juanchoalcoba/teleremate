@@ -41,7 +41,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-10 lg:py-0">
+    <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-4 lg:py-0">
       {/* Background Image ... */}
       {/* Background Images Loop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -64,7 +64,7 @@ export default function HeroSection() {
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-5 xl:col-span-5 w-full">
           {/* Auction Ticker Badge */}
           {UPCOMING_AUCTIONS.length > 0 && (
-            <div className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-4 shadow-xl animate-reveal animation-delay-300">
+            <div className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 mb-1 lg:mb-4 shadow-xl animate-reveal animation-delay-300">
               <div className="relative flex items-center justify-center">
                 <div className="absolute inset-0 bg-brand-500/20 blur-sm rounded-full animate-pulse" />
                 <Bell size={12} className="text-brand-500 relative z-10" />
@@ -76,7 +76,7 @@ export default function HeroSection() {
           )}
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6 shadow-sm">
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-2 lg:mb-6 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             <span className="text-gray-100 text-[10px] md:text-xs font-bold uppercase tracking-widest">
               Plataforma de Remates y Venta directa
@@ -85,11 +85,11 @@ export default function HeroSection() {
 
           {/* Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-4 lg:mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
-            {/* Imagen exclusiva para celulares - Aumentada y compactada */}
+            {/* Imagen exclusiva para celulares - ULTRA GRANDE Y COMPACTA */}
             <img 
               src="/LOGOTRANSPARENTE.png" 
               alt="Teleremate" 
-              className="block lg:hidden w-full max-w-[360px] h-auto object-contain -mb-6 animate-reveal drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]" 
+              className="block lg:hidden w-full max-w-[480px] h-auto object-contain -mt-8 -mb-14 animate-reveal drop-shadow-[0_0_40px_rgba(255,255,255,0.2)] scale-110" 
             />
 
             {/* Texto exclusivo para Desktop y Pantallas Grandes */}
