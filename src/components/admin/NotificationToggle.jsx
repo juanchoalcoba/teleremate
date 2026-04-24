@@ -159,7 +159,7 @@ const NotificationToggle = () => {
       await testPushOnDevice({
         subscription,
         title: "TeleRemate Admin 🔔",
-        body: "¡Prueba exitosa! Motor unificado funcionando.",
+        body: "¡Prueba desde Servidor Exitosa!",
         url: "/backoffice"
       });
       
@@ -170,6 +170,21 @@ const NotificationToggle = () => {
       setTimeout(() => setError(null), 3000);
     } finally {
       setTestingNotification(false);
+    }
+  };
+
+  const testLocalNotification = async () => {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification("TeleRemate Local 🖥️", {
+        body: "Si ves esto, el navegador permite notificaciones. El problema es el servidor o conexión.",
+        icon: '/iconodefin.png',
+        badge: '/badge-gavel.svg',
+        tag: 'local-test'
+      });
+    } catch (err) {
+      alert("Error local: " + err.message);
+      setError("Error en navegador");
     }
   };
 
@@ -207,7 +222,14 @@ const NotificationToggle = () => {
             disabled={testingNotification}
             className="w-full px-2 py-1 bg-slate-600 text-white text-[8px] rounded-lg hover:bg-slate-700 disabled:opacity-50 transition-colors uppercase font-black"
           >
-            {testingNotification ? 'Enviando...' : 'Probar en este equipo'}
+            {testingNotification ? 'Enviando...' : 'Probar vía Servidor'}
+          </button>
+
+          <button
+            onClick={testLocalNotification}
+            className="w-full px-2 py-1 bg-sky-600/20 text-sky-400 text-[8px] rounded-lg border border-sky-500/20 hover:bg-sky-500/30 transition-all uppercase font-black"
+          >
+            Prueba Local (Navegador)
           </button>
           
           <button
