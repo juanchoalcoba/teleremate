@@ -86,10 +86,10 @@ export default function HeroSection() {
           {/* Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-4 lg:mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
             {/* Imagen exclusiva para celulares - TAMAÑO MÁXIMO */}
-            <img 
-              src="/LOGOTRANSPARENTE.png" 
-              alt="Teleremate" 
-              className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-12 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125" 
+            <img
+              src="/LOGOTRANSPARENTE.png"
+              alt="Teleremate"
+              className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-12 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125"
             />
 
             {/* Texto exclusivo para Desktop y Pantallas Grandes */}
@@ -97,14 +97,14 @@ export default function HeroSection() {
 
             <span
               className="relative inline-block sm:scale-100 mt-2 sm:mt-0 animate-reveal
-  bg-gradient-to-r from-white via-sky-100 to-blue-200
+  bg-gradient-to-r from-white via-orange-100 to-orange-200
   bg-clip-text [-webkit-background-clip:text] text-transparent
   [-webkit-text-stroke:1px_black]
   drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]"
             >
               Uruguay
               <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/70 rounded-full overflow-hidden">
-                <div className="w-full h-full bg-white/60 animate-sweep" />
+                <div className="w-full h-full bg-white/80 animate-sweep" />
               </div>
             </span>
           </h1>
@@ -124,7 +124,6 @@ export default function HeroSection() {
             >
               {/* El brillo animado */}
               <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine sm:hidden" />
-              
               Ver Catálogos
               <div className="bg-white/20 sm:bg-transparent rounded-full p-1 sm:p-0 group-hover:translate-x-1 transition-transform">
                 <ArrowRight size={18} />
