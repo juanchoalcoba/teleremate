@@ -41,7 +41,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-16 lg:py-0">
+    <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-10 lg:py-0">
       {/* Background Image ... */}
       {/* Background Images Loop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -84,12 +84,12 @@ export default function HeroSection() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
-            {/* Imagen exclusiva para celulares */}
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-4 lg:mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
+            {/* Imagen exclusiva para celulares - Aumentada y compactada */}
             <img 
               src="/LOGOTRANSPARENTE.png" 
               alt="Teleremate" 
-              className="block lg:hidden w-full max-w-[280px] h-auto object-contain mb-2 animate-reveal drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]" 
+              className="block lg:hidden w-full max-w-[360px] h-auto object-contain -mb-6 animate-reveal drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]" 
             />
 
             {/* Texto exclusivo para Desktop y Pantallas Grandes */}
