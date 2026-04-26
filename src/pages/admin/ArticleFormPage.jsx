@@ -36,6 +36,7 @@ export default function ArticleFormPage() {
   const isEdit = !!id;
 
   const [formData, setFormData] = useState({
+    auctionLot: "",
     lotNumber: "",
     title: "",
     description: "",
@@ -61,6 +62,7 @@ export default function ArticleFormPage() {
       const art = articleData.data;
       setTimeout(() => {
         setFormData({
+          auctionLot: art.auctionLot || "",
           lotNumber: art.lotNumber || "",
           title: art.title || "",
           description: art.description || "",
@@ -185,6 +187,29 @@ export default function ArticleFormPage() {
             className="card-admin p-8 space-y-6"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:col-span-1">
+                <label className="label-admin">Lote de Remate</label>
+                <input
+                  name="auctionLot"
+                  value={formData.auctionLot}
+                  onChange={handleChange}
+                  className="input-admin font-black text-brand-600"
+                  placeholder="Ej: 15"
+                />
+              </div>
+
+              <div className="md:col-span-1">
+                <label className="label-admin">Referencia (ID 5 cifras)</label>
+                <input
+                  name="lotNumber"
+                  value={formData.lotNumber}
+                  onChange={handleChange}
+                  required
+                  className="input-admin font-mono"
+                  placeholder="LOT-000"
+                />
+              </div>
+
               <div className="md:col-span-2">
                 <label className="label-admin">Título del Artículo</label>
                 <input
@@ -194,18 +219,6 @@ export default function ArticleFormPage() {
                   required
                   className="input-admin text-lg font-bold"
                   placeholder="Ej: Sofá Chester 3 Cuerpos"
-                />
-              </div>
-
-              <div>
-                <label className="label-admin">ID del Artículo</label>
-                <input
-                  name="lotNumber"
-                  value={formData.lotNumber}
-                  onChange={handleChange}
-                  required
-                  className="input-admin font-mono"
-                  placeholder="LOT-000"
                 />
               </div>
 

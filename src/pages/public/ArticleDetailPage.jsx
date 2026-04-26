@@ -136,6 +136,9 @@ export default function ArticleDetailPage() {
 
         <div className="flex flex-col">
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 sm:mb-6 tracking-tight leading-tight whitespace-normal">
+            {article.auctionLot && (
+              <span className="text-brand-500 mr-4">Lote #{article.auctionLot}</span>
+            )}
             {article.title}
           </h1>
 

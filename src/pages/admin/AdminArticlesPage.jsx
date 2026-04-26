@@ -147,7 +147,10 @@ export default function AdminArticlesPage() {
                   Artículo
                 </th>
                 <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[10%]">
-                  ID
+                  LOTE
+                </th>
+                <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[10%]">
+                  REF.
                 </th>
                 <th className="px-4 py-4 text-xs font-black text-gray-400 uppercase tracking-widest w-[15%]">
                   Categoría
@@ -213,6 +216,11 @@ export default function AdminArticlesPage() {
                           </p>
                         </div>
                       </div>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className="text-sm font-black text-brand-600">
+                        {item.auctionLot || "-"}
+                      </span>
                     </td>
                     <td className="px-4 py-4">
                       <code className="text-[10px] font-mono bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded text-gray-500">

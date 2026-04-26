@@ -60,6 +60,11 @@ export default function ArticleCard({ article }) {
               Vendido
             </span>
           )}
+          {article.auctionLot && (
+            <span className="badge-status bg-white/90 text-brand-600 border border-brand-100 shadow-sm backdrop-blur-sm">
+              Lote #{article.auctionLot}
+            </span>
+          )}
         </div>
       </div>
       {/* Content */}
