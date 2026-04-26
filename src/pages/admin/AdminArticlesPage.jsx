@@ -223,9 +223,9 @@ export default function AdminArticlesPage() {
                       </span>
                     </td>
                     <td className="px-4 py-4">
-                      <code className="text-[10px] font-mono bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded text-gray-500">
+                      <span className="text-sm font-black text-gray-900">
                         {item.lotNumber}
-                      </code>
+                      </span>
                     </td>
                     <td className="px-4 py-4 text-xs text-gray-500">
                       {item.category}
