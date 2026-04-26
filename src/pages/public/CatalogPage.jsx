@@ -7,7 +7,7 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "deposito",
+    category: "remate",
     status: "",
     minPrice: "",
     maxPrice: "",
