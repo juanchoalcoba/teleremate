@@ -38,18 +38,8 @@ export default function AdminArticlesPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-articles", { search, page, category: categoryFilter }],
-    queryFn: () => {
-      let category = categoryFilter;
-      let status = "";
-      
-      // Si el usuario elige "Vendido" en el filtro de categoría, lo tratamos como status "sold"
-      if (categoryFilter === "sold") {
-        category = "";
-        status = "sold";
-      }
-      
-      return getAdminArticles({ search, page, category, status, limit: 10 });
-    },
+    queryFn: () =>
+      getAdminArticles({ search, page, category: categoryFilter, limit: 10 }),
   });
 
   const deleteMutation = useMutation({
@@ -140,7 +130,6 @@ export default function AdminArticlesPage() {
             <option value="remate">A Rematar</option>
             <option value="inmueble">Inmuebles</option>
             <option value="vehiculo">Vehículos</option>
-            <option value="sold">Vendido</option>
           </select>
           <button className="btn-secondary px-3 lg:hidden">
             <Filter size={18} />
