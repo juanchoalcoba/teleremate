@@ -33,13 +33,24 @@ export default function AdminArticlesPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin-articles", { search, page, category: categoryFilter }],
-    queryFn: () =>
-      getAdminArticles({ search, page, category: categoryFilter, limit: 10 }),
+    queryKey: ["admin-articles", { search, page, category: categoryFilter, status: statusFilter }],
+    queryFn: () => {
+      let category = categoryFilter;
+      let status = statusFilter;
+      
+      // Si el usuario elige "Vendido" en el filtro de categoría, lo tratamos como status "sold"
+      if (categoryFilter === "sold") {
+        category = "";
+        status = "sold";
+      }
+      
+      return getAdminArticles({ search, page, category, status, limit: 10 });
+    },
   });
 
   const deleteMutation = useMutation({
@@ -130,6 +141,22 @@ export default function AdminArticlesPage() {
             <option value="remate">A Rematar</option>
             <option value="inmueble">Inmuebles</option>
             <option value="vehiculo">Vehículos</option>
+            <option value="sold">Vendido</option>
+          </select>
+
+          <select
+            className="input flex-1 sm:w-40"
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">Todos los estados</option>
+            <option value="upcoming">Próximo Remate</option>
+            <option value="depot">Venta Directa</option>
+            <option value="sold">Vendido</option>
+            <option value="reserved">Reservado</option>
           </select>
           <button className="btn-secondary px-3 lg:hidden">
             <Filter size={18} />
