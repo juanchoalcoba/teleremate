@@ -17,8 +17,8 @@ export default function CatalogPage() {
   const [page, setPage] = useState(1);
 
   const CATEGORY_TABS = [
-    { value: "deposito", label: "Venta Directa", icon: Package },
     { value: "remate", label: "A Rematar", icon: Gavel },
+    { value: "deposito", label: "Venta Directa", icon: Package },
     { value: "inmueble", label: "Inmuebles", icon: Package },
     { value: "vehiculo", label: "Vehículos", icon: Package },
   ];
