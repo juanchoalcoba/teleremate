@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Bell } from "lucide-react";
 import Typed from "typed.js";
 
-const UPCOMING_AUCTIONS = ["REMATADOR: Rodrigo Báez de los Reyes"];
+const UPCOMING_AUCTIONS = [
+  "Proximos remates: 9 y 10 de Mayo",
+  "REMATADOR: Rodrigo Báez de los Reyes",
+];
 
 const HERO_IMAGES = ["/bgaura.webp", "/hero-bg.webp", "/3hero.webp"];
 

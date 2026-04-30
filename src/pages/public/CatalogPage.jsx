@@ -133,11 +133,11 @@ export default function CatalogPage() {
               {[
                 { label: "Todos", value: "" },
                 {
-                  label: "Sábado 25 de Abril",
+                  label: "Sábado 9 de Mayo",
                   value: "2026-04-25T00:00:00.000Z",
                 },
                 {
-                  label: "Domingo 26 de Abril",
+                  label: "Domingo 10 de Mayo",
                   value: "2026-04-26T00:00:00.000Z",
                 },
               ].map((sub) => (
