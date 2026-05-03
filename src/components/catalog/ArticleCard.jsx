@@ -88,15 +88,15 @@ export default function ArticleCard({ article, theme }) {
       {/* Content */}
       <div className="p-5 flex flex-col grow relative z-10">
         <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap truncate pr-2">
             <Tag
               size={12}
               className={
-                category === "deposito" ? "text-green-500" : (isDark ? "text-white/60" : "text-brand-500")
+                category === "deposito" ? "text-green-500 shrink-0" : (isDark ? "text-white/60 shrink-0" : "text-brand-500 shrink-0")
               }
             />{" "}
             <span
-              className={category === "deposito" ? "text-green-600/80" : (isDark ? "text-gray-400" : "text-gray-400")}
+              className={`truncate ${category === "deposito" ? "text-green-600/80" : (isDark ? "text-gray-400" : "text-gray-400")}`}
             >
               {getCategoryLabel(category)}
             </span>
@@ -114,7 +114,7 @@ export default function ArticleCard({ article, theme }) {
           </button>
         </div>
 
-        <h3 className={`text-base font-bold mb-4 leading-snug transition-colors line-clamp-2 ${
+        <h3 className={`text-sm md:text-base font-bold mb-4 leading-snug transition-colors line-clamp-2 ${
           isDark ? "text-white group-hover:text-gray-300" : "text-gray-900 group-hover:text-brand-500"
         }`}>
           {title}
