@@ -32,7 +32,7 @@ export default function CatalogPage() {
     ...filters,
     search: search || undefined,
     page,
-    limit: 100,
+    limit: 12,
   };
 
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
