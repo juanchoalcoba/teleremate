@@ -7,11 +7,11 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "deposito",
+    category: "remate",
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "",
+    auctionDate: "2026-05-08T00:00:00.000Z",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -32,7 +32,7 @@ export default function CatalogPage() {
     ...filters,
     search: search || undefined,
     page,
-    limit: 12,
+    limit: 100,
   };
 
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
@@ -111,7 +111,10 @@ export default function CatalogPage() {
                 <button
                   key={tab.value}
                   onClick={() =>
-                    updateFilters({ category: tab.value, auctionDate: "" })
+                    updateFilters({ 
+                      category: tab.value, 
+                      auctionDate: tab.value === "remate" ? "2026-05-08T00:00:00.000Z" : "" 
+                    })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
                     filters.category === tab.value
@@ -137,6 +140,10 @@ export default function CatalogPage() {
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
                 {[
                   { label: "Todos", value: "" },
+                  {
+                    label: "Viernes 8 de Mayo",
+                    value: "2026-05-08T00:00:00.000Z",
+                  },
                   {
                     label: "Sábado 9 de Mayo",
                     value: "2026-04-25T00:00:00.000Z",
