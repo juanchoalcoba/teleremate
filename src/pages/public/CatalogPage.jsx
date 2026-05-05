@@ -146,11 +146,11 @@ export default function CatalogPage() {
                   },
                   {
                     label: "Sábado 9 de Mayo",
-                    value: "2026-04-25T00:00:00.000Z",
+                    value: "2026-05-09T00:00:00.000Z",
                   },
                   {
                     label: "Domingo 10 de Mayo",
-                    value: "2026-04-26T00:00:00.000Z",
+                    value: "2026-05-10T00:00:00.000Z",
                   },
                 ].map((sub) => (
                   <button
