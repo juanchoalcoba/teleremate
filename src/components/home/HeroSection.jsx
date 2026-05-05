@@ -4,7 +4,7 @@ import { ArrowRight, Bell } from "lucide-react";
 import Typed from "typed.js";
 
 const UPCOMING_AUCTIONS = [
-  "Proximos remates: 09 y 10 de Mayo",
+  "Proximos remates:08 09 y 10 de Mayo",
   "REMATADOR: Rodrigo Báez de los Reyes",
 ];
 
