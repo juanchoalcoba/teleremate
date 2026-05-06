@@ -109,7 +109,7 @@ export default function ArticleDetailPage() {
             <img
               src={currentImage}
               alt={article.title}
-              className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700"
+              className="w-full h-full object-contain transition-transform group-hover:scale-105 duration-700"
             />
             <button className="absolute bottom-6 right-6 p-3 bg-white/90 backdrop-blur rounded-full shadow-lg text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity">
               <Maximize2 size={18} />
@@ -126,7 +126,7 @@ export default function ArticleDetailPage() {
                   <img
                     src={getImageUrl(img.url)}
                     alt=""
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </button>
               ))}
