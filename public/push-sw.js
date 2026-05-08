@@ -14,6 +14,7 @@ self.addEventListener('push', (event) => {
       data.title = payload.title || data.title;
       data.body = payload.body || data.body;
       data.url = payload.url || '/backoffice/';
+      data.tag = payload.tag || null;
     }
   } catch (e) {
     console.warn('[PUSH-SW] Error de parseo, usando fallback', e);
@@ -26,15 +27,16 @@ self.addEventListener('push', (event) => {
     body: data.body,
     icon: '/iconodefin.png',
     badge: '/badge-gavel.svg',
-    tag: 'teleremate-admin-alert', // TAG Único para evitar colisiones
-    renotify: true,
+    tag: data.tag || 'teleremate-admin-general', // Tag dinámico para evitar colapso/spam
+    renotify: data.tag ? true : false,
     requireInteraction: true,
+    timestamp: Date.now(),
     data: {
       url: data.url || '/backoffice/'
     },
-    vibrate: [300, 100, 300],
+    vibrate: [100, 50, 100], // Vibración más sutil
     actions: [
-      { action: 'open', title: 'Ver en Panel' }
+      { action: 'open', title: 'Ver Detalles' }
     ]
   };
 
