@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { subscribeAdminPush, getPushCount, testPushOnDevice } from '../../services/api';
 
-const VAPID_PUBLIC_KEY = "BEpaqg41Bl3SXo9056-cg_Z22GR1cSg9-Q2RbteEkBlL7VA9oHsjGDzoTHADM1poX5M8GSa8WfsCx2GmrFp0Oew";
+const VAPID_PUBLIC_KEY = "BI0oIRXxMsuK_y06vMXIgEmRXf6GK-14U72qud5RdIPD9O4Quz5bSaL-4GIO4alVjQ-KC-t_UOZcc7t_T2NpYtQ";
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -84,6 +84,7 @@ const NotificationToggle = () => {
 
       // 3. Suscribir
       const subscription = await registration.pushManager.subscribe(subscribeOptions);
+      console.log('[PUSH] Nueva suscripción generada:', JSON.stringify(subscription));
 
       // 4. Enviar al backend (Admin)
       await subscribeAdminPush(subscription);
@@ -117,20 +118,37 @@ const NotificationToggle = () => {
   };
 
   const emergencyReset = async () => {
-    if (!confirm("Esto reseteará todas las notificaciones en este equipo para resolver conflictos. ¿Continuar?")) return;
+    if (!confirm("Esto eliminará TODA configuración de notificaciones en este equipo y reseteará el Service Worker. ¿Continuar?")) return;
     
     setLoading(true);
     try {
-      // 1. Desuscribir si es posible
-      const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
-      if (subscription) await subscription.unsubscribe();
-
-      // 2. Desregistrar TODOS los service workers para limpiar scopes duplicados
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      for (let reg of registrations) {
-        await reg.unregister();
+      console.log('[RESET] Iniciando limpieza profunda...');
+      
+      // 1. Intentar desuscribir de todas las formas posibles
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let reg of registrations) {
+          const sub = await reg.pushManager.getSubscription();
+          if (sub) {
+            console.log('[RESET] Desuscribiendo endpoint:', sub.endpoint);
+            await sub.unsubscribe();
+          }
+          console.log('[RESET] Desregistrando SW:', reg.active?.scriptURL || 'SW');
+          await reg.unregister();
+        }
+      } catch (e) {
+        console.warn('[RESET] Error limpiando SW/Subs:', e);
       }
+
+      // 2. Limpiar IndexedDB si existe alguna de Workbox o similar
+      try {
+        const databases = await window.indexedDB.databases();
+        for (let db of databases) {
+          if (db.name && (db.name.includes('workbox') || db.name.includes('PWA'))) {
+            window.indexedDB.deleteDatabase(db.name);
+          }
+        }
+      } catch (e) {}
 
       // 3. Limpiar cachés de la app
       if ('caches' in window) {
@@ -138,11 +156,12 @@ const NotificationToggle = () => {
         await Promise.all(cacheNames.map(name => caches.delete(name)));
       }
 
-      alert("Limpieza completada. Por favor, recarga la página y vuelve a Activar Push.");
+      console.log('[RESET] Limpieza completada exitosamente.');
+      alert("Limpieza total completada. La página se recargará. Luego pulsa 'ACTIVAR PUSH' para crear una suscripción nueva y limpia.");
       window.location.reload();
     } catch (err) {
       console.error('Error en reset:', err);
-      alert("Hubo un error en la limpieza.");
+      alert("Hubo un error en la limpieza: " + err.message);
     } finally {
       setLoading(false);
     }
