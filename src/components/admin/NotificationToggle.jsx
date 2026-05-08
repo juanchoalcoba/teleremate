@@ -150,11 +150,12 @@ const NotificationToggle = () => {
 
   const testNotification = async () => {
     setTestingNotification(true);
+    setError(null);
     try {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
 
-      if (!subscription) throw new Error("No hay suscripción");
+      if (!subscription) throw new Error("No hay suscripción activa en este navegador.");
 
       await testPushOnDevice({
         subscription,
@@ -163,11 +164,14 @@ const NotificationToggle = () => {
         url: "/backoffice"
       });
       
-      setError("¡Enviado!");
-      setTimeout(() => setError(null), 3000);
+      setError("¡Enviado con éxito!");
+      setTimeout(() => setError(null), 5000);
     } catch (err) {
-      setError("Error de envío");
-      setTimeout(() => setError(null), 3000);
+      console.error('Error en test:', err);
+      const msg = err.response?.data?.message || err.message || "Error de envío";
+      setError(msg);
+      // No quitar el error tan rápido si es un fallo real
+      if (msg !== "¡Enviado con éxito!") setTimeout(() => setError(null), 10000);
     } finally {
       setTestingNotification(false);
     }
