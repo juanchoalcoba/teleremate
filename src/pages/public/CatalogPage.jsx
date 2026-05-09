@@ -11,7 +11,7 @@ export default function CatalogPage() {
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "2026-05-08T00:00:00.000Z",
+    auctionDate: "2026-05-09T00:00:00.000Z",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -113,7 +113,7 @@ export default function CatalogPage() {
                   onClick={() =>
                     updateFilters({ 
                       category: tab.value, 
-                      auctionDate: tab.value === "remate" ? "2026-05-08T00:00:00.000Z" : "" 
+                      auctionDate: tab.value === "remate" ? "2026-05-09T00:00:00.000Z" : "" 
                     })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
@@ -140,10 +140,6 @@ export default function CatalogPage() {
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
                 {[
                   { label: "Todos", value: "" },
-                  {
-                    label: "Viernes 8 de Mayo",
-                    value: "2026-05-08T00:00:00.000Z",
-                  },
                   {
                     label: "Sábado 9 de Mayo",
                     value: "2026-05-09T00:00:00.000Z",
