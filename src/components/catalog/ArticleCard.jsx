@@ -69,7 +69,7 @@ export default function ArticleCard({ article, theme }) {
               Vendido
             </span>
           )}
-          {article.auctionLot && (
+          {category === "remate" && article.auctionLot && (
             <span className={`badge-status ${
               isDark 
                 ? "bg-zinc-950/80 text-white border border-white/20 shadow-md backdrop-blur-md" 
