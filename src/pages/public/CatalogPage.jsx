@@ -7,11 +7,11 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "remate",
+    category: "deposito",
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "2026-05-10T00:00:00.000Z",
+    auctionDate: "",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -113,7 +113,7 @@ export default function CatalogPage() {
                   onClick={() =>
                     updateFilters({ 
                       category: tab.value, 
-                      auctionDate: tab.value === "remate" ? "2026-05-10T00:00:00.000Z" : "" 
+                      auctionDate: "" 
                     })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
@@ -135,30 +135,7 @@ export default function CatalogPage() {
               ))}
             </div>
 
-            {/* Sub-tabs for "A Rematar" */}
-            {filters.category === "remate" && (
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
-                {[
-                  { label: "Todos", value: "" },
-                  {
-                    label: "Domingo 10 de Mayo",
-                    value: "2026-05-10T00:00:00.000Z",
-                  },
-                ].map((sub) => (
-                  <button
-                    key={sub.label}
-                    onClick={() => updateFilters({ auctionDate: sub.value })}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
-                      (filters.auctionDate || "") === sub.value
-                        ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                        : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
-                    }`}
-                  >
-                    {sub.label}
-                  </button>
-                ))}
-              </div>
-            )}
+
 
             {/* Dedicated indicator row (Only on Mobile) */}
             <div className="flex items-center justify-end md:hidden pr-2">
