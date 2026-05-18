@@ -219,7 +219,7 @@ export default function AdminArticlesPage() {
                     </td>
                     <td className="px-4 py-4">
                       <span className="text-sm font-black text-brand-600">
-                        {item.auctionLot || "-"}
+                        {item.category === "remate" ? (item.auctionLot || "-") : "-"}
                       </span>
                     </td>
                     <td className="px-4 py-4">
