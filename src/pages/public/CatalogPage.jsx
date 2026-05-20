@@ -23,6 +23,14 @@ export default function CatalogPage() {
     { value: "vehiculo", label: "Vehículos", icon: Package },
   ];
 
+  const AUCTION_DATES = [
+    { value: "", label: "Todos" },
+    { value: "2026-05-28T00:00:00.000Z", label: "Jueves 28 de Mayo" },
+    { value: "2026-05-29T00:00:00.000Z", label: "Viernes 29 de Mayo" },
+    { value: "2026-05-30T00:00:00.000Z", label: "Sábado 30 de Mayo" },
+    { value: "2026-05-31T00:00:00.000Z", label: "Domingo 31 de Mayo" },
+  ];
+
   const updateFilters = useCallback((patch) => {
     setFilters((prev) => ({ ...prev, ...patch }));
     setPage(1);
@@ -66,7 +74,7 @@ export default function CatalogPage() {
                   Nuestros <span className="text-gray-500">Catálogos</span>
                 </h1>
                 <p className="text-gray-400 max-w-xl text-sm md:text-base leading-relaxed font-medium">
-                  Descubra una selección curada de artículos exclusivos,
+                  Descubra una selection curada de artículos exclusivos,
                   antigüedades y oportunidades únicas. Calidad verificada en
                   cada remate.
                 </p>
@@ -113,7 +121,7 @@ export default function CatalogPage() {
                   onClick={() =>
                     updateFilters({ 
                       category: tab.value, 
-                      auctionDate: "" 
+                      auctionDate: tab.value === "remate" ? "2026-05-28T00:00:00.000Z" : "" 
                     })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
@@ -134,6 +142,25 @@ export default function CatalogPage() {
                 </button>
               ))}
             </div>
+
+            {/* Sub-tabs for "A Rematar" */}
+            {filters.category === "remate" && (
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+                {AUCTION_DATES.map((sub) => (
+                  <button
+                    key={sub.label}
+                    onClick={() => updateFilters({ auctionDate: sub.value })}
+                    className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                      (filters.auctionDate || "") === sub.value
+                        ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                        : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                    }`}
+                  >
+                    {sub.label}
+                  </button>
+                ))}
+              </div>
+            )}
 
 
 
