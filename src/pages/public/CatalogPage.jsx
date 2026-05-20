@@ -7,11 +7,11 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "deposito",
+    category: "remate",
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "",
+    auctionDate: "2026-05-28T00:00:00.000Z",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
