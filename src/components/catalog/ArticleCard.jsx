@@ -56,6 +56,8 @@ export default function ArticleCard({ article, theme }) {
         <img
           src={imgSrc}
           alt={title}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute top-3 left-3 flex flex-col gap-2">

@@ -1,23 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Bell } from "lucide-react";
 import Typed from "typed.js";
 
 const UPCOMING_AUCTIONS = ["REMATADOR: Rodrigo Báez de los Reyes"];
 
-const HERO_IMAGES = ["/bgaura.webp", "/hero-bg.webp", "/3hero.webp"];
-
 export default function HeroSection() {
   const typedRef = useRef(null);
-  const [bgIndex, setBgIndex] = useState(0);
-
-  // Background Loop
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setBgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 3000); // 5 seconds (1s transition + 4s stable)
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     if (UPCOMING_AUCTIONS.length === 0) return;
@@ -40,18 +29,16 @@ export default function HeroSection() {
   return (
     <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-4 lg:py-0">
       {/* Background Image ... */}
-      {/* Background Images Loop */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {HERO_IMAGES.map((src, index) => (
-          <img
-            key={src}
-            src={src}
-            alt="Remates Teleremate"
-            className={`absolute inset-0 w-full h-full object-cover object-center animate-kenburns transition-opacity duration-1000 ease-in-out ${
-              index === bgIndex ? "opacity-90" : "opacity-0"
-            }`}
-          />
-        ))}
+        <img
+          src="/newhero.png"
+          alt="Remates Teleremate Fondo"
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
         <div className="absolute inset-0 bg-linear-to-r from-dark-950 via-dark-950/50 to-dark-950/50" />
       </div>
 
@@ -86,6 +73,9 @@ export default function HeroSection() {
             <img
               src="/LOGOTRANSPARENTE.png"
               alt="Teleremate"
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
               className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-12 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125"
             />
 
@@ -149,6 +139,9 @@ export default function HeroSection() {
             <img
               src="/logoprincipal.png"
               alt="Teleremate"
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
               className="relative z-10 w-full object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.08)] brightness-110"
             />
           </div>
@@ -156,11 +149,7 @@ export default function HeroSection() {
       </div>
       {/* Custom Styles for Hero Animations */}
       <style>{`
-        @keyframes kenburns {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.08); }
-          100% { transform: scale(1); }
-        }
+
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-15px); }
@@ -177,7 +166,7 @@ export default function HeroSection() {
         @keyframes shine {
           100% { transform: translateX(100%); }
         }
-        .animate-kenburns { animation: kenburns 30s ease-in-out infinite; }
+
         .animate-float { animation: float 5s ease-in-out infinite; }
         .animate-sweep { animation: sweep 5s ease-in-out infinite; }
         .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }

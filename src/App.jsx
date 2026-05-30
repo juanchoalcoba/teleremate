@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster, toast } from "react-hot-toast";
@@ -10,23 +10,23 @@ import PublicLayout from "./layouts/PublicLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
 // Public Pages
-import HomePage from "./pages/public/HomePage";
-import CatalogPage from "./pages/public/CatalogPage";
-import ArticleDetailPage from "./pages/public/ArticleDetailPage";
+const HomePage = lazy(() => import("./pages/public/HomePage"));
+const CatalogPage = lazy(() => import("./pages/public/CatalogPage"));
+const ArticleDetailPage = lazy(() => import("./pages/public/ArticleDetailPage"));
 
 // Admin Pages
-import LoginPage from "./pages/admin/LoginPage";
-import DashboardPage from "./pages/admin/DashboardPage";
-import AdminArticlesPage from "./pages/admin/AdminArticlesPage";
-import ArticleFormPage from "./pages/admin/ArticleFormPage";
-import ReservationsPage from "./pages/admin/ReservationsPage";
-import PurchasesPage from "./pages/admin/PurchasesPage";
-import AdminSubmissionsPage from "./pages/admin/AdminSubmissionsPage";
-import AdminAnnotationsPage from "./pages/admin/AdminAnnotationsPage";
-import AdminResidencesPage from "./pages/admin/AdminResidencesPage";
+const LoginPage = lazy(() => import("./pages/admin/LoginPage"));
+const DashboardPage = lazy(() => import("./pages/admin/DashboardPage"));
+const AdminArticlesPage = lazy(() => import("./pages/admin/AdminArticlesPage"));
+const ArticleFormPage = lazy(() => import("./pages/admin/ArticleFormPage"));
+const ReservationsPage = lazy(() => import("./pages/admin/ReservationsPage"));
+const PurchasesPage = lazy(() => import("./pages/admin/PurchasesPage"));
+const AdminSubmissionsPage = lazy(() => import("./pages/admin/AdminSubmissionsPage"));
+const AdminAnnotationsPage = lazy(() => import("./pages/admin/AdminAnnotationsPage"));
+const AdminResidencesPage = lazy(() => import("./pages/admin/AdminResidencesPage"));
 
 // Features
-import SellPage from "./pages/public/SellPage";
+const SellPage = lazy(() => import("./pages/public/SellPage"));
 
 // Auth Guard
 import useAuthStore from "./store/authStore";
@@ -93,44 +93,50 @@ function App() {
       <BrowserRouter>
         <DynamicCanonical />
         <SmoothScroll>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<PublicLayout />}>
-              <Route index element={<HomePage />} />
-              <Route path="catalogo" element={<CatalogPage />} />
-              <Route path="articulo/:id" element={<ArticleDetailPage />} />
-              <Route path="vender" element={<SellPage />} />
-            </Route>
+          <Suspense fallback={
+            <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+              <div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          }>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<PublicLayout />}>
+                <Route index element={<HomePage />} />
+                <Route path="catalogo" element={<CatalogPage />} />
+                <Route path="articulo/:id" element={<ArticleDetailPage />} />
+                <Route path="vender" element={<SellPage />} />
+              </Route>
 
-            {/* Admin Auth */}
-            <Route path="/backoffice/login" element={<LoginPage />} />
+              {/* Admin Auth */}
+              <Route path="/backoffice/login" element={<LoginPage />} />
 
-            {/* Admin Routes */}
-            <Route
-              path="/backoffice"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<DashboardPage />} />
-              <Route path="articulos" element={<AdminArticlesPage />} />
-              <Route path="articulos/nuevo" element={<ArticleFormPage />} />
+              {/* Admin Routes */}
               <Route
-                path="articulos/editar/:id"
-                element={<ArticleFormPage />}
-              />
-              <Route path="reservas" element={<ReservationsPage />} />
-              <Route path="compras" element={<PurchasesPage />} />
-              <Route path="pedidos" element={<AdminSubmissionsPage />} />
-              <Route path="anotaciones" element={<AdminAnnotationsPage />} />
-              <Route path="domicilios" element={<AdminResidencesPage />} />
-            </Route>
+                path="/backoffice"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<DashboardPage />} />
+                <Route path="articulos" element={<AdminArticlesPage />} />
+                <Route path="articulos/nuevo" element={<ArticleFormPage />} />
+                <Route
+                  path="articulos/editar/:id"
+                  element={<ArticleFormPage />}
+                />
+                <Route path="reservas" element={<ReservationsPage />} />
+                <Route path="compras" element={<PurchasesPage />} />
+                <Route path="pedidos" element={<AdminSubmissionsPage />} />
+                <Route path="anotaciones" element={<AdminAnnotationsPage />} />
+                <Route path="domicilios" element={<AdminResidencesPage />} />
+              </Route>
 
-            {/* 404 Redirect */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* 404 Redirect */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </SmoothScroll>
       </BrowserRouter>
       <Toaster position="top-right" />
