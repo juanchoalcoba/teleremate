@@ -1,7 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Package, Gavel, ArrowRight } from "lucide-react";
 import { getArticles } from "../../services/api";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import CatalogGridSlide from "../../components/catalog/CatalogGridSlide";
 import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
 
@@ -43,13 +46,22 @@ export default function CatalogPage() {
     limit: 12,
   };
 
+  const [swiperInstance, setSwiperInstance] = useState(null);
+
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: ["articles", queryParams],
     queryFn: () => getArticles(queryParams),
   });
 
   const articles = data?.data?.articles || [];
-  const pagination = data?.data?.pagination || {};
+  const pagination = data?.data?.pagination || { totalPages: 1 };
+  const totalPages = pagination.totalPages || 0;
+
+  useEffect(() => {
+    if (swiperInstance && swiperInstance.activeIndex !== page - 1) {
+      swiperInstance.slideTo(page - 1);
+    }
+  }, [page, swiperInstance]);
 
   return (
     <div className="bg-zinc-950 min-h-screen relative overflow-hidden text-gray-200">
@@ -185,7 +197,7 @@ export default function CatalogPage() {
             />
           </aside>
 
-          <div className="grow">
+          <div className="grow overflow-hidden relative">
             {isError ? (
               <div className="flex flex-col items-center justify-center py-20 text-gray-300 bg-red-950/30 rounded-3xl border border-red-900/50 backdrop-blur-md">
                 <Package size={48} className="mb-4 text-red-400" />
@@ -199,16 +211,7 @@ export default function CatalogPage() {
                   Reintentar
                 </button>
               </div>
-            ) : isLoading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-72 bg-white/5 border border-white/5 animate-pulse rounded-2xl backdrop-blur-sm"
-                  />
-                ))}
-              </div>
-            ) : articles.length === 0 ? (
+            ) : totalPages === 0 && !isLoading ? (
               <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-zinc-900/50 rounded-3xl border-2 border-dashed border-white/10 backdrop-blur-sm">
                 <Package size={48} className="mb-4 opacity-20" />
                 <p className="font-bold text-gray-400">
@@ -231,30 +234,46 @@ export default function CatalogPage() {
               </div>
             ) : (
               <>
-                <div
-                  className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity ${isFetching ? "opacity-50" : ""}`}
+                <Swiper
+                  spaceBetween={30}
+                  slidesPerView={1}
+                  onSwiper={setSwiperInstance}
+                  onSlideChange={(swiper) => setPage(swiper.activeIndex + 1)}
+                  className="w-full"
                 >
-                  {articles.map((a) => (
-                    <ArticleCard key={a._id} article={a} theme="dark" />
-                  ))}
-                </div>
+                  {Array.from({ length: totalPages || 1 }).map((_, idx) => {
+                    const slidePage = idx + 1;
+                    return (
+                      <SwiperSlide key={slidePage}>
+                        <CatalogGridSlide
+                          page={slidePage}
+                          filters={filters}
+                          search={search}
+                          updateFilters={updateFilters}
+                          setSearch={setSearch}
+                          shouldFetch={Math.abs(page - slidePage) <= 1}
+                        />
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
 
-                {pagination.totalPages > 1 && (
+                {totalPages > 1 && (
                   <div className="flex justify-center items-center gap-4 mt-12">
                     <button
                       disabled={page === 1}
-                      onClick={() => setPage((p) => p - 1)}
-                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-sm"
+                      onClick={() => swiperInstance?.slidePrev()}
+                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-sm cursor-pointer"
                     >
                       Anterior
                     </button>
                     <span className="text-sm font-bold text-gray-400">
-                      Página {page} de {pagination.totalPages}
+                      Página {page} de {totalPages}
                     </span>
                     <button
-                      disabled={page === pagination.totalPages}
-                      onClick={() => setPage((p) => p + 1)}
-                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-sm"
+                      disabled={page === totalPages}
+                      onClick={() => swiperInstance?.slideNext()}
+                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-sm cursor-pointer"
                     >
                       Siguiente
                     </button>
