@@ -60,7 +60,7 @@ export default defineConfig({
         scope: "/",
         icons: [
           {
-            src: "/icon-192.png",
+            src: "/iconodefin.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any",
