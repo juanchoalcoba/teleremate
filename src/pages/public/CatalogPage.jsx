@@ -14,7 +14,7 @@ export default function CatalogPage() {
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "2026-05-30T00:00:00.000Z",
+    auctionDate: "2026-05-28T00:00:00.000Z",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
