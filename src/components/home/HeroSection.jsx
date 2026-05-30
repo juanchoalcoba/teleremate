@@ -44,7 +44,7 @@ export default function HeroSection() {
           />
         </picture>
 
-        <div className="absolute inset-0 bg-linear-to-r from-dark-950 via-dark-950/50 to-dark-950/50" />
+        <div className="absolute inset-0 bg-linear-to-b from-dark-950 via-dark-950/30 to-dark-950/30" />
       </div>
 
       {/* Content */}
