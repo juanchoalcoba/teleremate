@@ -14,7 +14,7 @@ export default function CatalogPage() {
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "2026-05-28T00:00:00.000Z",
+    auctionDate: "2026-05-30T00:00:00.000Z",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -131,9 +131,12 @@ export default function CatalogPage() {
                 <button
                   key={tab.value}
                   onClick={() =>
-                    updateFilters({ 
-                      category: tab.value, 
-                      auctionDate: tab.value === "remate" ? "2026-05-28T00:00:00.000Z" : "" 
+                    updateFilters({
+                      category: tab.value,
+                      auctionDate:
+                        tab.value === "remate"
+                          ? "2026-05-28T00:00:00.000Z"
+                          : "",
                     })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
@@ -173,8 +176,6 @@ export default function CatalogPage() {
                 ))}
               </div>
             )}
-
-
 
             {/* Dedicated indicator row (Only on Mobile) */}
             <div className="flex items-center justify-end md:hidden pr-2">
