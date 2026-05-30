@@ -137,7 +137,7 @@ export default function HeroSection() {
             <div className="absolute inset-0 rounded-full bg-brand-500/10 blur-[60px] lg:blur-[100px] scale-100 lg:scale-125" />
 
             <img
-              src="/logoprincipal.png"
+              src="/LOGOTRANSPARENTE.png"
               alt="Teleremate"
               loading="eager"
               fetchpriority="high"
