@@ -31,14 +31,19 @@ export default function HeroSection() {
       {/* Background Image ... */}
       {/* Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <img
-          src="/newhero.png"
-          alt="Remates Teleremate Fondo"
-          loading="eager"
-          decoding="sync"
-          fetchpriority="high"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
+        <picture>
+          <source media="(max-width: 1023px)" srcSet="/newhero2.png" />
+
+          <img
+            src="/newhero.png"
+            alt="Remates Teleremate Fondo"
+            loading="eager"
+            decoding="sync"
+            fetchPriority="high"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </picture>
+
         <div className="absolute inset-0 bg-linear-to-r from-dark-950 via-dark-950/50 to-dark-950/50" />
       </div>
 
