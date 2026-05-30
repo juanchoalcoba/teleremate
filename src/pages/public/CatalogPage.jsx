@@ -27,9 +27,6 @@ export default function CatalogPage() {
   ];
 
   const AUCTION_DATES = [
-    { value: "", label: "Todos" },
-    { value: "2026-05-28T00:00:00.000Z", label: "Jueves 28 de Mayo" },
-    { value: "2026-05-29T00:00:00.000Z", label: "Viernes 29 de Mayo" },
     { value: "2026-05-30T00:00:00.000Z", label: "Sábado 30 de Mayo" },
     { value: "2026-05-31T00:00:00.000Z", label: "Domingo 31 de Mayo" },
   ];
