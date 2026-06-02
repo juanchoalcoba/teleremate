@@ -41,7 +41,10 @@ export default function ArticleDetailPage() {
   
   const shareDescription = useMemo(() => {
     if (!article) return "Consultá este artículo en Teleremate";
-    return `Consultá por este artículo en Teleremate. ${getPriceLabel(article)}: ${getCurrencySymbol(article.currency, article.category)} ${article.estimatedPrice?.toLocaleString("es-UY")}`;
+    const finalPrice = article.category === "deposito" 
+      ? Math.round(article.estimatedPrice * 1.2) 
+      : article.estimatedPrice;
+    return `Consultá por este artículo en Teleremate. ${getPriceLabel(article)}: ${getCurrencySymbol(article.currency, article.category)} ${finalPrice?.toLocaleString("es-UY")}`;
   }, [article]);
 
   const currentImage = useMemo(() => {
@@ -165,12 +168,28 @@ export default function ArticleDetailPage() {
           <div className="bg-dark-950 text-white p-8 rounded-4xl shadow-xl">
             <div className="flex items-end justify-between gap-4 mb-8">
               <div>
-                <p className="text-gray-400 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
-                  {getPriceLabel(article)}
-                </p>
-                <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
-                  {getCurrencySymbol(article.currency, article.category)} $ {article.estimatedPrice?.toLocaleString("es-UY")}
-                </p>
+                {article.category === "deposito" ? (
+                  <>
+                    <p className="text-gray-400 text-[10px] font-medium tracking-widest mb-1 line-through decoration-gray-500/50">
+                      Base: {getCurrencySymbol(article.currency, article.category)} {article.estimatedPrice?.toLocaleString("es-UY")}
+                    </p>
+                    <p className="text-brand-300 text-[10px] font-black mb-1 uppercase tracking-[0.2em]">
+                      Final (+20% com.)
+                    </p>
+                    <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                      {getCurrencySymbol(article.currency, article.category)} {Math.round(article.estimatedPrice * 1.2)?.toLocaleString("es-UY")}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-gray-400 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
+                      {getPriceLabel(article)}
+                    </p>
+                    <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
+                      {getCurrencySymbol(article.currency, article.category)} {article.estimatedPrice?.toLocaleString("es-UY")}
+                    </p>
+                  </>
+                )}
               </div>
               <div className="text-right">
                 {article.category === "remate" ? (

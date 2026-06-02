@@ -126,17 +126,40 @@ export default function ArticleCard({ article, theme }) {
           isDark ? "border-white/10 group-hover:border-white/30" : "border-gray-100"
         }`}>
           <div>
-            <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${
-              isDark ? "text-gray-500" : "text-gray-400"
-            }`}>
-              {getPriceLabel(article)}
-            </p>
-            <p className={`text-lg font-black transition-all ${
-              isDark ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" : "text-brand-500"
-            }`}>
-              <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
-              {(price || estimatedPrice)?.toLocaleString() || "0"}
-            </p>
+            {category === "deposito" ? (
+              <>
+                <p className={`text-[10px] font-medium tracking-wide mb-0.5 line-through decoration-gray-500/50 ${
+                  isDark ? "text-gray-500" : "text-gray-400"
+                }`}>
+                  Base: {getCurrencySymbol(currency, category)} {(price || estimatedPrice)?.toLocaleString()}
+                </p>
+                <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${
+                  isDark ? "text-brand-300" : "text-brand-600"
+                }`}>
+                  Final (+20% com.)
+                </p>
+                <p className={`text-lg font-black transition-all ${
+                  isDark ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" : "text-brand-500"
+                }`}>
+                  <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
+                  {Math.round((price || estimatedPrice) * 1.2)?.toLocaleString() || "0"}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${
+                  isDark ? "text-gray-500" : "text-gray-400"
+                }`}>
+                  {getPriceLabel(article)}
+                </p>
+                <p className={`text-lg font-black transition-all ${
+                  isDark ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" : "text-brand-500"
+                }`}>
+                  <span className="text-xs mr-1 opacity-70">{getCurrencySymbol(currency, category)}</span>
+                  {(price || estimatedPrice)?.toLocaleString() || "0"}
+                </p>
+              </>
+            )}
           </div>
           <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
             isDark 
