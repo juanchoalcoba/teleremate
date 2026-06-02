@@ -10,11 +10,11 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    category: "remate",
+    category: "deposito",
     status: "",
     minPrice: "",
     maxPrice: "",
-    auctionDate: "2026-05-30T00:00:00.000Z",
+    auctionDate: "",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -26,10 +26,7 @@ export default function CatalogPage() {
     { value: "vehiculo", label: "Vehículos", icon: Package },
   ];
 
-  const AUCTION_DATES = [
-    { value: "2026-05-30T00:00:00.000Z", label: "Sábado 30 de Mayo" },
-    { value: "2026-05-31T00:00:00.000Z", label: "Domingo 31 de Mayo" },
-  ];
+  const AUCTION_DATES = [];
 
   const updateFilters = useCallback((patch) => {
     setFilters((prev) => ({ ...prev, ...patch }));
@@ -130,10 +127,7 @@ export default function CatalogPage() {
                   onClick={() =>
                     updateFilters({
                       category: tab.value,
-                      auctionDate:
-                        tab.value === "remate"
-                          ? "2026-05-30T00:00:00.000Z"
-                          : "",
+                      auctionDate: "",
                     })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
@@ -156,7 +150,7 @@ export default function CatalogPage() {
             </div>
 
             {/* Sub-tabs for "A Rematar" */}
-            {filters.category === "remate" && (
+            {filters.category === "remate" && AUCTION_DATES.length > 0 && (
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
                 {AUCTION_DATES.map((sub) => (
                   <button
