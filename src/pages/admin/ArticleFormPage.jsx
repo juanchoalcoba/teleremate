@@ -49,6 +49,7 @@ export default function ArticleFormPage() {
     auctionDate: "",
     reservedUntil: "",
     currency: "UYU",
+    isNewCondition: false,
   });
 
   const { data: articleData, isLoading: isLoadingArticle } = useQuery({
@@ -75,6 +76,7 @@ export default function ArticleFormPage() {
           auctionDate: art.auctionDate ? art.auctionDate.split("T")[0] : "",
           reservedUntil: art.reservedUntil ? art.reservedUntil.split("T")[0] : "",
           currency: art.currency || "UYU",
+          isNewCondition: art.isNewCondition || false,
         });
       }, 0);
     }
@@ -303,6 +305,19 @@ export default function ArticleFormPage() {
                 />
                 <span className="text-sm font-medium text-gray-700 underline decoration-brand-200 decoration-2 underline-offset-4">
                   Destacar este artículo en la portada
+                </span>
+              </label>
+              
+              <label className="flex items-center gap-2 cursor-pointer select-none ml-6">
+                <input
+                  type="checkbox"
+                  name="isNewCondition"
+                  checked={formData.isNewCondition}
+                  onChange={handleChange}
+                  className="w-4 h-4 text-brand-500 rounded border-gray-300 focus:ring-brand-500"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  Marcar como artículo NUEVO (Sin uso)
                 </span>
               </label>
             </div>

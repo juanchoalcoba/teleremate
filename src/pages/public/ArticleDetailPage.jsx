@@ -154,6 +154,11 @@ export default function ArticleDetailPage() {
               <ShieldCheck size={14} className="text-brand-500" />{" "}
               {article.condition}
             </div>
+            {article.isNewCondition && (
+              <div className="flex items-center gap-1.5 text-xs font-black text-white bg-brand-500 px-4 py-2 rounded-full shadow-sm">
+                NUEVO
+              </div>
+            )}
           </div>
 
           <div className="flex-1 bg-white border border-gray-50 rounded-3xl p-6 sm:p-8 mb-6 sm:mb-8">

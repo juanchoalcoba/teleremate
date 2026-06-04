@@ -61,6 +61,11 @@ export default function ArticleCard({ article, theme }) {
           className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {article.isNewCondition && (
+            <span className="badge-status bg-brand-500 text-white shadow-sm border border-brand-400 font-black tracking-widest px-3">
+              NUEVO
+            </span>
+          )}
           {status === "reserved" && (
             <span className="badge-status badge-status-reserved shadow-sm">
               Reservado
