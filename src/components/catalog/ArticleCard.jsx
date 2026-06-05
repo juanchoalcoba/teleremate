@@ -62,7 +62,11 @@ export default function ArticleCard({ article, theme }) {
         />
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {article.isNewCondition && (
-            <span className="badge-status bg-brand-500 text-white shadow-sm border border-brand-400 font-black tracking-widest px-3">
+            <span className={`badge-status shadow-lg font-black tracking-widest px-3 backdrop-blur-md ${
+              isDark 
+                ? "bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]" 
+                : "bg-emerald-50 text-emerald-700 border border-emerald-500 shadow-emerald-500/20"
+            }`}>
               NUEVO
             </span>
           )}
