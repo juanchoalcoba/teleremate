@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   ChevronLeft,
@@ -25,6 +25,7 @@ import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/
 
 export default function ArticleDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
@@ -99,12 +100,20 @@ export default function ArticleDetailPage() {
         <meta name="twitter:image" content={currentImage} />
       </Helmet>
 
-      <Link
-        to="/catalogo"
-        className="flex items-center text-gray-500 hover:text-brand-600 mb-8 font-medium"
+      <a
+        href="/catalogo"
+        onClick={(e) => {
+          e.preventDefault();
+          if (window.history.state && window.history.state.idx > 0) {
+            navigate(-1);
+          } else {
+            navigate('/catalogo');
+          }
+        }}
+        className="inline-flex items-center text-gray-500 hover:text-brand-600 mb-8 font-medium cursor-pointer"
       >
         <ChevronLeft size={18} className="mr-1" /> Volver al catálogo
-      </Link>
+      </a>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>

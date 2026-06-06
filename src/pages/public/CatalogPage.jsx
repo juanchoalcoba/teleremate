@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Package, Gavel, ArrowRight } from "lucide-react";
 import { getArticles } from "../../services/api";
@@ -9,17 +10,19 @@ import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
 
 export default function CatalogPage() {
-  const [filters, setFilters] = useState({
-    category: "deposito",
-    status: "",
-    minPrice: "",
-    maxPrice: "",
-    auctionDate: "",
-    isNewCondition: "",
-    subcategory: "",
-  });
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filters = {
+    category: searchParams.get("category") || "deposito",
+    status: searchParams.get("status") || "",
+    minPrice: searchParams.get("minPrice") || "",
+    maxPrice: searchParams.get("maxPrice") || "",
+    auctionDate: searchParams.get("auctionDate") || "",
+    isNewCondition: searchParams.get("isNewCondition") || "",
+    subcategory: searchParams.get("subcategory") || "",
+  };
+  const search = searchParams.get("search") || "";
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
   const CATEGORY_TABS = [
     { value: "deposito", label: "Venta Directa", icon: Package },
@@ -47,10 +50,49 @@ export default function CatalogPage() {
 
   const AUCTION_DATES = [];
 
+  const SUBCATEGORY_COLORS = {
+    "Electrodomésticos y Climatización": "border-blue-500",
+    "Muebles y Hogar": "border-amber-500",
+    "Bazar y Cocina": "border-orange-500",
+    "Herramientas y Ferretería": "border-zinc-500",
+    "Deportes y Tiempo Libre": "border-green-500",
+    "Bebés y Niños": "border-pink-500",
+    "Vehículos y Accesorios": "border-red-500",
+    "Varios / Otros": "border-purple-500"
+  };
+
   const updateFilters = useCallback((patch) => {
-    setFilters((prev) => ({ ...prev, ...patch }));
-    setPage(1);
-  }, []);
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      Object.entries(patch).forEach(([key, value]) => {
+        if (value) {
+          newParams.set(key, value);
+        } else {
+          newParams.delete(key);
+        }
+      });
+      newParams.set("page", "1");
+      return newParams;
+    });
+  }, [setSearchParams]);
+
+  const setSearch = useCallback((val) => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      if (val) newParams.set("search", val);
+      else newParams.delete("search");
+      newParams.set("page", "1");
+      return newParams;
+    });
+  }, [setSearchParams]);
+
+  const setPage = useCallback((val) => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set("page", val.toString());
+      return newParams;
+    });
+  }, [setSearchParams]);
 
   const queryParams = {
     ...filters,
@@ -131,7 +173,6 @@ export default function CatalogPage() {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setPage(1);
               }}
               className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-white/30 focus:bg-white/10 transition-all shadow-sm font-medium text-white placeholder:text-gray-500 backdrop-blur-md"
             />
@@ -202,19 +243,21 @@ export default function CatalogPage() {
                   >
                     Todas
                   </button>
-                  {SUBCATEGORIES.map((sub) => (
+                  {SUBCATEGORIES.map((sub) => {
+                    const borderColor = SUBCATEGORY_COLORS[sub] || "border-white/10";
+                    return (
                     <button
                       key={sub}
                       onClick={() => updateFilters({ subcategory: sub })}
                       className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                         filters.subcategory === sub
-                          ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                          : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                          ? `bg-white text-zinc-950 ${borderColor} border-2 shadow-[0_0_15px_rgba(255,255,255,0.2)]`
+                          : `bg-transparent text-gray-400 ${borderColor} border-2 hover:bg-white/5 hover:text-white`
                       }`}
                     >
                       {sub}
                     </button>
-                  ))}
+                  )})}
                 </div>
               </div>
             )}
@@ -281,13 +324,7 @@ export default function CatalogPage() {
                 </p>
                 <button
                   onClick={() => {
-                    setSearch("");
-                    updateFilters({
-                      category: "deposito",
-                      status: "",
-                      minPrice: "",
-                      maxPrice: "",
-                    });
+                    setSearchParams(new URLSearchParams({ category: "deposito" }));
                   }}
                   className="mt-4 text-white font-bold text-sm hover:underline hover:text-accent-500 transition-colors"
                 >
