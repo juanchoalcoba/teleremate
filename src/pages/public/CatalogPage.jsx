@@ -15,6 +15,8 @@ export default function CatalogPage() {
     minPrice: "",
     maxPrice: "",
     auctionDate: "",
+    isNewCondition: "",
+    subcategory: "",
   });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -24,6 +26,23 @@ export default function CatalogPage() {
     { value: "remate", label: "A Rematar", icon: Gavel },
     { value: "inmueble", label: "Inmuebles", icon: Package },
     { value: "vehiculo", label: "Vehículos", icon: Package },
+  ];
+
+  const CONDITION_TABS = [
+    { value: "", label: "Todos" },
+    { value: "true", label: "Nuevos" },
+    { value: "false", label: "Usados" },
+  ];
+
+  const SUBCATEGORIES = [
+    "Electrodomésticos y Climatización",
+    "Muebles y Hogar",
+    "Bazar y Cocina",
+    "Herramientas y Ferretería",
+    "Deportes y Tiempo Libre",
+    "Bebés y Niños",
+    "Vehículos y Accesorios",
+    "Varios / Otros"
   ];
 
   const AUCTION_DATES = [];
@@ -128,6 +147,8 @@ export default function CatalogPage() {
                     updateFilters({
                       category: tab.value,
                       auctionDate: "",
+                      isNewCondition: "",
+                      subcategory: "",
                     })
                   }
                   className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
@@ -148,6 +169,55 @@ export default function CatalogPage() {
                 </button>
               ))}
             </div>
+
+            {/* Sub-tabs for "Venta Directa" */}
+            {filters.category === "deposito" && (
+              <div className="flex flex-col gap-3">
+                {/* Condition Tabs (Todos, Nuevos, Usados) */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+                  {CONDITION_TABS.map((cond) => (
+                    <button
+                      key={cond.label}
+                      onClick={() => updateFilters({ isNewCondition: cond.value })}
+                      className={`px-5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                        (filters.isNewCondition || "") === cond.value
+                          ? "bg-brand-500 text-white border-brand-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+                          : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                      }`}
+                    >
+                      {cond.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Subcategory Tabs */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+                  <button
+                    onClick={() => updateFilters({ subcategory: "" })}
+                    className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                      !filters.subcategory
+                        ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                        : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                    }`}
+                  >
+                    Todas
+                  </button>
+                  {SUBCATEGORIES.map((sub) => (
+                    <button
+                      key={sub}
+                      onClick={() => updateFilters({ subcategory: sub })}
+                      className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                        filters.subcategory === sub
+                          ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                          : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                      }`}
+                    >
+                      {sub}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Sub-tabs for "A Rematar" */}
             {filters.category === "remate" && AUCTION_DATES.length > 0 && (

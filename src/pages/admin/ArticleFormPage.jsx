@@ -27,6 +27,16 @@ const CATEGORIES = [
   { value: "inmueble", label: "Inmuebles" },
   { value: "vehiculo", label: "Vehículos" },
 ];
+const SUBCATEGORIES = [
+  "Electrodomésticos y Climatización",
+  "Muebles y Hogar",
+  "Bazar y Cocina",
+  "Herramientas y Ferretería",
+  "Deportes y Tiempo Libre",
+  "Bebés y Niños",
+  "Vehículos y Accesorios",
+  "Varios / Otros"
+];
 const CONDITIONS = ["Excelente", "Muy bueno", "Bueno", "Regular"];
 
 export default function ArticleFormPage() {
@@ -50,6 +60,7 @@ export default function ArticleFormPage() {
     reservedUntil: "",
     currency: "UYU",
     isNewCondition: false,
+    subcategory: "Varios / Otros",
   });
 
   const { data: articleData, isLoading: isLoadingArticle } = useQuery({
@@ -77,6 +88,7 @@ export default function ArticleFormPage() {
           reservedUntil: art.reservedUntil ? art.reservedUntil.split("T")[0] : "",
           currency: art.currency || "UYU",
           isNewCondition: art.isNewCondition || false,
+          subcategory: art.subcategory || "Varios / Otros",
         });
       }, 0);
     }
@@ -424,6 +436,22 @@ export default function ArticleFormPage() {
                   {CATEGORIES.map((c) => (
                     <option key={c.value} value={c.value}>
                       {c.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="label-admin">Subcategoría (Departamento)</label>
+                <select
+                  name="subcategory"
+                  value={formData.subcategory}
+                  onChange={handleChange}
+                  className="input-admin text-sm"
+                >
+                  {SUBCATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
                     </option>
                   ))}
                 </select>
