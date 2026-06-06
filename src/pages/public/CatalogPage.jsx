@@ -215,7 +215,7 @@ export default function CatalogPage() {
             {filters.category === "deposito" && (
               <div className="flex flex-col gap-3">
                 {/* Condition Tabs (Todos, Nuevos, Usados) */}
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+                <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
                   {CONDITION_TABS.map((cond) => (
                     <button
                       key={cond.label}
@@ -232,7 +232,7 @@ export default function CatalogPage() {
                 </div>
 
                 {/* Subcategory Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+                <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
                   <button
                     onClick={() => updateFilters({ subcategory: "" })}
                     className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
@@ -264,7 +264,7 @@ export default function CatalogPage() {
 
             {/* Sub-tabs for "A Rematar" */}
             {filters.category === "remate" && AUCTION_DATES.length > 0 && (
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+              <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
                 {AUCTION_DATES.map((sub) => (
                   <button
                     key={sub.label}
