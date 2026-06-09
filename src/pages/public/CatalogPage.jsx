@@ -13,11 +13,11 @@ export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filters = {
-    category: searchParams.get("category") || "deposito",
+    category: searchParams.get("category") || "remate",
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || "",
+    auctionDate: searchParams.get("auctionDate") || "2026-06-13T00:00:00.000Z",
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
