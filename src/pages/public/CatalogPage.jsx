@@ -12,12 +12,14 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const currentCategory = searchParams.get("category") || "remate";
+
   const filters = {
-    category: searchParams.get("category") || "remate",
+    category: currentCategory,
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || "2026-06-13T00:00:00.000Z",
+    auctionDate: searchParams.get("auctionDate") || (currentCategory === "remate" ? "2026-06-13T00:00:00.000Z" : ""),
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
