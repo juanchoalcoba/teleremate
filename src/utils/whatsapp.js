@@ -25,6 +25,7 @@ export const formatPhoneForWA = (phone) => {
     cleaned = "598" + cleaned;
   }
   
+  console.log(`[WA LOG] Original: "${phone}" -> Normalizado: "${cleaned}"`);
   return cleaned;
 };
 
@@ -36,7 +37,9 @@ export const formatPhoneForWA = (phone) => {
 export const getWALink = (phone, message = "") => {
   const formattedPhone = formatPhoneForWA(phone);
   const encodedMsg = encodeURIComponent(message);
-  return `https://wa.me/${formattedPhone}${encodedMsg ? `?text=${encodedMsg}` : ""}`;
+  const finalUrl = `https://wa.me/${formattedPhone}${encodedMsg ? `?text=${encodedMsg}` : ""}`;
+  console.log(`[WA LOG] URL Final Generada: ${finalUrl}`);
+  return finalUrl;
 };
 
 /**

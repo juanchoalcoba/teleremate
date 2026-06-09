@@ -48,7 +48,10 @@ export default function CatalogPage() {
     "Varios / Otros"
   ];
 
-  const AUCTION_DATES = [];
+  const AUCTION_DATES = [
+    { value: "2026-06-13T00:00:00.000Z", label: "13 de junio" },
+    { value: "2026-06-14T00:00:00.000Z", label: "14 de junio" },
+  ];
 
   const SUBCATEGORY_COLORS = {
     "Electrodomésticos y Climatización": "border-blue-500",
