@@ -64,13 +64,24 @@ export default function HeroSection() {
             </div>
           )}
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-2 lg:mb-6 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-gray-100 text-[10px] md:text-xs font-bold uppercase tracking-widest">
-              Plataforma de Remates y Venta directa
+          {/* WhatsApp Group Button */}
+          <a
+            href="https://chat.whatsapp.com/BSnSdwa9CSQHWR2BM1HkHA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whatsapp-hero-btn inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] active:bg-[#17a84f] text-white font-black text-sm md:text-base px-6 py-3 rounded-full mb-4 lg:mb-6 shadow-[0_0_20px_rgba(37,211,102,0.45)] hover:shadow-[0_0_35px_rgba(37,211,102,0.65)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
+          >
+            {/* WhatsApp SVG icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 shrink-0">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.122 1.528 5.855L.057 23.17a.75.75 0 0 0 .92.92l5.335-1.474A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.726 9.726 0 0 1-4.952-1.352l-.355-.21-3.668 1.014 1.032-3.573-.228-.368A9.726 9.726 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+            </svg>
+            Unirse al grupo de WhatsApp
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
             </span>
-          </div>
+          </a>
 
           {/* Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-4 lg:mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
