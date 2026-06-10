@@ -69,7 +69,7 @@ export default function HeroSection() {
             href="https://chat.whatsapp.com/BSnSdwa9CSQHWR2BM1HkHA"
             target="_blank"
             rel="noopener noreferrer"
-            className="whatsapp-hero-btn relative z-20 inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] active:bg-[#17a84f] text-white font-bold text-xs md:text-sm px-5 py-2 rounded-full mb-3 lg:mb-5 shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:shadow-[0_0_28px_rgba(37,211,102,0.6)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
+            className="whatsapp-hero-btn relative z-20 inline-flex items-center gap-2 bg-[#128C7E] hover:bg-[#075E54] active:bg-[#054c44] text-white font-bold text-xs md:text-sm px-5 py-2 rounded-full mb-3 lg:mb-5 shadow-[0_0_16px_rgba(18,140,126,0.4)] hover:shadow-[0_0_28px_rgba(18,140,126,0.6)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
           >
             {/* WhatsApp SVG icon */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 shrink-0">
@@ -123,7 +123,7 @@ export default function HeroSection() {
             {/* BOTÓN: VER CATÁLOGOS */}
             <Link
               to="/catalogo"
-              className="relative w-auto min-w-[220px] sm:w-auto sm:min-w-0 group overflow-hidden inline-flex justify-center items-center gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 bg-[length:200%_auto] sm:bg-brand-500 sm:bg-none hover:bg-[right_center] text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] sm:shadow-none hover:shadow-[0_0_35px_rgba(249,115,22,0.5)] sm:hover:shadow-xl sm:hover:shadow-brand-500/30 active:scale-95 uppercase sm:normal-case text-sm"
+              className="relative w-auto min-w-[220px] sm:w-auto sm:min-w-0 group overflow-hidden inline-flex justify-center items-center gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 bg-[length:200%_auto] sm:bg-brand-500 sm:bg-none hover:bg-[right_center] text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] sm:shadow-none hover:shadow-[0_0_35px_rgba(249,115,22,0.5)] sm:hover:shadow-xl sm:hover:shadow-brand-500/30 active:scale-95 uppercase sm:normal-case text-sm border-4 border-white"
             >
               {/* El brillo animado */}
               <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine sm:hidden" />
@@ -136,7 +136,7 @@ export default function HeroSection() {
             {/* BOTÓN: VENDER */}
             <Link
               to="/vender"
-              className="w-auto min-w-[220px] sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-2 sm:border border-white/10 sm:border-white/20 hover:border-white/30 sm:hover:border-white/40 text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm"
+              className="w-auto min-w-[220px] sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-4 border-brand-500 hover:border-brand-400 text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm shadow-[0_0_15px_rgba(249,115,22,0.2)] hover:shadow-[0_0_25px_rgba(249,115,22,0.4)]"
             >
               Vender Artículo
             </Link>
