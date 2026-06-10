@@ -69,7 +69,7 @@ export default function HeroSection() {
             href="https://chat.whatsapp.com/BSnSdwa9CSQHWR2BM1HkHA"
             target="_blank"
             rel="noopener noreferrer"
-            className="whatsapp-hero-btn inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] active:bg-[#17a84f] text-white font-bold text-xs md:text-sm px-5 py-2 rounded-full mb-3 lg:mb-5 shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:shadow-[0_0_28px_rgba(37,211,102,0.6)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
+            className="whatsapp-hero-btn relative z-20 inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] active:bg-[#17a84f] text-white font-bold text-xs md:text-sm px-5 py-2 rounded-full mb-3 lg:mb-5 shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:shadow-[0_0_28px_rgba(37,211,102,0.6)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
           >
             {/* WhatsApp SVG icon */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 shrink-0">
@@ -92,7 +92,7 @@ export default function HeroSection() {
               loading="eager"
               fetchpriority="high"
               decoding="sync"
-              className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-12 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125"
+              className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-6 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125"
             />
 
             {/* Texto exclusivo para Desktop y Pantallas Grandes */}
