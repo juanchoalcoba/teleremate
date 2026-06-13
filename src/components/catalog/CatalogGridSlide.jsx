@@ -40,7 +40,7 @@ export default function CatalogGridSlide({
 
   if (isLoading || !shouldFetch) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
@@ -76,7 +76,7 @@ export default function CatalogGridSlide({
 
   return (
     <div
-      className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity ${
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity ${
         isFetching ? "opacity-50" : ""
       }`}
     >

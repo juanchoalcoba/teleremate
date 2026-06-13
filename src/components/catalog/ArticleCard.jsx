@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Tag, Share2 } from "lucide-react";
+import { ArrowRight, Tag, Share2, BookmarkPlus } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
 import { toast } from "react-hot-toast";
+import AnnotationModal from "../modals/AnnotationModal";
 
 export default function ArticleCard({ article, theme }) {
+  const [showAnnotationModal, setShowAnnotationModal] = useState(false);
   const { _id, title, price, estimatedPrice, images, status, category, currency } =
     article;
 
@@ -43,9 +46,10 @@ export default function ArticleCard({ article, theme }) {
   };
 
   return (
+    <>
     <Link 
       to={`/articulo/${_id}`} 
-      className={`group block h-full ${
+      className={`group flex flex-col h-full ${
         isDark 
           ? "bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 backdrop-blur-md" 
           : "card-premium"
@@ -178,7 +182,30 @@ export default function ArticleCard({ article, theme }) {
             <ArrowRight size={16} />
           </div>
         </div>
+
+        {category === "remate" && status !== "sold" && (
+          <div className="mt-3">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowAnnotationModal(true);
+              }}
+              className="w-full bg-white hover:bg-gray-100 text-black border-2 border-black font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95"
+            >
+              <BookmarkPlus size={16} /> ANOTARME AL REMATE
+            </button>
+          </div>
+        )}
       </div>
     </Link>
+    
+    {showAnnotationModal && (
+      <AnnotationModal
+        articleId={_id}
+        onClose={() => setShowAnnotationModal(false)}
+      />
+    )}
+    </>
   );
 }
