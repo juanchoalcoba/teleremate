@@ -51,7 +51,7 @@ export default function ArticleCard({ article, theme }) {
       to={`/articulo/${_id}`} 
       className={`group flex flex-col h-full ${
         isDark 
-          ? "bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 backdrop-blur-md" 
+          ? "bg-zinc-900/90 md:bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 backdrop-blur-none md:backdrop-blur-md" 
           : "card-premium"
       }`}
     >
@@ -66,9 +66,9 @@ export default function ArticleCard({ article, theme }) {
         />
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {article.isNewCondition && (
-            <span className={`badge-status shadow-lg font-black tracking-widest px-3 backdrop-blur-md ${
+            <span className={`badge-status shadow-lg font-black tracking-widest px-3 backdrop-blur-none md:backdrop-blur-md ${
               isDark 
-                ? "bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]" 
+                ? "bg-emerald-950/90 md:bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]" 
                 : "bg-emerald-50 text-emerald-700 border border-emerald-500 shadow-emerald-500/20"
             }`}>
               NUEVO
@@ -85,10 +85,10 @@ export default function ArticleCard({ article, theme }) {
             </span>
           )}
           {category === "remate" && article.auctionLot && (
-            <span className={`badge-status ${
+            <span className={`badge-status backdrop-blur-none md:backdrop-blur-md ${
               isDark 
-                ? "bg-zinc-950/80 text-white border border-white/20 shadow-md backdrop-blur-md" 
-                : "bg-white/90 text-brand-600 border border-brand-100 shadow-sm backdrop-blur-sm"
+                ? "bg-zinc-950/90 md:bg-zinc-950/80 text-white border border-white/20 shadow-md" 
+                : "bg-white/90 text-brand-600 border border-brand-100 shadow-sm md:backdrop-blur-sm"
             }`}>
               Lote #{article.auctionLot}
             </span>

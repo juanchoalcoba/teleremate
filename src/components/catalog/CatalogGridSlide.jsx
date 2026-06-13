@@ -44,7 +44,7 @@ export default function CatalogGridSlide({
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
-            className="h-72 bg-white/5 border border-white/5 animate-pulse rounded-2xl backdrop-blur-sm"
+            className="h-72 bg-white/5 border border-white/5 animate-pulse rounded-2xl backdrop-blur-none md:backdrop-blur-sm"
           />
         ))}
       </div>

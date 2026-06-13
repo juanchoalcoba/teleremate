@@ -3,8 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Package, Gavel, ArrowRight } from "lucide-react";
 import { getArticles } from "../../services/api";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import CatalogGridSlide from "../../components/catalog/CatalogGridSlide";
 import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
@@ -106,8 +104,6 @@ export default function CatalogPage() {
     limit: 12,
   };
 
-  const [swiperInstance, setSwiperInstance] = useState(null);
-
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: ["articles", queryParams],
     queryFn: () => getArticles(queryParams),
@@ -116,12 +112,6 @@ export default function CatalogPage() {
   const articles = data?.data?.articles || [];
   const pagination = data?.data?.pagination || { totalPages: 1 };
   const totalPages = pagination.totalPages || 0;
-
-  useEffect(() => {
-    if (swiperInstance && swiperInstance.activeIndex !== page - 1) {
-      swiperInstance.slideTo(page - 1);
-    }
-  }, [page, swiperInstance]);
 
   return (
     <div className="bg-zinc-950 min-h-screen relative overflow-hidden text-gray-200">
@@ -338,36 +328,21 @@ export default function CatalogPage() {
               </div>
             ) : (
               <>
-                <Swiper
-                  spaceBetween={30}
-                  slidesPerView={1}
-                  onSwiper={setSwiperInstance}
-                  onSlideChange={(swiper) => setPage(swiper.activeIndex + 1)}
-                  className="w-full"
-                >
-                  {Array.from({ length: totalPages || 1 }).map((_, idx) => {
-                    const slidePage = idx + 1;
-                    return (
-                      <SwiperSlide key={slidePage}>
-                        <CatalogGridSlide
-                          page={slidePage}
-                          filters={filters}
-                          search={search}
-                          updateFilters={updateFilters}
-                          setSearch={setSearch}
-                          shouldFetch={Math.abs(page - slidePage) <= 1}
-                        />
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
+                <CatalogGridSlide
+                  page={page}
+                  filters={filters}
+                  search={search}
+                  updateFilters={updateFilters}
+                  setSearch={setSearch}
+                  shouldFetch={true}
+                />
 
                 {totalPages > 1 && (
                   <div className="flex justify-center items-center gap-4 mt-12">
                     <button
                       disabled={page === 1}
-                      onClick={() => swiperInstance?.slidePrev()}
-                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-sm cursor-pointer"
+                      onClick={() => setPage(page - 1)}
+                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
                     >
                       Anterior
                     </button>
@@ -376,8 +351,8 @@ export default function CatalogPage() {
                     </span>
                     <button
                       disabled={page === totalPages}
-                      onClick={() => swiperInstance?.slideNext()}
-                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all backdrop-blur-sm cursor-pointer"
+                      onClick={() => setPage(page + 1)}
+                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
                     >
                       Siguiente
                     </button>
