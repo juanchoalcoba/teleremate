@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useMutation } from "@tanstack/react-query";
 import { X, Loader, User, Phone, CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
@@ -68,8 +69,8 @@ export default function AnnotationModal({ articleId, onClose, onSuccess }) {
   };
 
   if (isDone) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    return createPortal(
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
         <div className="bg-white rounded-3xl p-10 flex flex-col items-center max-w-sm w-full text-center shadow-2xl animate-in zoom-in duration-300">
           <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
             <CheckCircle size={40} />
@@ -77,12 +78,13 @@ export default function AnnotationModal({ articleId, onClose, onSuccess }) {
           <h2 className="text-2xl font-black text-gray-900 mb-2">¡Registrado!</h2>
           <p className="text-gray-500">Te has anotado correctamente para este remate. Nos contactaremos pronto.</p>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="bg-brand-500 p-6 flex items-center justify-between">
@@ -163,6 +165,7 @@ export default function AnnotationModal({ articleId, onClose, onSuccess }) {
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
