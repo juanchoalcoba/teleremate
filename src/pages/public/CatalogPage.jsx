@@ -17,7 +17,7 @@ export default function CatalogPage() {
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || (currentCategory === "remate" ? "2026-06-13T00:00:00.000Z" : ""),
+    auctionDate: searchParams.get("auctionDate") || (currentCategory === "remate" ? "2026-06-14T00:00:00.000Z" : ""),
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
