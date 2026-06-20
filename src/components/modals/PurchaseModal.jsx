@@ -294,8 +294,8 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
                   className="w-5 h-5 text-brand-600 border-gray-300 focus:ring-brand-500"
                 />
                 <div className="ml-4">
-                  <p className="font-bold text-gray-900">Transferencia / Depósito</p>
-                  <p className="text-sm text-gray-500">Coordina el pago directamente con nosotros</p>
+                  <p className="font-bold text-gray-900">Pago Presencial en Depósito</p>
+                  <p className="text-sm text-gray-500">Abona en efectivo o tarjeta directamente en nuestro local</p>
                 </div>
               </label>
 
