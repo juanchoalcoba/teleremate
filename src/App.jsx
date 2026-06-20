@@ -13,6 +13,7 @@ import AdminLayout from "./layouts/AdminLayout";
 const HomePage = lazy(() => import("./pages/public/HomePage"));
 const CatalogPage = lazy(() => import("./pages/public/CatalogPage"));
 const ArticleDetailPage = lazy(() => import("./pages/public/ArticleDetailPage"));
+const SuccessPaymentPage = lazy(() => import("./pages/public/SuccessPaymentPage"));
 
 // Admin Pages
 const LoginPage = lazy(() => import("./pages/admin/LoginPage"));
@@ -105,6 +106,7 @@ function App() {
                 <Route path="catalogo" element={<CatalogPage />} />
                 <Route path="articulo/:id" element={<ArticleDetailPage />} />
                 <Route path="vender" element={<SellPage />} />
+                <Route path="pago-exitoso" element={<SuccessPaymentPage />} />
               </Route>
 
               {/* Admin Auth */}
