@@ -219,7 +219,7 @@ export default function ArticleDetailPage() {
                     </div>
                   </>
                 ) : (
-                  article.reservedUntil && (
+                  article.status === "reserved" && article.reservedUntil && (
                     <>
                       <p className="text-orange-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
                         Reservado hasta
