@@ -155,7 +155,7 @@ export default function CatalogPage() {
           <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/10 blur-[100px] rounded-full pointer-events-none" />
         </div>
 
-        <div className="flex flex-col gap-6 mb-12">
+        <div id="catalog-content" className="flex flex-col gap-6 mb-12">
           <div className="relative group">
             <Search
               size={18}
@@ -342,7 +342,7 @@ export default function CatalogPage() {
                       disabled={page === 1}
                       onClick={() => {
                         setPage(page - 1);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        document.getElementById('catalog-content')?.scrollIntoView({ behavior: 'smooth' });
                       }}
                       className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
                     >
@@ -355,7 +355,7 @@ export default function CatalogPage() {
                       disabled={page === totalPages}
                       onClick={() => {
                         setPage(page + 1);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        document.getElementById('catalog-content')?.scrollIntoView({ behavior: 'smooth' });
                       }}
                       className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
                     >
