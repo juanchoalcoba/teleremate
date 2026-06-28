@@ -340,7 +340,10 @@ export default function CatalogPage() {
                   <div className="flex justify-center items-center gap-4 mt-12">
                     <button
                       disabled={page === 1}
-                      onClick={() => setPage(page - 1)}
+                      onClick={() => {
+                        setPage(page - 1);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
                     >
                       Anterior
@@ -350,7 +353,10 @@ export default function CatalogPage() {
                     </span>
                     <button
                       disabled={page === totalPages}
-                      onClick={() => setPage(page + 1)}
+                      onClick={() => {
+                        setPage(page + 1);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
                     >
                       Siguiente
