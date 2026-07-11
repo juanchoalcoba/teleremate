@@ -110,6 +110,9 @@ export default function PurchasesPage() {
                       Teléfono
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase">
+                      Pago
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase">
                       Entrega
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase">
@@ -143,6 +146,28 @@ export default function PurchasesPage() {
                           {purchase.phone}
                           <MessageCircle size={14} />
                         </a>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col items-start gap-1">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-bold ${
+                              purchase.paymentMethod === "mercadopago"
+                                ? purchase.paymentStatus === "approved"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-orange-100 text-orange-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {purchase.paymentMethod === "mercadopago" 
+                              ? (purchase.paymentStatus === "approved" ? "MP Aprobado" : "MP Pendiente")
+                              : "Depósito"}
+                          </span>
+                          {purchase.paymentId && (
+                            <span className="text-xs text-gray-500 font-mono">
+                              ID: {purchase.paymentId}
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <span

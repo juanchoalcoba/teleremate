@@ -10,14 +10,14 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentCategory = searchParams.get("category") || "deposito";
+  const currentCategory = searchParams.get("category") || "remate";
 
   const filters = {
     category: currentCategory,
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || "",
+    auctionDate: searchParams.get("auctionDate") || (currentCategory === "remate" ? "2026-07-18T00:00:00.000Z" : ""),
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
@@ -48,7 +48,9 @@ export default function CatalogPage() {
     "Varios / Otros"
   ];
 
-  const AUCTION_DATES = [];
+  const AUCTION_DATES = [
+    { value: "2026-07-18T00:00:00.000Z", label: "18 de Julio" }
+  ];
 
   const SUBCATEGORY_COLORS = {
     "Electrodomésticos y Climatización": "border-blue-500",
