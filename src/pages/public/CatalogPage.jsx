@@ -17,7 +17,7 @@ export default function CatalogPage() {
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || (currentCategory === "remate" ? "2026-07-18T00:00:00.000Z" : ""),
+    auctionDate: searchParams.get("auctionDate") || (currentCategory === "remate" ? "2026-07-19T00:00:00.000Z" : ""),
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
@@ -49,6 +49,7 @@ export default function CatalogPage() {
   ];
 
   const AUCTION_DATES = [
+    { value: "2026-07-19T00:00:00.000Z", label: "19 de Julio" },
     { value: "2026-07-18T00:00:00.000Z", label: "18 de Julio" }
   ];
 
