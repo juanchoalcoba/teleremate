@@ -119,7 +119,7 @@ export default function HeroSection() {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-5 w-full mt-6 max-w-sm mx-auto sm:max-w-none">
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-5 w-full mt-4 max-w-sm mx-auto sm:max-w-none">
             {/* BOTÓN: VER CATÁLOGOS */}
             <Link
               to="/catalogo"
@@ -136,7 +136,7 @@ export default function HeroSection() {
             {/* BOTÓN: VENDER */}
             <Link
               to="/vender"
-              className="w-full sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-2 sm:border-4 border-brand-500 hover:border-brand-400 text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm sm:text-base shadow-lg sm:shadow-none hover:shadow-xl"
+              className="w-full sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-2 sm:border-4 border-brand-500 sm:border-white/40 hover:border-brand-400 sm:hover:border-white/80 text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm sm:text-base shadow-lg sm:shadow-none hover:shadow-xl"
             >
               Vender Artículo
             </Link>
