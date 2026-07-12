@@ -49,8 +49,8 @@ export default function CatalogPage() {
   ];
 
   const AUCTION_DATES = [
-    { value: "2026-07-19T00:00:00.000Z", label: "19 de Julio" },
-    { value: "2026-07-18T00:00:00.000Z", label: "18 de Julio" }
+    { value: "2026-07-18T00:00:00.000Z", label: "18 de Julio" },
+    { value: "2026-07-19T00:00:00.000Z", label: "19 de Julio" }
   ];
 
   const SUBCATEGORY_COLORS = {
