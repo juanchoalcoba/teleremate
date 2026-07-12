@@ -118,12 +118,12 @@ export default function HeroSection() {
             totalmente transparente.
           </p>
 
-          {/* CTA Buttons - Híbridos (Premium en móvil, Original en Desktop) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 w-full mt-4">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-5 w-full mt-6 max-w-sm mx-auto sm:max-w-none">
             {/* BOTÓN: VER CATÁLOGOS */}
             <Link
               to="/catalogo"
-              className="relative w-auto min-w-[220px] sm:w-auto sm:min-w-0 group overflow-hidden inline-flex justify-center items-center gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 bg-[length:200%_auto] sm:bg-brand-500 sm:bg-none hover:bg-[right_center] text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)] sm:shadow-none hover:shadow-[0_0_35px_rgba(249,115,22,0.5)] sm:hover:shadow-xl sm:hover:shadow-brand-500/30 active:scale-95 uppercase sm:normal-case text-sm border-4 border-white"
+              className="relative w-full sm:w-auto sm:min-w-0 group overflow-hidden inline-flex justify-center items-center gap-2 sm:gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 sm:bg-brand-500 sm:bg-none hover:bg-[right_center] text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-500 shadow-lg sm:shadow-none hover:shadow-xl sm:hover:shadow-brand-500/30 active:scale-95 uppercase sm:normal-case text-sm sm:text-base border-2 sm:border-4 border-white"
             >
               {/* El brillo animado */}
               <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine sm:hidden" />
@@ -136,7 +136,7 @@ export default function HeroSection() {
             {/* BOTÓN: VENDER */}
             <Link
               to="/vender"
-              className="w-auto min-w-[220px] sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-4 border-brand-500 hover:border-brand-400 text-white font-black sm:font-bold px-10 py-5 sm:px-8 sm:py-4 rounded-full sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm shadow-[0_0_15px_rgba(249,115,22,0.2)] hover:shadow-[0_0_25px_rgba(249,115,22,0.4)]"
+              className="w-full sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-2 sm:border-4 border-brand-500 hover:border-brand-400 text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm sm:text-base shadow-lg sm:shadow-none hover:shadow-xl"
             >
               Vender Artículo
             </Link>
