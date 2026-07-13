@@ -53,8 +53,24 @@ const NotificationToggle = () => {
 
       // IMPORTANTE: Usamos el SW unificado que ya registra VitePWA
       const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.getSubscription();
+      let subscription = await registration.pushManager.getSubscription();
       
+      // Auto-resuscribir si el usuario ya dio permisos pero la suscripción se venció/perdió
+      if (!subscription && Notification.permission === 'granted') {
+        console.log('[PUSH] Permisos detectados pero sin suscripción activa. Intentando auto-resuscribir...');
+        try {
+          const subscribeOptions = {
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+          };
+          subscription = await registration.pushManager.subscribe(subscribeOptions);
+          await subscribeAdminPush(subscription);
+          console.log('[PUSH] Auto-resuscripción exitosa.');
+        } catch (e) {
+          console.error('[PUSH] Falló la auto-resuscripción:', e);
+        }
+      }
+
       setIsSubscribed(!!subscription);
     } catch (err) {
       console.error('Error checking status:', err);
