@@ -36,6 +36,7 @@ export default function HeroSection() {
               rel="noopener noreferrer"
               className="inline-flex justify-center items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 uppercase text-xs md:text-sm border-2 border-white/20 hover:border-white/50"
             >
+              <img src="/logoremotes.png" alt="Remotes" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" />
               Participar Sábado 18
             </a>
             <a
@@ -44,6 +45,7 @@ export default function HeroSection() {
               rel="noopener noreferrer"
               className="inline-flex justify-center items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 uppercase text-xs md:text-sm border-2 border-white/20 hover:border-white/50"
             >
+              <img src="/logoremotes.png" alt="Remotes" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" />
               Participar Domingo 19
             </a>
           </div>
