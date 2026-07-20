@@ -28,27 +28,7 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* LEFT: Text + CTA */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-5 xl:col-span-5 w-full">
-          {/* Participate Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-4 lg:mb-6 z-20 relative w-full sm:w-auto animate-reveal animation-delay-300">
-            <a
-              href="https://www.remotes.com.uy/participar/remate/7328"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex justify-center items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 uppercase text-xs md:text-sm border-2 border-white/20 hover:border-white/50"
-            >
-              <img src="/logoremotes.png" alt="Remotes" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" />
-              Participar Sábado 18
-            </a>
-            <a
-              href="https://www.remotes.com.uy/participar/remate/7330"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex justify-center items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg active:scale-95 uppercase text-xs md:text-sm border-2 border-white/20 hover:border-white/50"
-            >
-              <img src="/logoremotes.png" alt="Remotes" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" />
-              Participar Domingo 19
-            </a>
-          </div>
+
 
           {/* WhatsApp Group Button */}
           <a
