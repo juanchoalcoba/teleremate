@@ -10,14 +10,17 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentCategory = searchParams.get("category") || "deposito";
+  const currentCategory = searchParams.get("category") || "remate";
+
+  // Si la categoría es "remate" y no hay auctionDate en la URL, usamos el 25 de julio por defecto
+  const defaultAuctionDate = currentCategory === "remate" ? "2026-07-25" : "";
 
   const filters = {
     category: currentCategory,
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || "",
+    auctionDate: searchParams.get("auctionDate") || defaultAuctionDate,
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
@@ -48,7 +51,9 @@ export default function CatalogPage() {
     "Varios / Otros"
   ];
 
-  const AUCTION_DATES = [];
+  const AUCTION_DATES = [
+    { value: "2026-07-25", label: "⚡ Sábado 25 de Julio" },
+  ];
 
   const SUBCATEGORY_COLORS = {
     "Electrodomésticos y Climatización": "border-blue-500",
@@ -255,15 +260,25 @@ export default function CatalogPage() {
             )}
 
             {/* Sub-tabs for "A Rematar" */}
-            {filters.category === "remate" && AUCTION_DATES.length > 0 && (
+            {filters.category === "remate" && (
               <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
+                <button
+                  onClick={() => updateFilters({ auctionDate: "" })}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                    !filters.auctionDate
+                      ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                      : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  Todos
+                </button>
                 {AUCTION_DATES.map((sub) => (
                   <button
                     key={sub.label}
                     onClick={() => updateFilters({ auctionDate: sub.value })}
                     className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                       (filters.auctionDate || "") === sub.value
-                        ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                        ? "bg-brand-500 text-white border-brand-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
                         : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
                     }`}
                   >
