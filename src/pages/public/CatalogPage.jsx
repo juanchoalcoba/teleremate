@@ -12,8 +12,8 @@ export default function CatalogPage() {
 
   const currentCategory = searchParams.get("category") || "remate";
 
-  // Si la categoría es "remate" y no hay auctionDate en la URL, usamos el 25 de julio por defecto
-  const defaultAuctionDate = currentCategory === "remate" ? "2026-07-25" : "";
+  // Si la categoría es "remate" y no hay auctionDate en la URL, usamos el 8 de agosto por defecto
+  const defaultAuctionDate = currentCategory === "remate" ? "2026-08-08" : "";
 
   const filters = {
     category: currentCategory,
@@ -52,7 +52,8 @@ export default function CatalogPage() {
   ];
 
   const AUCTION_DATES = [
-    { value: "2026-07-25", label: "⚡ Sábado 25 de Julio" },
+    { value: "2026-08-08", label: "⚡ Sábado 8 de Agosto" },
+    { value: "2026-08-09", label: "⚡ Domingo 9 de Agosto" },
   ];
 
   const SUBCATEGORY_COLORS = {
