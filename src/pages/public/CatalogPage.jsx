@@ -10,10 +10,9 @@ import FilterSidebar from "../../components/catalog/FilterSidebar";
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentCategory = searchParams.get("category") || "remate";
+  const currentCategory = searchParams.get("category") || "deposito";
 
-  // Si la categoría es "remate" y no hay auctionDate en la URL, usamos el 8 de agosto por defecto
-  const defaultAuctionDate = currentCategory === "remate" ? "2026-08-08" : "";
+  const defaultAuctionDate = "";
 
   const filters = {
     category: currentCategory,
@@ -257,35 +256,6 @@ export default function CatalogPage() {
                     </button>
                   )})}
                 </div>
-              </div>
-            )}
-
-            {/* Sub-tabs for "A Rematar" */}
-            {filters.category === "remate" && (
-              <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
-                <button
-                  onClick={() => updateFilters({ auctionDate: "" })}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
-                    !filters.auctionDate
-                      ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                      : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
-                  }`}
-                >
-                  Todos
-                </button>
-                {AUCTION_DATES.map((sub) => (
-                  <button
-                    key={sub.label}
-                    onClick={() => updateFilters({ auctionDate: sub.value })}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
-                      (filters.auctionDate || "") === sub.value
-                        ? "bg-brand-500 text-white border-brand-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
-                        : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
-                    }`}
-                  >
-                    {sub.label}
-                  </button>
-                ))}
               </div>
             )}
 
