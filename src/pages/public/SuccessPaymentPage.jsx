@@ -1,10 +1,24 @@
+import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle2, ChevronRight } from "lucide-react";
+import { verifyPayment } from "../../services/api";
 
 export default function SuccessPaymentPage() {
   const [searchParams] = useSearchParams();
-  const paymentId = searchParams.get("payment_id");
-  const status = searchParams.get("status");
+  const paymentId = searchParams.get("payment_id") || searchParams.get("collection_id");
+  const externalReference = searchParams.get("external_reference");
+  const status = searchParams.get("status") || searchParams.get("collection_status");
+
+  useEffect(() => {
+    if (paymentId || externalReference) {
+      verifyPayment({
+        paymentId,
+        external_reference: externalReference,
+      }).catch((err) => {
+        console.warn("Auto payment verification background call error:", err);
+      });
+    }
+  }, [paymentId, externalReference]);
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4">

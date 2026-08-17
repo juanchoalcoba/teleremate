@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Trash2, CheckCircle, Clock, MessageCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2, CheckCircle, Clock, MessageCircle, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   getPurchases,
   updatePurchaseStatus,
   deletePurchase,
+  verifyPurchaseMP,
 } from "../../services/api";
 import { getWALink, WAMessages } from "../../utils/whatsapp";
 
 export default function PurchasesPage() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState("pending");
+  const [verifyingId, setVerifyingId] = useState(null);
   const limit = 10;
   const queryClient = useQueryClient();
 
@@ -19,6 +21,24 @@ export default function PurchasesPage() {
     queryKey: ["purchases", page, status],
     queryFn: () => getPurchases({ page, limit, status }),
   });
+
+  const handleVerifyMP = async (purchaseId) => {
+    setVerifyingId(purchaseId);
+    try {
+      const res = await verifyPurchaseMP(purchaseId);
+      if (res.data?.paymentStatus === "approved") {
+        toast.success("¡Pago de MercadoPago verificado y APROBADO!");
+      } else {
+        toast.info(res.data?.message || "Pago aún en estado pendiente en MercadoPago");
+      }
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error al verificar pago con MercadoPago");
+    } finally {
+      setVerifyingId(null);
+    }
+  };
 
   const handleStatusChange = async (purchaseId, newStatus) => {
     try {
@@ -162,6 +182,17 @@ export default function PurchasesPage() {
                               ? (purchase.paymentStatus === "approved" ? "MP Aprobado" : "MP Pendiente")
                               : "Depósito"}
                           </span>
+                          {purchase.paymentMethod === "mercadopago" && purchase.paymentStatus !== "approved" && (
+                            <button
+                              onClick={() => handleVerifyMP(purchase._id)}
+                              disabled={verifyingId === purchase._id}
+                              className="mt-1 px-2.5 py-1 bg-amber-100 text-amber-800 hover:bg-amber-200 rounded-lg text-xs font-bold flex items-center gap-1 transition"
+                              title="Consultar MercadoPago para actualizar el estado del pago"
+                            >
+                              <RefreshCw size={12} className={verifyingId === purchase._id ? "animate-spin" : ""} />
+                              {verifyingId === purchase._id ? "Verificando..." : "Verificar Pago MP"}
+                            </button>
+                          )}
                           {purchase.paymentId && (
                             <span className="text-xs text-gray-500 font-mono">
                               ID: {purchase.paymentId}

@@ -322,6 +322,7 @@ export default function ArticleDetailPage() {
       {showPurchaseModal && (
         <PurchaseModal
           articleId={id}
+          article={article}
           onClose={() => setShowPurchaseModal(false)}
           onSuccess={() => {
             refetch();

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X, Loader, ShieldCheck, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
-import { createPurchase } from "../../services/api";
+import { createPurchase, getArticleById } from "../../services/api";
 
-export default function PurchaseModal({ articleId, onClose, onSuccess }) {
+export default function PurchaseModal({ articleId, article: initialArticle, onClose, onSuccess }) {
+  const [article, setArticle] = useState(initialArticle || null);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -15,6 +16,20 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
   const [acceptedGuarantee, setAcceptedGuarantee] = useState(false);
   const [step, setStep] = useState(1); // 1 = Info, 2 = Pago
   const [paymentMethod, setPaymentMethod] = useState("deposit");
+
+  useEffect(() => {
+    if (!article && articleId) {
+      getArticleById(articleId)
+        .then((res) => setArticle(res.data))
+        .catch((err) => console.error("Error fetching article in modal:", err));
+    }
+  }, [articleId, article]);
+
+  const basePrice = article?.price || article?.estimatedPrice || 0;
+  const standardPrice = Math.round(basePrice * 1.2);
+  const mpCommissionAmount = Math.round(basePrice * 0.06);
+  const mpTotalPrice = Math.round(basePrice * 1.26);
+  const currencySymbol = article?.currency === "USD" ? "US$" : "$";
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -284,38 +299,95 @@ export default function PurchaseModal({ articleId, onClose, onSuccess }) {
             <h3 className="text-lg font-bold text-center text-gray-800 mb-4">Selecciona tu método de pago</h3>
             
             <div className="space-y-4">
-              <label className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all ${paymentMethod === 'deposit' ? 'border-brand-500 bg-brand-50' : 'border-gray-200 hover:border-brand-300'}`}>
+              <label className={`flex items-start p-4 border-2 rounded-2xl cursor-pointer transition-all ${paymentMethod === 'deposit' ? 'border-brand-500 bg-brand-50/60 shadow-sm' : 'border-gray-200 hover:border-brand-300'}`}>
                 <input 
                   type="radio" 
                   name="paymentMethod" 
                   value="deposit" 
                   checked={paymentMethod === 'deposit'} 
                   onChange={() => setPaymentMethod('deposit')}
-                  className="w-5 h-5 text-brand-600 border-gray-300 focus:ring-brand-500"
+                  className="w-5 h-5 text-brand-600 border-gray-300 focus:ring-brand-500 mt-0.5"
                 />
-                <div className="ml-4">
-                  <p className="font-bold text-gray-900">Pago Presencial en Depósito</p>
-                  <p className="text-sm text-gray-500">Abona en efectivo o tarjeta directamente en nuestro local</p>
+                <div className="ml-3 flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="font-bold text-gray-900">Pago Presencial en Depósito</p>
+                    {standardPrice > 0 && (
+                      <span className="font-extrabold text-brand-700 text-sm">
+                        {currencySymbol} {standardPrice.toLocaleString("es-UY")}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500">Abona en efectivo o tarjeta directamente en nuestro local</p>
                 </div>
               </label>
 
-              <label className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-all ${paymentMethod === 'mercadopago' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300'}`}>
+              <label className={`flex items-start p-4 border-2 rounded-2xl cursor-pointer transition-all ${paymentMethod === 'mercadopago' ? 'border-blue-500 bg-blue-50/60 shadow-sm' : 'border-gray-200 hover:border-blue-300'}`}>
                 <input 
                   type="radio" 
                   name="paymentMethod" 
                   value="mercadopago" 
                   checked={paymentMethod === 'mercadopago'} 
                   onChange={() => setPaymentMethod('mercadopago')}
-                  className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500 mt-0.5"
                 />
-                <div className="ml-4">
-                  <p className="font-bold text-gray-900">MercadoPago</p>
-                  <p className="text-sm text-gray-500">Tarjetas de crédito, débito o dinero en cuenta</p>
+                <div className="ml-3 flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="font-bold text-gray-900">MercadoPago</p>
+                    {mpTotalPrice > 0 && (
+                      <span className="font-extrabold text-blue-700 text-sm">
+                        {currencySymbol} {mpTotalPrice.toLocaleString("es-UY")}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500">Tarjetas de crédito, débito o dinero en cuenta (+6% comisión MP)</p>
                 </div>
               </label>
             </div>
 
-            <div className="flex gap-3 pt-4 mt-6">
+            {/* Helper Text e Info de Comisión de MercadoPago */}
+            {paymentMethod === "mercadopago" && (
+              <div className="bg-blue-50/90 border border-blue-200 rounded-2xl p-4 space-y-2 animate-in fade-in">
+                <div className="flex items-start gap-2.5">
+                  <div className="bg-blue-100 p-1.5 rounded-lg text-blue-600 mt-0.5">
+                    <AlertCircle size={18} />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">
+                      Aviso de Comisión MercadoPago
+                    </h4>
+                    <p className="text-xs text-blue-800 leading-relaxed">
+                      Al seleccionar MercadoPago se aplica un <strong>6% adicional</strong> por concepto de costos operativos de la pasarela de pago (Comisión total aplicable: 26%).
+                    </p>
+                  </div>
+                </div>
+
+                {standardPrice > 0 && (
+                  <div className="mt-3 pt-3 border-t border-blue-200/60 space-y-1 text-xs text-blue-950">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Precio estándar (Base + 20%):</span>
+                      <span>{currencySymbol} {standardPrice.toLocaleString("es-UY")}</span>
+                    </div>
+                    <div className="flex justify-between text-blue-800">
+                      <span>Recargo MercadoPago (+6%):</span>
+                      <span>+ {currencySymbol} {mpCommissionAmount.toLocaleString("es-UY")}</span>
+                    </div>
+                    <div className="flex justify-between font-bold text-sm text-blue-900 pt-1.5 border-t border-blue-200">
+                      <span>Total a pagar con MercadoPago:</span>
+                      <span>{currencySymbol} {mpTotalPrice.toLocaleString("es-UY")}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {paymentMethod === "deposit" && standardPrice > 0 && (
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-3.5 text-xs text-gray-700 flex justify-between items-center">
+                <span className="font-medium">Total a pagar presencial en depósito:</span>
+                <span className="font-extrabold text-sm text-gray-900">{currencySymbol} {standardPrice.toLocaleString("es-UY")}</span>
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-2 mt-4">
               <button
                 type="button"
                 onClick={() => setStep(1)}

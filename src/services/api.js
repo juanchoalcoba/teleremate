@@ -32,6 +32,7 @@ export const getArticleById = (id) => api.get(`/articles/${id}`);
 // Reservations & Purchases
 export const createReservation = (data) => api.post("/reservations", data);
 export const createPurchase = (data) => api.post("/purchases", data);
+export const verifyPayment = (data) => api.post("/purchases/verify-payment", data);
 export const createSubmission = (data) => api.post("/submissions", data);
 export const createAnnotation = (data) => api.post("/annotations", data);
 export const uploadPublicImages = (files) => {
@@ -56,6 +57,8 @@ export const getPurchases = (params) =>
   api.get("/backoffice/purchases", { params });
 export const updatePurchaseStatus = (id, data) =>
   api.put(`/backoffice/purchases/${id}`, data);
+export const verifyPurchaseMP = (id) =>
+  api.post(`/backoffice/purchases/${id}/verify-mp`);
 export const deletePurchase = (id) =>
   api.delete(`/backoffice/purchases/${id}`);
 
