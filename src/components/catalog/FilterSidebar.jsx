@@ -1,18 +1,17 @@
 import { useState } from "react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, Package, Gavel, Home, Car, Clock } from "lucide-react";
 
 const CATEGORIES = [
-  { value: "deposito", label: "Venta Directa" },
-  { value: "remate", label: "A Rematar" },
-  { value: "inmueble", label: "Inmuebles" },
-  { value: "vehiculo", label: "Vehículos" },
+  { value: "deposito", label: "Venta Directa", icon: Package },
+  { value: "remate", label: "A Rematar", icon: Gavel },
+  { value: "inmueble", label: "Inmuebles", icon: Home },
+  { value: "vehiculo", label: "Vehículos", icon: Car },
 ];
 const STATUSES = [
-  { value: "reserved", label: "Reservado" },
+  { value: "reserved", label: "Reservado", icon: Clock },
 ];
-const CONDITIONS = ["Excelente", "Muy bueno", "Bueno", "Regular"];
 
-export default function FilterSidebar({ filters, onChange, theme }) {
+export default function FilterSidebar({ filters, onChange, theme = "light" }) {
   const [open, setOpen] = useState(false);
   const isDark = theme === "dark";
 
@@ -30,13 +29,17 @@ export default function FilterSidebar({ filters, onChange, theme }) {
     filters.category || filters.status || filters.minPrice || filters.maxPrice;
 
   const panel = (
-    <div className={`rounded-2xl p-5 space-y-6 transition-all duration-300 ${isDark ? "bg-zinc-900/80 backdrop-blur-md border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]" : "bg-white shadow-(--shadow-card)"}`}>
-      <div className="flex items-center justify-between">
-        <h3 className={`font-bold font-display ${isDark ? "text-white" : "text-gray-900"}`}>Filtros</h3>
+    <div className={`rounded-2xl p-5 space-y-6 transition-all duration-300 ${
+      isDark 
+        ? "bg-zinc-900/80 backdrop-blur-md border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]" 
+        : "bg-white border border-gray-100 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)]"
+    }`}>
+      <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+        <h3 className={`font-black tracking-tight text-base ${isDark ? "text-white" : "text-gray-900"}`}>Filtros</h3>
         {hasFilters && (
           <button
             onClick={handleClear}
-            className={`text-xs flex items-center gap-1 transition-colors ${isDark ? "text-gray-400 hover:text-white" : "text-brand-600 hover:text-brand-700"}`}
+            className="text-xs font-bold flex items-center gap-1 text-amber-700 hover:text-amber-800 hover:underline transition-colors"
           >
             <X size={12} /> Limpiar
           </button>
@@ -45,83 +48,97 @@ export default function FilterSidebar({ filters, onChange, theme }) {
 
       {/* Category */}
       <div>
-        <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? "text-gray-500" : "text-gray-500"}`}>
-          Categoría
+        <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">
+          CATEGORÍA
         </h4>
-        <div className="flex flex-col gap-1">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => handleCategory(cat.value)}
-              className={`text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
-                filters.category === cat.value
-                  ? (isDark ? "bg-white text-zinc-950 font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)]" : "bg-brand-500 text-white font-medium")
-                  : (isDark ? "text-gray-400 hover:bg-white/5 hover:text-white" : "text-gray-600 hover:bg-gray-50")
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        <div className="flex flex-col gap-1.5">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const isSelected = filters.category === cat.value;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => handleCategory(cat.value)}
+                className={`text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-2.5 ${
+                  isSelected
+                    ? "bg-amber-50/70 border border-amber-600/40 text-amber-950 shadow-xs"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                }`}
+              >
+                <Icon size={16} className={isSelected ? "text-amber-700" : "text-gray-400"} />
+                {cat.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Status */}
       <div>
-        <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? "text-gray-500" : "text-gray-500"}`}>
-          Estado
+        <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">
+          ESTADO
         </h4>
-        <div className="flex flex-col gap-1">
-          {STATUSES.map(({ value, label }) => (
-            <button
-              key={value}
-              onClick={() => handleStatus(value)}
-              className={`text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
-                filters.status === value
-                  ? (isDark ? "bg-white text-zinc-950 font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)]" : "bg-brand-500 text-white font-medium")
-                  : (isDark ? "text-gray-400 hover:bg-white/5 hover:text-white" : "text-gray-600 hover:bg-gray-50")
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+        <div className="flex flex-col gap-1.5">
+          {STATUSES.map(({ value, label, icon: Icon }) => {
+            const isSelected = filters.status === value;
+            return (
+              <button
+                key={value}
+                onClick={() => handleStatus(value)}
+                className={`text-left text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-2.5 ${
+                  isSelected
+                    ? "bg-amber-50/70 border border-amber-600/40 text-amber-950 shadow-xs"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                }`}
+              >
+                <Icon size={16} className={isSelected ? "text-amber-700" : "text-gray-400"} />
+                {label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Price range */}
-      <div className={`pt-2 border-t ${isDark ? "border-white/10" : "border-gray-50"}`}>
-        <h4 className={`text-[10px] font-black uppercase tracking-widest mb-3 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-          Rango de Precio (UYU)
+      <div className="pt-3 border-t border-gray-100 space-y-3">
+        <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+          RANGO DE PRECIO (UYU)
         </h4>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           <div className="relative group">
-            <span className={`absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold transition-colors ${isDark ? "text-gray-500 group-focus-within:text-white" : "text-gray-300 group-focus-within:text-brand-500"}`}>$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">$</span>
             <input
               type="number"
               placeholder="Min"
               value={filters.minPrice}
               onChange={(e) => onChange({ minPrice: e.target.value })}
-              className={`w-full pl-6 pr-3 py-2.5 rounded-xl text-sm font-bold outline-none transition-all ${
-                isDark 
-                  ? "bg-black/50 border border-white/10 text-white placeholder:text-gray-600 focus:border-white/30 focus:bg-white/5" 
-                  : "bg-gray-50 border border-gray-100 text-gray-900 focus:border-brand-500 focus:bg-white placeholder:text-gray-300"
-              }`}
+              className="w-full pl-7 pr-3 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-gray-900 placeholder:text-gray-400 transition-all"
             />
           </div>
           <div className="relative group">
-            <span className={`absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold transition-colors ${isDark ? "text-gray-500 group-focus-within:text-white" : "text-gray-300 group-focus-within:text-brand-500"}`}>$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">$</span>
             <input
               type="number"
               placeholder="Max"
               value={filters.maxPrice}
               onChange={(e) => onChange({ maxPrice: e.target.value })}
-              className={`w-full pl-6 pr-3 py-2.5 rounded-xl text-sm font-bold outline-none transition-all ${
-                isDark 
-                  ? "bg-black/50 border border-white/10 text-white placeholder:text-gray-600 focus:border-white/30 focus:bg-white/5" 
-                  : "bg-gray-50 border border-gray-100 text-gray-900 focus:border-brand-500 focus:bg-white placeholder:text-gray-300"
-              }`}
+              className="w-full pl-7 pr-3 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-gray-900 placeholder:text-gray-400 transition-all"
             />
           </div>
         </div>
+      </div>
+
+      {/* Apply Filters Button */}
+      <div className="pt-2">
+        <button
+          onClick={() => {
+            // Apply is automatic via state, but this button provides clear UX feedback
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="w-full bg-[#9a7b38] hover:bg-[#85672a] text-white font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow transition-all text-xs uppercase tracking-wider cursor-pointer"
+        >
+          Aplicar Filtros
+        </button>
       </div>
     </div>
   );
@@ -129,7 +146,7 @@ export default function FilterSidebar({ filters, onChange, theme }) {
   return (
     <>
       {/* Desktop */}
-      <div className="hidden md:block w-56 shrink-0 sticky top-24 self-start">
+      <div className="hidden md:block w-64 shrink-0 sticky top-24 self-start">
         {panel}
       </div>
 
@@ -137,12 +154,12 @@ export default function FilterSidebar({ filters, onChange, theme }) {
       <div className="md:hidden w-full mb-4">
         <button
           onClick={() => setOpen(!open)}
-          className={`w-full justify-center ${isDark ? "btn-secondary !bg-white/5 !border-white/10 !text-white hover:!bg-white/10 backdrop-blur-md" : "btn-secondary"}`}
+          className="w-full justify-center btn-secondary !bg-white !border-gray-200 !text-gray-900 shadow-sm"
         >
           <SlidersHorizontal size={15} />
           Filtros{" "}
           {hasFilters && (
-            <span className={`${isDark ? "bg-white text-zinc-950" : "bg-brand-500 text-white"} rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold`}>
+            <span className="bg-[#9a7b38] text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold">
               {
                 [filters.category, filters.status, filters.minPrice].filter(
                   Boolean,

@@ -9,7 +9,8 @@ export default function CatalogGridSlide({
   search, 
   updateFilters, 
   setSearch,
-  shouldFetch 
+  shouldFetch,
+  theme = "light"
 }) {
   const queryParams = {
     ...filters,
@@ -28,9 +29,9 @@ export default function CatalogGridSlide({
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-gray-300 bg-red-950/30 rounded-3xl border border-red-900/50 backdrop-blur-md">
-        <Package size={48} className="mb-4 text-red-400" />
-        <p className="font-bold text-red-400 mb-2">Error al cargar los artículos</p>
+      <div className="flex flex-col items-center justify-center py-20 text-gray-700 bg-red-50 rounded-3xl border border-red-200">
+        <Package size={48} className="mb-4 text-red-500" />
+        <p className="font-bold text-red-600 mb-2">Error al cargar los artículos</p>
         <button onClick={() => refetch()} className="btn-primary">
           Reintentar
         </button>
@@ -44,7 +45,7 @@ export default function CatalogGridSlide({
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
-            className="h-72 bg-white/5 border border-white/5 animate-pulse rounded-2xl backdrop-blur-none md:backdrop-blur-sm"
+            className="h-72 bg-white border border-gray-100 animate-pulse rounded-2xl shadow-xs"
           />
         ))}
       </div>
@@ -53,9 +54,9 @@ export default function CatalogGridSlide({
 
   if (articles.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-zinc-900/50 rounded-3xl border-2 border-dashed border-white/10 backdrop-blur-sm">
+      <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-white rounded-3xl border-2 border-dashed border-gray-200 shadow-xs">
         <Package size={48} className="mb-4 opacity-20" />
-        <p className="font-bold text-gray-400">No se encontraron artículos</p>
+        <p className="font-bold text-gray-600">No se encontraron artículos</p>
         <button
           onClick={() => {
             setSearch("");
@@ -66,7 +67,7 @@ export default function CatalogGridSlide({
               maxPrice: "",
             });
           }}
-          className="mt-4 text-white font-bold text-sm hover:underline hover:text-accent-500 transition-colors"
+          className="mt-4 text-amber-700 font-bold text-sm hover:underline transition-colors"
         >
           Limpiar todos los filtros
         </button>
@@ -81,7 +82,7 @@ export default function CatalogGridSlide({
       }`}
     >
       {articles.map((a) => (
-        <ArticleCard key={a._id} article={a} theme="dark" />
+        <ArticleCard key={a._id} article={a} theme={theme} />
       ))}
     </div>
   );

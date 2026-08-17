@@ -1,7 +1,20 @@
 import { useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Package, Gavel, ArrowRight } from "lucide-react";
+import { 
+  Search, 
+  Package, 
+  Gavel, 
+  ArrowRight,
+  Tv,
+  Armchair,
+  Utensils,
+  Wrench,
+  Dumbbell,
+  Baby,
+  Car,
+  Grid
+} from "lucide-react";
 import { getArticles } from "../../services/api";
 import CatalogGridSlide from "../../components/catalog/CatalogGridSlide";
 import ArticleCard from "../../components/catalog/ArticleCard";
@@ -40,14 +53,14 @@ export default function CatalogPage() {
   ];
 
   const SUBCATEGORIES = [
-    "Electrodomésticos y Climatización",
-    "Muebles y Hogar",
-    "Bazar y Cocina",
-    "Herramientas y Ferretería",
-    "Deportes y Tiempo Libre",
-    "Bebés y Niños",
-    "Vehículos y Accesorios",
-    "Varios / Otros"
+    { label: "Electrodomésticos y Climatización", icon: Tv },
+    { label: "Muebles y Hogar", icon: Armchair },
+    { label: "Bazar y Cocina", icon: Utensils },
+    { label: "Herramientas y Ferretería", icon: Wrench },
+    { label: "Deportes y Tiempo Libre", icon: Dumbbell },
+    { label: "Bebés y Niños", icon: Baby },
+    { label: "Vehículos y Accesorios", icon: Car },
+    { label: "Varios / Otros", icon: Grid },
   ];
 
   const AUCTION_DATES = [
@@ -116,178 +129,168 @@ export default function CatalogPage() {
   const totalPages = pagination.totalPages || 0;
 
   return (
-    <div className="bg-zinc-950 min-h-screen relative overflow-hidden text-gray-200">
-      {/* Decorative ambient background glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-500/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[50%] bg-accent-500/10 rounded-full blur-[150px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-        <div className="mb-12 relative overflow-hidden rounded-3xl">
-          <div className="p-1">
-            {" "}
-            {/* Padding to prevent blur cutoff */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-10 bg-brand-100" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-100">
-                Remates en línea
-              </span>
-            </div>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
-              <div>
-                <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase font-display mb-4">
-                  Nuestros <span className="text-gray-500">Catálogos</span>
-                </h1>
-                <p className="text-gray-400 max-w-xl text-sm md:text-base leading-relaxed font-medium">
-                  Descubra una selection curada de artículos exclusivos,
-                  antigüedades y oportunidades únicas. Calidad verificada en
-                  cada remate.
-                </p>
+    <div className="bg-[#f8fafc] min-h-screen relative overflow-hidden text-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
+        
+        {/* Slim Compact Hero Section */}
+        <div className="mb-6 relative overflow-hidden bg-[#0f172a] text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-white/5">
+          {/* Subtle gold ambient glow */}
+          <div className="absolute -top-20 -right-20 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="h-0.5 w-6 bg-amber-400" />
+                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-400">
+                  Remates en línea
+                </span>
               </div>
+              
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase">
+                Nuestros{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500">
+                  Catálogos
+                </span>
+              </h1>
+              
+              <p className="text-slate-300 text-xs font-medium max-w-xl mt-1">
+                Descubra una selección curada de artículos exclusivos y oportunidades únicas.
+              </p>
+            </div>
 
-              <div className="hidden md:flex items-center gap-4 text-white pb-2">
-                <Gavel
-                  size={64}
-                  strokeWidth={1}
-                  className="opacity-30 rotate-12 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+            {/* High-contrast Light Search Bar (Wide on Desktop) */}
+            <div className="w-full md:w-[450px] lg:w-[540px] shrink-0 mt-3 md:mt-0">
+              <div className="relative group">
+                <Search
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-amber-700 transition-colors z-10"
+                />
+                <input
+                  type="text"
+                  placeholder="Buscar por nombre o ID..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 transition-all text-gray-900 placeholder:text-gray-400 text-xs font-semibold shadow-md"
                 />
               </div>
             </div>
           </div>
-
-          {/* Subtle decorative element */}
-          <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/10 blur-[100px] rounded-full pointer-events-none" />
         </div>
 
-        <div id="catalog-content" className="flex flex-col gap-6 mb-12">
-          <div className="relative group">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 group-focus-within:text-white transition-colors z-10"
-            />
-            <input
-              type="text"
-              placeholder="Buscar por nombre o ID..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-white/30 focus:bg-white/10 transition-all shadow-sm font-medium text-white placeholder:text-gray-500 backdrop-blur-md"
-            />
-          </div>
-
-          {/* Category Tabs and Indicator Container */}
+        {/* Filters and Categories section */}
+        <div id="catalog-content" className="flex flex-col gap-5 mb-8">
+          
+          {/* Main Category Tabs Container */}
           <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 p-1.5 bg-white/5 border border-white/5 backdrop-blur-md rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
-              {CATEGORY_TABS.map((tab) => (
-                <button
-                  key={tab.value}
-                  onClick={() =>
-                    updateFilters({
-                      category: tab.value,
-                      auctionDate: "",
-                      isNewCondition: "",
-                      subcategory: "",
-                    })
-                  }
-                  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
-                    filters.category === tab.value
-                      ? "bg-white text-zinc-950 shadow-[0_0_20px_rgba(255,255,255,0.3)] scale-105"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <tab.icon
-                    size={16}
-                    className={
-                      filters.category === tab.value
-                        ? "text-zinc-950"
-                        : "opacity-60"
+            <div className="flex items-center gap-2 p-1.5 bg-white border border-gray-100 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.04)] rounded-2xl overflow-x-auto no-scrollbar scroll-smooth">
+              {CATEGORY_TABS.map((tab) => {
+                const isSelected = filters.category === tab.value;
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.value}
+                    onClick={() =>
+                      updateFilters({
+                        category: tab.value,
+                        auctionDate: "",
+                        isNewCondition: "",
+                        subcategory: "",
+                      })
                     }
-                  />
-                  {tab.label}
-                </button>
-              ))}
+                    className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 ${
+                      isSelected
+                        ? "bg-amber-50/80 border border-amber-600/40 text-amber-950 shadow-xs scale-[1.02]"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border border-transparent"
+                    }`}
+                  >
+                    <Icon
+                      size={16}
+                      className={isSelected ? "text-amber-700" : "text-gray-400"}
+                    />
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Sub-tabs for "Venta Directa" */}
             {filters.category === "deposito" && (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 pt-1">
+                
                 {/* Condition Tabs (Todos, Nuevos, Usados) */}
                 <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
-                  {CONDITION_TABS.map((cond) => (
-                    <button
-                      key={cond.label}
-                      onClick={() => updateFilters({ isNewCondition: cond.value })}
-                      className={`px-5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
-                        (filters.isNewCondition || "") === cond.value
-                          ? "bg-brand-500 text-white border-brand-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
-                          : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
-                      }`}
-                    >
-                      {cond.label}
-                    </button>
-                  ))}
+                  {CONDITION_TABS.map((cond) => {
+                    const isSelected = (filters.isNewCondition || "") === cond.value;
+                    return (
+                      <button
+                        key={cond.label}
+                        onClick={() => updateFilters({ isNewCondition: cond.value })}
+                        className={`px-5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+                          isSelected
+                            ? "bg-zinc-900 text-white shadow-sm"
+                            : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                        }`}
+                      >
+                        {cond.label}
+                      </button>
+                    );
+                  })}
                 </div>
 
-                {/* Subcategory Tabs */}
+                {/* Subcategory Tabs with Icons */}
                 <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
                   <button
                     onClick={() => updateFilters({ subcategory: "" })}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                    className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 ${
                       !filters.subcategory
-                        ? "bg-white text-zinc-950 border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                        : "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                        ? "bg-amber-50/80 border-amber-600/40 text-amber-950 shadow-xs"
+                        : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >
+                    <Grid size={14} className={!filters.subcategory ? "text-amber-700" : "text-gray-400"} />
                     Todas
                   </button>
-                  {SUBCATEGORIES.map((sub) => {
-                    const borderColor = SUBCATEGORY_COLORS[sub] || "border-white/10";
+                  {SUBCATEGORIES.map(({ label, icon: Icon }) => {
+                    const isSelected = filters.subcategory === label;
                     return (
-                    <button
-                      key={sub}
-                      onClick={() => updateFilters({ subcategory: sub })}
-                      className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
-                        filters.subcategory === sub
-                          ? `bg-white text-zinc-950 ${borderColor} border-2 shadow-[0_0_15px_rgba(255,255,255,0.2)]`
-                          : `bg-transparent text-gray-400 ${borderColor} border-2 hover:bg-white/5 hover:text-white`
-                      }`}
-                    >
-                      {sub}
-                    </button>
-                  )})}
+                      <button
+                        key={label}
+                        onClick={() => updateFilters({ subcategory: label })}
+                        className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 ${
+                          isSelected
+                            ? "bg-amber-50/80 border-amber-600/40 text-amber-950 shadow-xs font-black"
+                            : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-900"
+                        }`}
+                      >
+                        <Icon size={14} className={isSelected ? "text-amber-700" : "text-gray-400"} />
+                        {label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
-
-            {/* Dedicated indicator row (Only on Mobile) */}
-            <div className="flex items-center justify-end md:hidden pr-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-900/80 backdrop-blur-sm rounded-full border border-white/10 animate-pulse pointer-events-none">
-                <span className="text-[10px] font-black uppercase tracking-widest text-white">
-                  Desliza para ver más
-                </span>
-                <ArrowRight size={12} className="text-white/50" />
-              </div>
-            </div>
           </div>
         </div>
 
+        {/* Sidebar + Main Grid */}
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="md:w-64 shrink-0">
             <FilterSidebar
               filters={filters}
               onChange={updateFilters}
-              theme="dark"
+              theme="light"
             />
           </aside>
 
           <div className="grow overflow-hidden relative">
             {isError ? (
-              <div className="flex flex-col items-center justify-center py-20 text-gray-300 bg-red-950/30 rounded-3xl border border-red-900/50 backdrop-blur-md">
-                <Package size={48} className="mb-4 text-red-400" />
-                <p className="font-bold text-red-400 mb-2">
+              <div className="flex flex-col items-center justify-center py-20 text-gray-700 bg-red-50 rounded-3xl border border-red-200">
+                <Package size={48} className="mb-4 text-red-500" />
+                <p className="font-bold text-red-600 mb-2">
                   Error al cargar los artículos
                 </p>
-                <p className="text-sm text-center max-w-sm mb-6 opacity-80 text-gray-400">
+                <p className="text-sm text-center max-w-sm mb-6 text-gray-500">
                   Hubo un problema de conexión. Por favor, intenta nuevamente.
                 </p>
                 <button onClick={() => refetch()} className="btn-primary">
@@ -295,16 +298,16 @@ export default function CatalogPage() {
                 </button>
               </div>
             ) : totalPages === 0 && !isLoading ? (
-              <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-zinc-900/50 rounded-3xl border-2 border-dashed border-white/10 backdrop-blur-sm">
+              <div className="flex flex-col items-center justify-center py-20 text-gray-500 bg-white rounded-3xl border-2 border-dashed border-gray-200 shadow-xs">
                 <Package size={48} className="mb-4 opacity-20" />
-                <p className="font-bold text-gray-400">
+                <p className="font-bold text-gray-600">
                   No se encontraron artículos
                 </p>
                 <button
                   onClick={() => {
                     setSearchParams(new URLSearchParams({ category: "deposito" }));
                   }}
-                  className="mt-4 text-white font-bold text-sm hover:underline hover:text-accent-500 transition-colors"
+                  className="mt-4 text-amber-700 font-bold text-sm hover:underline transition-colors"
                 >
                   Limpiar todos los filtros
                 </button>
@@ -318,6 +321,7 @@ export default function CatalogPage() {
                   updateFilters={updateFilters}
                   setSearch={setSearch}
                   shouldFetch={true}
+                  theme="light"
                 />
 
                 {totalPages > 1 && (
@@ -328,11 +332,11 @@ export default function CatalogPage() {
                         setPage(page - 1);
                         document.getElementById('catalog-content')?.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
+                      className="px-4 py-2 border border-gray-200 text-gray-700 bg-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-gray-50 transition-all cursor-pointer shadow-xs"
                     >
                       Anterior
                     </button>
-                    <span className="text-sm font-bold text-gray-400">
+                    <span className="text-sm font-bold text-gray-500">
                       Página {page} de {totalPages}
                     </span>
                     <button
@@ -341,7 +345,7 @@ export default function CatalogPage() {
                         setPage(page + 1);
                         document.getElementById('catalog-content')?.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="px-4 py-2 border border-white/10 text-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-pointer"
+                      className="px-4 py-2 border border-gray-200 text-gray-700 bg-white rounded-xl disabled:opacity-30 font-bold text-sm hover:bg-gray-50 transition-all cursor-pointer shadow-xs"
                     >
                       Siguiente
                     </button>
