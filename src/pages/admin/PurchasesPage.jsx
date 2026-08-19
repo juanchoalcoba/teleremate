@@ -131,7 +131,7 @@ export default function PurchasesPage() {
       }
 
       // 3. Delivery Method Filter
-      if (deliveryFilter === "shipping" && p.deliveryMethod !== "shipping") return false;
+      if (deliveryFilter === "shipping" && p.deliveryMethod === "pickup") return false;
       if (deliveryFilter === "pickup" && p.deliveryMethod !== "pickup") return false;
 
       return true;
@@ -144,7 +144,7 @@ export default function PurchasesPage() {
     const mpApproved = rawPurchases.filter(
       (p) => p.paymentMethod === "mercadopago" && p.paymentStatus === "approved"
     ).length;
-    const shipping = rawPurchases.filter((p) => p.deliveryMethod === "shipping").length;
+    const shipping = rawPurchases.filter((p) => p.deliveryMethod !== "pickup").length;
     const totalAmount = rawPurchases.reduce((acc, p) => acc + (p.price || p.articleId?.currentPrice || 0), 0);
 
     return { total, mpApproved, shipping, totalAmount };
@@ -436,7 +436,7 @@ export default function PurchasesPage() {
                         {/* COLUMNA: Entrega & Dirección Acotada */}
                         <td className="px-5 py-4">
                           <div className="flex flex-col items-start gap-1">
-                            {purchase.deliveryMethod === "shipping" ? (
+                            {purchase.deliveryMethod !== "pickup" ? (
                               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black bg-orange-100 text-orange-800 border border-orange-200">
                                 <Truck size={12} /> Envío
                               </span>
@@ -632,7 +632,7 @@ export default function PurchasesPage() {
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1">
                   <MapPin size={14} className="text-[#9a7b38]" />
-                  Dirección de Entrega ({selectedPurchase.deliveryMethod === "shipping" ? "Envío" : "Retiro"})
+                  Dirección de Entrega ({selectedPurchase.deliveryMethod !== "pickup" ? "Envío" : "Retiro"})
                 </span>
                 {selectedPurchase.deliveryAddress && (
                   <a
