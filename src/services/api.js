@@ -58,7 +58,7 @@ export const getPurchases = (params) =>
 export const updatePurchaseStatus = (id, data) =>
   api.put(`/backoffice/purchases/${id}`, data);
 export const verifyPurchaseMP = (id) =>
-  api.post(`/backoffice/purchases/${id}/verify-mp`);
+  api.post(`/backoffice/purchases/${id}/verify-mp`, {});
 export const deletePurchase = (id) =>
   api.delete(`/backoffice/purchases/${id}`);
 

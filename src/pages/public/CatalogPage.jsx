@@ -13,18 +13,29 @@ import {
   Dumbbell,
   Baby,
   Car,
-  Grid
+  Grid,
+  X,
+  LayoutGrid,
+  List,
+  ArrowUpDown,
+  Filter
 } from "lucide-react";
 import { getArticles } from "../../services/api";
 import CatalogGridSlide from "../../components/catalog/CatalogGridSlide";
 import ArticleCard from "../../components/catalog/ArticleCard";
 import FilterSidebar from "../../components/catalog/FilterSidebar";
+import QuickViewModal from "../../components/modals/QuickViewModal";
+import PurchaseModal from "../../components/modals/PurchaseModal";
 
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentCategory = searchParams.get("category") || "deposito";
+  const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
+  const [sortOrder, setSortOrder] = useState("newest"); // "newest" | "price_asc" | "price_desc"
+  const [quickViewArticle, setQuickViewArticle] = useState(null);
+  const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
 
+  const currentCategory = searchParams.get("category") || "deposito";
   const defaultAuctionDate = "";
 
   const filters = {
@@ -62,22 +73,6 @@ export default function CatalogPage() {
     { label: "Vehículos y Accesorios", icon: Car },
     { label: "Varios / Otros", icon: Grid },
   ];
-
-  const AUCTION_DATES = [
-    { value: "2026-08-08", label: "⚡ Sábado 8 de Agosto" },
-    { value: "2026-08-09", label: "⚡ Domingo 9 de Agosto" },
-  ];
-
-  const SUBCATEGORY_COLORS = {
-    "Electrodomésticos y Climatización": "border-blue-500",
-    "Muebles y Hogar": "border-amber-500",
-    "Bazar y Cocina": "border-orange-500",
-    "Herramientas y Ferretería": "border-zinc-500",
-    "Deportes y Tiempo Libre": "border-green-500",
-    "Bebés y Niños": "border-pink-500",
-    "Vehículos y Accesorios": "border-red-500",
-    "Varios / Otros": "border-purple-500"
-  };
 
   const updateFilters = useCallback((patch) => {
     setSearchParams((prev) => {
@@ -127,6 +122,15 @@ export default function CatalogPage() {
   const articles = data?.data?.articles || [];
   const pagination = data?.data?.pagination || { totalPages: 1 };
   const totalPages = pagination.totalPages || 0;
+  const totalArticlesCount = pagination.total || articles.length;
+
+  const hasActiveFilters =
+    filters.subcategory ||
+    filters.isNewCondition ||
+    filters.status ||
+    filters.minPrice ||
+    filters.maxPrice ||
+    search;
 
   return (
     <div className="bg-[#f8fafc] min-h-screen relative overflow-hidden text-gray-900">
@@ -170,15 +174,24 @@ export default function CatalogPage() {
                   placeholder="Buscar por nombre o ID..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 transition-all text-gray-900 placeholder:text-gray-400 text-xs font-semibold shadow-md"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-200 rounded-xl outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 transition-all text-gray-900 placeholder:text-gray-400 text-xs font-semibold shadow-md"
                 />
+                {search && (
+                  <button
+                    onClick={() => setSearch("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors p-1"
+                    title="Limpiar búsqueda"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Categories section */}
-        <div id="catalog-content" className="flex flex-col gap-5 mb-8">
+        <div id="catalog-content" className="flex flex-col gap-4 mb-6">
           
           {/* Main Category Tabs Container */}
           <div className="flex flex-col gap-3">
@@ -273,7 +286,77 @@ export default function CatalogPage() {
           </div>
         </div>
 
-        {/* Sidebar + Main Grid */}
+        {/* Active Filters Chips Bar */}
+        {hasActiveFilters && (
+          <div className="flex flex-wrap items-center gap-2 mb-4 p-3 bg-white border border-gray-100 rounded-2xl shadow-xs">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 flex items-center gap-1.5 mr-1">
+              <Filter size={12} className="text-amber-700" /> Filtros Activos:
+            </span>
+
+            {search && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-600/30 text-amber-950 rounded-full text-xs font-bold">
+                Búsqueda: "{search}"
+                <button onClick={() => setSearch("")} className="hover:text-amber-700 cursor-pointer">
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+
+            {filters.subcategory && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-600/30 text-amber-950 rounded-full text-xs font-bold">
+                {filters.subcategory}
+                <button onClick={() => updateFilters({ subcategory: "" })} className="hover:text-amber-700 cursor-pointer">
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+
+            {filters.isNewCondition && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-zinc-900 text-white rounded-full text-xs font-bold">
+                {filters.isNewCondition === "true" ? "Nuevos" : "Usados"}
+                <button onClick={() => updateFilters({ isNewCondition: "" })} className="hover:text-gray-300 cursor-pointer">
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+
+            {filters.status && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">
+                Estado: {filters.status}
+                <button onClick={() => updateFilters({ status: "" })} className="hover:text-purple-950 cursor-pointer">
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+
+            {(filters.minPrice || filters.maxPrice) && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-full text-xs font-bold">
+                Precio: ${filters.minPrice || "0"} - ${filters.maxPrice || "∞"}
+                <button onClick={() => updateFilters({ minPrice: "", maxPrice: "" })} className="hover:text-emerald-950 cursor-pointer">
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+
+            <button
+              onClick={() => {
+                setSearch("");
+                updateFilters({
+                  subcategory: "",
+                  isNewCondition: "",
+                  status: "",
+                  minPrice: "",
+                  maxPrice: "",
+                });
+              }}
+              className="text-xs font-bold text-amber-700 hover:underline ml-auto cursor-pointer"
+            >
+              Limpiar todos
+            </button>
+          </div>
+        )}
+
+        {/* Sidebar + Main Grid Section */}
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="md:w-64 shrink-0">
             <FilterSidebar
@@ -284,6 +367,53 @@ export default function CatalogPage() {
           </aside>
 
           <div className="grow overflow-hidden relative">
+            
+            {/* Toolbar Above Grid: Counter, Sort Dropdown, View Mode Toggle */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 p-3.5 bg-white border border-gray-100 rounded-2xl shadow-xs">
+              <div className="text-xs font-bold text-gray-500">
+                Mostrando <span className="text-gray-900 font-black">{articles.length}</span> de{" "}
+                <span className="text-gray-900 font-black">{totalArticlesCount}</span> artículos
+              </div>
+
+              <div className="flex items-center gap-3 self-end sm:self-auto">
+                {/* Sort Order Selector */}
+                <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5">
+                  <ArrowUpDown size={14} className="text-amber-700 shrink-0" />
+                  <select
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                    className="bg-transparent text-xs font-bold text-gray-800 outline-none cursor-pointer"
+                  >
+                    <option value="newest">Más recientes</option>
+                    <option value="price_asc">Precio: Menor a Mayor</option>
+                    <option value="price_desc">Precio: Mayor a Menor</option>
+                  </select>
+                </div>
+
+                {/* View Mode Buttons (Grid / List) */}
+                <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl border border-gray-200">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                      viewMode === "grid" ? "bg-white text-gray-900 shadow-xs font-bold" : "text-gray-400 hover:text-gray-700"
+                    }`}
+                    title="Vista en Cuadrícula"
+                  >
+                    <LayoutGrid size={16} />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                      viewMode === "list" ? "bg-white text-gray-900 shadow-xs font-bold" : "text-gray-400 hover:text-gray-700"
+                    }`}
+                    title="Vista en Lista"
+                  >
+                    <List size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
             {isError ? (
               <div className="flex flex-col items-center justify-center py-20 text-gray-700 bg-red-50 rounded-3xl border border-red-200">
                 <Package size={48} className="mb-4 text-red-500" />
@@ -322,6 +452,9 @@ export default function CatalogPage() {
                   setSearch={setSearch}
                   shouldFetch={true}
                   theme="light"
+                  viewMode={viewMode}
+                  sortOrder={sortOrder}
+                  onQuickView={(art) => setQuickViewArticle(art)}
                 />
 
                 {totalPages > 1 && (
@@ -356,6 +489,30 @@ export default function CatalogPage() {
           </div>
         </div>
       </div>
+
+      {/* Quick View Modal */}
+      {quickViewArticle && (
+        <QuickViewModal
+          article={quickViewArticle}
+          onClose={() => setQuickViewArticle(null)}
+          onOpenPurchase={(art) => {
+            setQuickViewArticle(null);
+            setPurchaseModalArticle(art);
+          }}
+        />
+      )}
+
+      {/* Purchase Modal */}
+      {purchaseModalArticle && (
+        <PurchaseModal
+          article={purchaseModalArticle}
+          articleId={purchaseModalArticle._id}
+          onClose={() => setPurchaseModalArticle(null)}
+          onSuccess={() => {
+            setPurchaseModalArticle(null);
+          }}
+        />
+      )}
     </div>
   );
 }

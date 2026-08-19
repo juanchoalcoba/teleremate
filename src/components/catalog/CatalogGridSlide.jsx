@@ -10,7 +10,10 @@ export default function CatalogGridSlide({
   updateFilters, 
   setSearch,
   shouldFetch,
-  theme = "light"
+  theme = "light",
+  viewMode = "grid",
+  sortOrder = "newest",
+  onQuickView,
 }) {
   const queryParams = {
     ...filters,
@@ -25,7 +28,16 @@ export default function CatalogGridSlide({
     enabled: shouldFetch,
   });
 
-  const articles = data?.data?.articles || [];
+  const rawArticles = data?.data?.articles || [];
+
+  // Sort articles locally for instantaneous smooth UX
+  const articles = [...rawArticles].sort((a, b) => {
+    const priceA = a.price || a.estimatedPrice || 0;
+    const priceB = b.price || b.estimatedPrice || 0;
+    if (sortOrder === "price_asc") return priceA - priceB;
+    if (sortOrder === "price_desc") return priceB - priceA;
+    return 0; // default newest from server
+  });
 
   if (isError) {
     return (
@@ -41,11 +53,11 @@ export default function CatalogGridSlide({
 
   if (isLoading || !shouldFetch) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className={viewMode === "list" ? "flex flex-col gap-4" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"}>
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
-            className="h-72 bg-white border border-gray-100 animate-pulse rounded-2xl shadow-xs"
+            className={`${viewMode === "list" ? "h-40" : "h-72"} bg-white border border-gray-100 animate-pulse rounded-2xl shadow-xs`}
           />
         ))}
       </div>
@@ -77,12 +89,20 @@ export default function CatalogGridSlide({
 
   return (
     <div
-      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity ${
-        isFetching ? "opacity-50" : ""
+      className={`transition-opacity ${isFetching ? "opacity-50" : ""} ${
+        viewMode === "list"
+          ? "flex flex-col gap-4"
+          : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       }`}
     >
       {articles.map((a) => (
-        <ArticleCard key={a._id} article={a} theme={theme} />
+        <ArticleCard 
+          key={a._id} 
+          article={a} 
+          theme={theme} 
+          viewMode={viewMode}
+          onQuickView={onQuickView}
+        />
       ))}
     </div>
   );

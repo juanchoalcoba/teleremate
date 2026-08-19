@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Tag, Share2, BookmarkPlus } from "lucide-react";
+import { ArrowRight, Tag, Share2, BookmarkPlus, Eye } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel, getPriceLabel, getCurrencySymbol } from "../../utils/articleUtils";
 import { toast } from "react-hot-toast";
 import AnnotationModal from "../modals/AnnotationModal";
 
-export default function ArticleCard({ article, theme }) {
+export default function ArticleCard({ article, theme, onQuickView, viewMode = "grid" }) {
   const [showAnnotationModal, setShowAnnotationModal] = useState(false);
   const { _id, title, price, estimatedPrice, images, status, category, currency } =
     article;
 
   const isDark = theme === "dark";
+  const isListView = viewMode === "list";
 
-  // In the real backend, images might be objects with a 'url' property
   const imgSrc = getImageUrl(
     (typeof images?.[0] === "string" ? images[0] : images?.[0]?.url)
   ) || "https://images.unsplash.com/photo-1558618047-3fd3eb4d5af6?w=600";
@@ -45,18 +45,24 @@ export default function ArticleCard({ article, theme }) {
     }
   };
 
+  const handleQuickViewClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onQuickView) onQuickView(article);
+  };
+
   return (
     <>
     <Link 
       to={`/articulo/${_id}`} 
-      className={`group flex flex-col h-full ${
+      className={`group flex ${isListView ? "flex-col sm:flex-row" : "flex-col"} h-full ${
         isDark 
           ? "bg-zinc-900/90 md:bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 backdrop-blur-none md:backdrop-blur-md" 
-          : "bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)] hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+          : "bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_28px_-5px_rgba(154,123,56,0.18)] hover:border-[#9a7b38]/30 hover:-translate-y-1 transition-all duration-300"
       }`}
     >
       {/* Image Container */}
-      <div className={`relative aspect-video overflow-hidden ${isDark ? "bg-black/50" : "bg-[#f8fafc]"}`}>
+      <div className={`relative ${isListView ? "sm:w-64 shrink-0 aspect-square sm:aspect-auto" : "aspect-video"} overflow-hidden ${isDark ? "bg-black/50" : "bg-[#f8fafc]"}`}>
         <img
           src={imgSrc}
           alt={title}
@@ -64,7 +70,7 @@ export default function ArticleCard({ article, theme }) {
           decoding="async"
           className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
           {article.isNewCondition && (
             <span className={`badge-status shadow-lg font-black tracking-widest px-3 backdrop-blur-none md:backdrop-blur-md ${
               isDark 
@@ -94,6 +100,19 @@ export default function ArticleCard({ article, theme }) {
             </span>
           )}
         </div>
+
+        {/* Floating Quick View button on hover */}
+        {onQuickView && (
+          <button
+            onClick={handleQuickViewClick}
+            className="absolute bottom-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/90 hover:bg-white text-gray-900 font-bold px-3 py-1.5 rounded-full text-xs shadow-md backdrop-blur-xs flex items-center gap-1.5 hover:scale-105"
+            title="Vista Rápida"
+          >
+            <Eye size={14} className="text-[#9a7b38]" />
+            <span className="hidden sm:inline">Vista Rápida</span>
+          </button>
+        )}
+
         {/* Subtle gradient overlay for dark mode */}
         {isDark && (
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
