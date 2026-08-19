@@ -30,6 +30,26 @@ import {
 import { getWALink, WAMessages } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
 
+// Utility: Helper to calculate base price, 6% MP commission, and total price
+const getPurchasePriceDetails = (purchase) => {
+  const article = purchase?.articleId || {};
+  const basePrice = Number(purchase?.price) || Number(article.salePrice) || Number(article.estimatedPrice) || 0;
+  const isMP = purchase?.paymentMethod === "mercadopago";
+  const commissionPercentage = isMP ? 0.06 : 0;
+  const commissionAmount = Math.round(basePrice * commissionPercentage);
+  const totalPrice = isMP ? Math.round(basePrice * 1.06) : basePrice;
+  const currencySymbol = article.currency === "USD" ? "US$" : "$";
+
+  return {
+    basePrice,
+    isMP,
+    commissionPercentage,
+    commissionAmount,
+    totalPrice,
+    currencySymbol,
+  };
+};
+
 export default function PurchasesPage() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState("pending");
@@ -138,17 +158,22 @@ export default function PurchasesPage() {
     });
   }, [rawPurchases, searchTerm, paymentFilter, deliveryFilter]);
 
-  // Executive Metrics Calculations
+  // Executive Metrics Calculations (Including Base Price + 6% MP Commission)
   const metrics = useMemo(() => {
     const total = rawPurchases.length;
     const mpApproved = rawPurchases.filter(
       (p) => p.paymentMethod === "mercadopago" && p.paymentStatus === "approved"
     ).length;
     const shipping = rawPurchases.filter((p) => p.deliveryMethod !== "pickup").length;
-    const totalAmount = rawPurchases.reduce((acc, p) => acc + (Number(p.price) || Number(p.articleId?.currentPrice) || 0), 0);
+    const totalAmount = rawPurchases.reduce((acc, p) => {
+      const priceDetails = getPurchasePriceDetails(p);
+      return acc + priceDetails.totalPrice;
+    }, 0);
 
     return { total, mpApproved, shipping, totalAmount };
   }, [rawPurchases]);
+
+  const selectedPriceDetails = selectedPurchase ? getPurchasePriceDetails(selectedPurchase) : null;
 
   return (
     <div className="space-y-6 pb-12">
@@ -211,7 +236,7 @@ export default function PurchasesPage() {
           </div>
         </div>
 
-        {/* KPI 4: Monto Total */}
+        {/* KPI 4: Monto Total acumulado */}
         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-xs flex items-center gap-4">
           <div className="p-3 bg-orange-50 text-orange-600 rounded-xl shrink-0">
             <DollarSign size={24} />
@@ -332,6 +357,7 @@ export default function PurchasesPage() {
                     <th className="px-5 py-3.5">Artículo & Lote</th>
                     <th className="px-5 py-3.5">Comprador</th>
                     <th className="px-5 py-3.5">Estado de Pago</th>
+                    <th className="px-5 py-3.5">Precio & Comisión</th>
                     <th className="px-5 py-3.5">Entrega</th>
                     <th className="px-5 py-3.5">Fecha</th>
                     <th className="px-5 py-3.5 text-right">Acciones</th>
@@ -342,6 +368,7 @@ export default function PurchasesPage() {
                     const article = purchase.articleId || {};
                     const isMPApproved = purchase.paymentMethod === "mercadopago" && purchase.paymentStatus === "approved";
                     const isMPPending = purchase.paymentMethod === "mercadopago" && purchase.paymentStatus !== "approved";
+                    const priceDetails = getPurchasePriceDetails(purchase);
 
                     return (
                       <tr key={purchase._id} className="hover:bg-amber-50/20 transition-colors">
@@ -428,6 +455,24 @@ export default function PurchasesPage() {
                             {purchase.paymentId && (
                               <span className="text-[11px] text-gray-500 font-mono">
                                 ID: {purchase.paymentId}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+
+                        {/* COLUMNA: Precio & Comisión */}
+                        <td className="px-5 py-4">
+                          <div className="flex flex-col items-start">
+                            <span className="font-black text-gray-900 text-sm">
+                              {priceDetails.currencySymbol} {priceDetails.totalPrice.toLocaleString("es-UY")}
+                            </span>
+                            {priceDetails.isMP ? (
+                              <span className="text-[11px] font-bold text-[#9a7b38] bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-0.5">
+                                Base {priceDetails.currencySymbol} {priceDetails.basePrice.toLocaleString("es-UY")} (+6% MP)
+                              </span>
+                            ) : (
+                              <span className="text-[11px] font-medium text-gray-500 mt-0.5">
+                                Sin comisión extra
                               </span>
                             )}
                           </div>
@@ -541,7 +586,7 @@ export default function PurchasesPage() {
       </div>
 
       {/* ── MODAL DE DETALLE COMPLETO DEL COMPRADOR ── */}
-      {selectedPurchase && (
+      {selectedPurchase && selectedPriceDetails && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
           <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-6 relative border border-gray-100 overflow-hidden">
             
@@ -584,6 +629,33 @@ export default function PurchasesPage() {
                 <p className="text-xs text-gray-500 font-medium">
                   Fecha de solicitud: {new Date(selectedPurchase.createdAt).toLocaleDateString("es-UY")}
                 </p>
+              </div>
+            </div>
+
+            {/* Desglose Financiero */}
+            <div className="p-4 bg-[#9a7b38]/5 rounded-2xl border border-[#9a7b38]/20 space-y-2">
+              <span className="text-xs font-bold text-[#9a7b38] uppercase tracking-wider block">
+                Desglose Financiero
+              </span>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-600 font-medium">Precio Base Artículo:</span>
+                <span className="font-bold text-gray-900">
+                  {selectedPriceDetails.currencySymbol} {selectedPriceDetails.basePrice.toLocaleString("es-UY")}
+                </span>
+              </div>
+              {selectedPriceDetails.isMP && (
+                <div className="flex justify-between items-center text-sm text-amber-900">
+                  <span className="font-medium">Comisión MercadoPago (6%):</span>
+                  <span className="font-bold">
+                    +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.commissionAmount.toLocaleString("es-UY")}
+                  </span>
+                </div>
+              )}
+              <div className="flex justify-between items-center text-base pt-2 border-t border-[#9a7b38]/20">
+                <span className="font-black text-gray-900">Total Importe:</span>
+                <span className="font-black text-emerald-700 text-lg">
+                  {selectedPriceDetails.currencySymbol} {selectedPriceDetails.totalPrice.toLocaleString("es-UY")}
+                </span>
               </div>
             </div>
 
