@@ -145,7 +145,7 @@ export default function PurchasesPage() {
       (p) => p.paymentMethod === "mercadopago" && p.paymentStatus === "approved"
     ).length;
     const shipping = rawPurchases.filter((p) => p.deliveryMethod !== "pickup").length;
-    const totalAmount = rawPurchases.reduce((acc, p) => acc + (p.price || p.articleId?.currentPrice || 0), 0);
+    const totalAmount = rawPurchases.reduce((acc, p) => acc + (Number(p.price) || Number(p.articleId?.currentPrice) || 0), 0);
 
     return { total, mpApproved, shipping, totalAmount };
   }, [rawPurchases]);
