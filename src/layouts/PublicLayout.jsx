@@ -74,8 +74,8 @@ const PublicLayout = () => {
                 className="h-10 w-auto object-contain transition-transform group-hover:scale-105 mix-blend-multiply"
               />
               <div className="flex items-center gap-2">
-                <span className="hidden sm:block font-black text-gray-900 text-base uppercase tracking-[0.12em] leading-none">
-                  Tele<span className="text-[#9a7b38]">remate</span>
+                <span className="hidden sm:block font-black text-black text-lg sm:text-xl uppercase tracking-wider leading-none">
+                  Tele<span className="text-orange-600 font-black">remate</span>
                 </span>
                 <img
                   src="https://flagcdn.com/w20/uy.png"
