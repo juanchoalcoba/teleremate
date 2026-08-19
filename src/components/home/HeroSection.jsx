@@ -1,43 +1,36 @@
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Bell } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
 export default function HeroSection() {
-
   return (
-    <section className="relative w-full min-h-[min(800px,calc(100vh-90px))] flex items-center overflow-hidden bg-dark-950 py-4 lg:py-0">
-      {/* Background Image ... */}
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <picture>
-          <source media="(max-width: 1023px)" srcSet="/newhero2.png" />
+    <section className="relative w-full min-h-[min(720px,calc(100vh-90px))] flex items-center overflow-hidden bg-white text-gray-900 py-10 lg:py-14 border-b border-gray-100">
+      
+      {/* ── MANCHAS DE DEGRADÉ AMBIENTALES DE ALTO IMPACTO (MESH GRADIENT BLOBS) ── */}
+      {/* Mancha 1: Superior Derecha (Dorado Cálido & Ámbar) */}
+      <div className="absolute -top-24 -right-20 w-[600px] h-[600px] bg-gradient-to-br from-amber-400/25 via-orange-300/15 to-transparent rounded-full blur-[120px] pointer-events-none animate-pulse" />
 
-          <img
-            src="/newhero.png"
-            alt="Remates Teleremate Fondo"
-            loading="eager"
-            decoding="sync"
-            fetchPriority="high"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-        </picture>
+      {/* Mancha 2: Inferior Izquierda (Cobre & Naranja Suave) */}
+      <div className="absolute -bottom-28 -left-20 w-[650px] h-[650px] bg-gradient-to-tr from-amber-500/20 via-amber-300/15 to-transparent rounded-full blur-[130px] pointer-events-none" />
 
-        <div className="absolute inset-0 bg-linear-to-b from-dark-950 via-dark-950/30 to-dark-950/30" />
-      </div>
+      {/* Mancha 3: Centro / Detrás del Icono (Resplandor Metálico) */}
+      <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-orange-400/20 via-amber-300/25 to-amber-500/20 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Mancha 4: Superior Izquierda (Destello Dorado Foco) */}
+      <div className="absolute top-12 left-1/4 w-[350px] h-[350px] bg-amber-300/15 rounded-full blur-[90px] pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+        
         {/* LEFT: Text + CTA */}
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-5 xl:col-span-5 w-full">
-
-
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left relative z-10 lg:col-span-6 xl:col-span-6 w-full">
+          
           {/* WhatsApp Group Button */}
           <a
             href="https://chat.whatsapp.com/BSnSdwa9CSQHWR2BM1HkHA"
             target="_blank"
             rel="noopener noreferrer"
-            className="whatsapp-hero-btn relative z-20 inline-flex items-center gap-2 bg-[#128C7E] hover:bg-[#075E54] active:bg-[#054c44] text-white font-bold text-xs md:text-sm px-5 py-2 rounded-full mb-3 lg:mb-5 shadow-[0_0_16px_rgba(18,140,126,0.4)] hover:shadow-[0_0_28px_rgba(18,140,126,0.6)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
+            className="whatsapp-hero-btn relative z-20 inline-flex items-center gap-2 bg-[#128C7E] hover:bg-[#075E54] active:bg-[#054c44] text-white font-bold text-xs md:text-sm px-5 py-2 rounded-full mb-4 lg:mb-6 shadow-[0_4px_16px_rgba(18,140,126,0.3)] hover:shadow-[0_6px_22px_rgba(18,140,126,0.45)] transition-all duration-300 active:scale-95 uppercase tracking-wide"
           >
-            {/* WhatsApp SVG icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -49,94 +42,81 @@ export default function HeroSection() {
             </svg>
             Unirse al grupo de WhatsApp
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-70"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
             </span>
           </a>
 
-          {/* Heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-display font-black leading-[1.1] lg:leading-[0.95] tracking-tight text-white mb-4 lg:mb-6 drop-shadow-md flex flex-col items-center lg:items-start">
-            {/* Imagen exclusiva para celulares - TAMAÑO MÁXIMO */}
+          {/* Heading with Orange to Dark Gradient */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-black leading-[1.05] tracking-tight mb-4 lg:mb-6 flex flex-col items-center lg:items-start">
+            {/* Mobile icon center */}
             <img
-              src="/LOGOTRANSPARENTE.png"
+              src="/iconodefin.png"
               alt="Teleremate"
               loading="eager"
-              fetchpriority="high"
               decoding="sync"
-              className="block lg:hidden w-full max-w-[550px] h-auto object-contain -mt-6 -mb-20 animate-reveal drop-shadow-[0_0_50px_rgba(255,255,255,0.25)] scale-125"
+              style={{ mixBlendMode: "multiply" }}
+              className="block lg:hidden w-44 sm:w-56 h-auto object-contain my-3 animate-float mix-blend-multiply drop-shadow-md rounded-3xl p-3 bg-white/80 backdrop-blur-xs border border-gray-100 shadow-xl"
             />
 
-            {/* Texto exclusivo para Desktop y Pantallas Grandes */}
-            <span className="hidden lg:block mb-1 lg:mb-0">TELEREMATE </span>
+            <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-amber-900 bg-clip-text text-transparent">
+              TELEREMATE
+            </span>
 
-            <span
-              className="relative inline-block sm:scale-100 mt-2 sm:mt-0 animate-reveal
-  bg-gradient-to-r from-white via-orange-100 to-orange-200
-  bg-clip-text [-webkit-background-clip:text] text-transparent
-  [-webkit-text-stroke:1px_black]
-  drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]"
-            >
+            <span className="relative inline-block mt-1 sm:mt-0 animate-reveal bg-gradient-to-r from-[#9a7b38] via-orange-600 to-amber-800 bg-clip-text text-transparent">
               Uruguay
-              <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-white/70 rounded-full overflow-hidden">
-                <div className="w-full h-full bg-white/80 animate-sweep" />
+              <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 sm:h-1.5 bg-amber-500/20 rounded-full overflow-hidden">
+                <div className="w-full h-full bg-[#9a7b38] animate-sweep" />
               </div>
             </span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-gray-300 text-base md:text-xl leading-relaxed mb-8 max-w-md font-normal mx-auto lg:mx-0">
-            La plataforma más confiable para subastas locales. Fácil, seguro y
-            totalmente transparente.
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-8 max-w-lg font-medium mx-auto lg:mx-0">
+            La plataforma más confiable para subastas locales y venta directa. Fácil, seguro y totalmente transparente.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-5 w-full max-w-sm mx-auto sm:max-w-none">
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full max-w-sm mx-auto sm:max-w-none">
             {/* BOTÓN: VER CATÁLOGOS */}
             <Link
               to="/catalogo"
-              className="relative w-full sm:w-auto sm:min-w-0 group overflow-hidden inline-flex justify-center items-center gap-2 sm:gap-4 bg-linear-to-r from-brand-500 via-brand-600 to-brand-500 sm:bg-brand-500 sm:bg-none hover:bg-[right_center] text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-500 shadow-lg sm:shadow-none hover:shadow-xl sm:hover:shadow-brand-500/30 active:scale-95 uppercase sm:normal-case text-sm sm:text-base border-2 sm:border-4 border-white"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-3 bg-gradient-to-r from-[#9a7b38] via-[#b89547] to-[#85672a] hover:from-[#85672a] hover:to-[#9a7b38] text-white font-black px-7 py-4 rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-[#9a7b38]/30 active:scale-95 uppercase tracking-wider text-sm sm:text-base cursor-pointer"
             >
-              {/* El brillo animado */}
-              <span className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine sm:hidden" />
-              Ver Catálogos
-              <div className="bg-white/20 sm:bg-transparent rounded-full p-1 sm:p-0 group-hover:translate-x-1 transition-transform">
-                <ArrowRight size={18} />
-              </div>
+              <span>Ver Catálogos</span>
+              <ArrowRight size={18} />
             </Link>
 
             {/* BOTÓN: VENDER */}
             <Link
               to="/vender"
-              className="w-full sm:w-auto sm:min-w-0 inline-flex justify-center items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md sm:backdrop-blur-none border-2 sm:border-4 border-brand-500 sm:border-white/40 hover:border-brand-400 sm:hover:border-white/80 text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 hover:bg-white/10 active:scale-95 uppercase sm:normal-case text-sm sm:text-base shadow-lg sm:shadow-none hover:shadow-xl"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-white/90 backdrop-blur-xs hover:bg-gray-50 border-2 border-gray-200 hover:border-[#9a7b38] text-gray-900 font-bold px-7 py-4 rounded-2xl transition-all duration-300 active:scale-95 uppercase tracking-wider text-sm sm:text-base shadow-xs hover:shadow-md cursor-pointer"
             >
               Vender Artículo
             </Link>
           </div>
-
-          {/* Mini stats */}
         </div>
 
-        {/* RIGHT: Logo Visual */}
-        <div className="hidden lg:flex flex-col items-center justify-center relative z-0 lg:col-span-7 xl:col-span-7 w-full lg:pl-16 mt-8 lg:mt-0">
-          {/* Constrained layout for Image */}
-          <div className="relative w-full max-w-[280px] sm:max-w-[400px] lg:max-w-[750px] xl:max-w-[850px] mx-auto flex items-center justify-center lg:translate-x-4 xl:translate-x-12 lg:scale-110 xl:scale-125 animate-float">
-            {/* Simple static glow ring */}
-            <div className="absolute inset-0 rounded-full bg-brand-500/10 blur-[60px] lg:blur-[100px] scale-100 lg:scale-125" />
+        {/* RIGHT: Logo iconodefin.png Visual inside rounded showcase card */}
+        <div className="hidden lg:flex flex-col items-center justify-center relative z-10 lg:col-span-6 xl:col-span-6 w-full lg:pl-8">
+          <div className="relative w-full max-w-[380px] lg:max-w-[460px] mx-auto flex items-center justify-center animate-float p-5 bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-gray-100 shadow-[0_20px_50px_rgba(154,123,56,0.12)]">
+            {/* Glow Aura posterior directo detrás del logo */}
+            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-tr from-amber-400/20 via-orange-300/15 to-amber-500/15 blur-[60px] pointer-events-none" />
 
             <img
-              src="/LOGOTRANSPARENTE.png"
-              alt="Teleremate"
+              src="/iconodefin.png"
+              alt="Teleremate Uruguay"
               loading="eager"
-              fetchpriority="high"
               decoding="sync"
-              className="relative z-10 w-full object-contain drop-shadow-[0_0_80px_rgba(255,255,255,0.08)] brightness-110"
+              style={{ mixBlendMode: "multiply" }}
+              className="relative z-10 w-full h-auto object-contain mix-blend-multiply rounded-3xl"
             />
           </div>
         </div>
       </div>
+
       {/* Custom Styles for Hero Animations */}
       <style>{`
-
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-15px); }
@@ -147,19 +127,13 @@ export default function HeroSection() {
           100% { transform: translateX(-100%); }
         }
         @keyframes reveal {
-          0% { opacity: 0; transform: translateY(10px); filter: blur(4px); }
-          100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-        @keyframes shine {
-          100% { transform: translateX(100%); }
+          0% { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
 
         .animate-float { animation: float 5s ease-in-out infinite; }
         .animate-sweep { animation: sweep 5s ease-in-out infinite; }
         .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .group-hover\\:animate-shine { animation: shine 0.8s ease-in-out; }
-        .animation-delay-300 { animation-delay: 300ms; }
-        .typed-cursor { color: var(--color-brand-500); font-weight: 900; margin-left: 2px; }
       `}</style>
     </section>
   );

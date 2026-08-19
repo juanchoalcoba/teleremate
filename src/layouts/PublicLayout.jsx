@@ -38,48 +38,49 @@ const PublicLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* ── TOP CONTACT BAR ── */}
-      <div className="hidden md:block bg-brand-500 text-white py-1.5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-[11px] font-bold  tracking-widest">
+      <div className="hidden md:block bg-gray-100/80 border-b border-gray-200/60 text-gray-700 py-1.5 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-[11px] font-bold tracking-widest">
           <a
             href="tel:099626385"
-            className="flex items-center gap-2 hover:text-white/80 transition-colors"
+            className="flex items-center gap-2 text-gray-600 hover:text-[#9a7b38] transition-colors"
           >
-            <Phone size={12} /> 099 626 385
+            <Phone size={12} className="text-[#9a7b38]" /> 099 626 385
           </a>
           <a
             href="mailto:contacto@teleremate.com.uy"
-            className="flex items-center gap-2 hover:text-white/80 transition-colors"
+            className="flex items-center gap-2 text-gray-600 hover:text-[#9a7b38] transition-colors"
           >
-            <Mail size={12} /> contacto@tele-remate.com.uy
+            <Mail size={12} className="text-[#9a7b38]" /> contacto@tele-remate.com.uy
           </a>
         </div>
       </div>
 
       {/* ── NAVBAR ── */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 bg-dark-950 ${
+        className={`sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md ${
           scrolled
-            ? "shadow-2xl shadow-black/40 border-b border-white/5"
-            : "border-b border-white/0"
+            ? "shadow-md shadow-gray-200/50 border-b border-gray-200"
+            : "border-b border-gray-100"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
+            <Link to="/" className="flex items-center gap-2.5 group">
               <img
-                src="/logoprincipal.png"
+                src="/iconodefin.png"
                 alt="Teleremate"
-                className="h-14 w-auto object-contain transition-transform group-hover:scale-105"
+                style={{ mixBlendMode: "multiply" }}
+                className="h-10 w-auto object-contain transition-transform group-hover:scale-105 mix-blend-multiply"
               />
-              <div className="flex items-center gap-2.5">
-                <span className="hidden sm:block font-black text-white text-sm uppercase tracking-[0.15em] leading-none">
-                  Tele<span className="text-gray-300">remate</span>
+              <div className="flex items-center gap-2">
+                <span className="hidden sm:block font-black text-gray-900 text-base uppercase tracking-[0.12em] leading-none">
+                  Tele<span className="text-[#9a7b38]">remate</span>
                 </span>
                 <img
                   src="https://flagcdn.com/w20/uy.png"
                   alt="Uruguay"
-                  className="h-3.5 w-auto sm:h-2.5 rounded-[1px] opacity-70 sm:opacity-60 border border-white/10 shadow-sm"
+                  className="h-3.5 w-auto sm:h-2.5 rounded-[1px] opacity-80 border border-gray-200 shadow-2xs"
                 />
               </div>
             </Link>
@@ -92,15 +93,15 @@ const PublicLayout = () => {
                   <Link
                     key={to}
                     to={to}
-                    className={`relative px-5 py-2 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${
+                    className={`relative px-5 py-2 rounded-xl text-xs font-extrabold uppercase tracking-widest transition-all ${
                       isActive
-                        ? "text-white bg-white/10"
-                        : "text-white/60 hover:text-white hover:bg-white/5"
+                        ? "text-amber-950 bg-amber-50/80 border border-amber-600/30"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/70 border border-transparent"
                     }`}
                   >
                     {label}
                     {isActive && (
-                      <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-orange-500 rounded-full" />
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-[#9a7b38] rounded-full" />
                     )}
                   </Link>
                 );
@@ -110,34 +111,34 @@ const PublicLayout = () => {
             {/* CTA + Hamburger */}
             <div className="flex items-center gap-3">
               {/* Social Icons Desktop */}
-              <div className="hidden md:flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2.5">
                 <a
                   target="_blank"
                   href="https://www.facebook.com/canal6zebra"
-                  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+                  className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-200/80 transition-all border border-gray-200"
                   aria-label="Facebook"
                 >
-                  <Facebook size={18} />
+                  <Facebook size={17} />
                 </a>
                 <a
                   target="_blank"
                   href="https://www.instagram.com/teleremate/"
-                  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+                  className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-200/80 transition-all border border-gray-200"
                   aria-label="Instagram"
                 >
-                  <Instagram size={18} />
+                  <Instagram size={17} />
                 </a>
                 <a
                   href={getWALink(TELEREMATE_WA, WAMessages.general)}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-[#25D366] hover:bg-white/10 transition-all border border-white/5 hover:border-white/10"
+                  className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:text-[#25D366] hover:bg-gray-200/80 transition-all border border-gray-200"
                   aria-label="WhatsApp"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
+                    width="17"
+                    height="17"
                     fill="currentColor"
                     viewBox="0 0 16 16"
                   >
@@ -146,7 +147,7 @@ const PublicLayout = () => {
                 </a>
               </div>
               <button
-                className="md:hidden p-2 text-white/80 hover:text-white rounded-xl hover:bg-white/10 transition-all"
+                className="md:hidden p-2 text-gray-700 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-all cursor-pointer"
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label="Toggle menu"
               >
@@ -158,48 +159,48 @@ const PublicLayout = () => {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden bg-dark-950/98 backdrop-blur-md border-t border-white/5 px-4 py-4 flex flex-col gap-1">
+          <div className="md:hidden bg-white/98 backdrop-blur-md border-t border-gray-100 shadow-lg px-4 py-4 flex flex-col gap-1">
             {navLinks.map(({ to, label }) => (
               <Link
                 key={to}
                 to={to}
                 onClick={() => setMenuOpen(false)}
-                className={`px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${
+                className={`px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${
                   pathname === to
-                    ? "text-white bg-brand-500/20 border border-brand-500/30"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
+                    ? "text-amber-950 bg-amber-50 border border-amber-600/30 font-black"
+                    : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                 }`}
               >
                 {label}
               </Link>
             ))}
             {/* Social Icons Mobile */}
-            <div className="mt-2 flex items-center justify-center gap-4 py-4 border-t border-white/5">
+            <div className="mt-2 flex items-center justify-center gap-4 py-3 border-t border-gray-100">
               <a
                 href="https://www.facebook.com/canal6zebra"
-                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white"
+                className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-700 hover:text-gray-900 border border-gray-200"
                 aria-label="Facebook"
               >
-                <Facebook size={20} />
+                <Facebook size={18} />
               </a>
               <a
                 href="https://www.instagram.com/teleremate/"
-                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-white"
+                className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-700 hover:text-gray-900 border border-gray-200"
                 aria-label="Instagram"
               >
-                <Instagram size={20} />
+                <Instagram size={18} />
               </a>
               <a
                 href={getWALink(TELEREMATE_WA, WAMessages.general)}
                 target="_blank"
                 rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/60 hover:text-[#25D366]"
+                className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-700 hover:text-[#25D366] border border-gray-200"
                 aria-label="WhatsApp"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="18"
+                  height="18"
                   fill="currentColor"
                   viewBox="0 0 16 16"
                 >
