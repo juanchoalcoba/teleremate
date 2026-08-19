@@ -5,6 +5,42 @@ export default function HeroSection() {
   return (
     <section className="relative w-full min-h-[min(720px,calc(100vh-90px))] flex items-center overflow-hidden bg-white text-gray-900 py-10 lg:py-14 border-b border-gray-100">
       
+      {/* ── LÍNEAS CRUZADAS DEFINIDAS Y VISIBLES DE LADO A LADO ── */}
+      {/* 1. Malla de Cuadrícula Cruzada */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-80">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <defs>
+            <pattern id="hero-cross-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+              {/* Línea Horizontal Nítida */}
+              <line x1="0" y1="40" x2="80" y2="40" stroke="#cbd5e1" strokeWidth="1" strokeOpacity="0.6" />
+              {/* Línea Vertical Nítida */}
+              <line x1="40" y1="0" x2="40" y2="80" stroke="#cbd5e1" strokeWidth="1" strokeOpacity="0.6" />
+              {/* Líneas Diagonales Cruzadas Doradas */}
+              <line x1="0" y1="0" x2="80" y2="80" stroke="#9a7b38" strokeWidth="0.8" strokeDasharray="4 4" strokeOpacity="0.35" />
+              <line x1="80" y1="0" x2="0" y2="80" stroke="#9a7b38" strokeWidth="0.8" strokeDasharray="4 4" strokeOpacity="0.35" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-cross-grid)" />
+        </svg>
+      </div>
+
+      {/* 2. Líneas Diagonales Largas Cruzadas de Lado a Lado (Edge-to-Edge Beams) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1000 600">
+          {/* Gran Diagonal de Izquierda Arriba a Derecha Abajo */}
+          <line x1="-100" y1="0" x2="1100" y2="600" stroke="#9a7b38" strokeWidth="1.5" strokeOpacity="0.25" />
+          <line x1="-100" y1="100" x2="1100" y2="700" stroke="#ea580c" strokeWidth="1" strokeDasharray="6 6" strokeOpacity="0.2" />
+
+          {/* Gran Diagonal Cruzada de Derecha Arriba a Izquierda Abajo */}
+          <line x1="1100" y1="0" x2="-100" y2="600" stroke="#9a7b38" strokeWidth="1.5" strokeOpacity="0.25" />
+          <line x1="1100" y1="100" x2="-100" y2="700" stroke="#9a7b38" strokeWidth="1" strokeDasharray="6 6" strokeOpacity="0.2" />
+
+          {/* Líneas Horizontales Destacadas */}
+          <line x1="0" y1="150" x2="1000" y2="150" stroke="#9a7b38" strokeWidth="1" strokeOpacity="0.2" />
+          <line x1="0" y1="450" x2="1000" y2="450" stroke="#ea580c" strokeWidth="1" strokeOpacity="0.15" />
+        </svg>
+      </div>
+
       {/* ── MANCHAS DE DEGRADÉ AMBIENTALES DE ALTO IMPACTO (MESH GRADIENT BLOBS) ── */}
       {/* Mancha 1: Superior Derecha (Dorado Cálido & Ámbar) */}
       <div className="absolute -top-24 -right-20 w-[600px] h-[600px] bg-gradient-to-br from-amber-400/25 via-orange-300/15 to-transparent rounded-full blur-[120px] pointer-events-none animate-pulse" />
