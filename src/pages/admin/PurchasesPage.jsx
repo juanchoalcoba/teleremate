@@ -600,17 +600,15 @@ export default function PurchasesPage() {
       {/* ── MODAL DE DETALLE COMPLETO DEL COMPRADOR ── */}
       {selectedPurchase && selectedPriceDetails && (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs animate-fadeIn p-4 sm:p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn"
           onClick={() => setSelectedPurchase(null)}
         >
-          <div className="min-h-full flex items-center justify-center py-4">
-            <div
-              className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 relative border border-gray-100 my-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-            
-            {/* Header del Modal */}
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <div
+            className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative border border-gray-100 max-h-[85vh] flex flex-col my-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header del Modal (Fijo Arriba) */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100 shrink-0">
               <div className="flex items-center gap-2">
                 <ShieldCheck size={20} className="text-[#9a7b38]" />
                 <h3 className="text-lg font-black text-gray-900 tracking-tight">
@@ -625,125 +623,128 @@ export default function PurchasesPage() {
               </button>
             </div>
 
-            {/* Ficha del Artículo */}
-            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-              {selectedPurchase.articleId?.images?.[0] ? (
-                <img
-                  src={getImageUrl(selectedPurchase.articleId.images[0])}
-                  alt={selectedPurchase.articleId.title}
-                  className="w-16 h-16 rounded-xl object-cover border border-gray-200"
-                />
-              ) : (
-                <div className="w-16 h-16 rounded-xl bg-gray-200 flex items-center justify-center text-gray-400">
-                  <Package size={24} />
+            {/* Cuerpo del Modal con Scrollbar Vertical Interno Propio */}
+            <div className="overflow-y-auto py-3 space-y-4 flex-1 pr-1">
+              {/* Ficha del Artículo */}
+              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                {selectedPurchase.articleId?.images?.[0] ? (
+                  <img
+                    src={getImageUrl(selectedPurchase.articleId.images[0])}
+                    alt={selectedPurchase.articleId.title}
+                    className="w-16 h-16 rounded-xl object-cover border border-gray-200"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-xl bg-gray-200 flex items-center justify-center text-gray-400">
+                    <Package size={24} />
+                  </div>
+                )}
+                <div>
+                  <span className="px-2 py-0.5 rounded-md text-xs font-black bg-amber-100 text-amber-900 border border-amber-200">
+                    LOTE #{selectedPurchase.articleId?.lotNumber || "-"}
+                  </span>
+                  <h4 className="font-bold text-gray-900 text-base mt-1">
+                    {selectedPurchase.articleId?.title || "Sin título"}
+                  </h4>
+                  <p className="text-xs text-gray-500 font-medium">
+                    Fecha de solicitud: {new Date(selectedPurchase.createdAt).toLocaleDateString("es-UY")}
+                  </p>
                 </div>
-              )}
-              <div>
-                <span className="px-2 py-0.5 rounded-md text-xs font-black bg-amber-100 text-amber-900 border border-amber-200">
-                  LOTE #{selectedPurchase.articleId?.lotNumber || "-"}
-                </span>
-                <h4 className="font-bold text-gray-900 text-base mt-1">
-                  {selectedPurchase.articleId?.title || "Sin título"}
-                </h4>
-                <p className="text-xs text-gray-500 font-medium">
-                  Fecha de solicitud: {new Date(selectedPurchase.createdAt).toLocaleDateString("es-UY")}
-                </p>
               </div>
-            </div>
 
-            {/* Desglose Financiero */}
-            <div className="p-4 bg-[#9a7b38]/5 rounded-2xl border border-[#9a7b38]/20 space-y-2">
-              <span className="text-xs font-bold text-[#9a7b38] uppercase tracking-wider block">
-                Desglose Financiero
-              </span>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600 font-medium">Precio Base Artículo:</span>
-                <span className="font-bold text-gray-900">
-                  {selectedPriceDetails.currencySymbol} {selectedPriceDetails.basePrice.toLocaleString("es-UY")}
+              {/* Desglose Financiero */}
+              <div className="p-4 bg-[#9a7b38]/5 rounded-2xl border border-[#9a7b38]/20 space-y-2">
+                <span className="text-xs font-bold text-[#9a7b38] uppercase tracking-wider block">
+                  Desglose Financiero
                 </span>
-              </div>
-              {selectedPriceDetails.isMP && (
-                <div className="flex justify-between items-center text-sm text-amber-900">
-                  <span className="font-medium">Comisión MercadoPago (6%):</span>
-                  <span className="font-bold">
-                    +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.commissionAmount.toLocaleString("es-UY")}
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600 font-medium">Precio Base Artículo:</span>
+                  <span className="font-bold text-gray-900">
+                    {selectedPriceDetails.currencySymbol} {selectedPriceDetails.basePrice.toLocaleString("es-UY")}
                   </span>
                 </div>
-              )}
-              <div className="flex justify-between items-center text-base pt-2 border-t border-[#9a7b38]/20">
-                <span className="font-black text-gray-900">Total Importe:</span>
-                <span className="font-black text-emerald-700 text-lg">
-                  {selectedPriceDetails.currencySymbol} {selectedPriceDetails.totalPrice.toLocaleString("es-UY")}
-                </span>
-              </div>
-            </div>
-
-            {/* Datos del Cliente y Envío */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div className="p-4 bg-white rounded-2xl border border-gray-100 space-y-1">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Comprador</span>
-                <p className="font-black text-gray-900 text-base">{selectedPurchase.fullName}</p>
-                <a
-                  href={getWALink(
-                    selectedPurchase.phone,
-                    WAMessages.purchaseFollowup(
-                      selectedPurchase.fullName,
-                      selectedPurchase.articleId?.lotNumber,
-                      selectedPurchase.articleId?.title
-                    )
-                  )}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 mt-2 transition"
-                >
-                  <MessageCircle size={14} />
-                  <span>Enviar WhatsApp ({selectedPurchase.phone})</span>
-                </a>
+                {selectedPriceDetails.isMP && (
+                  <div className="flex justify-between items-center text-sm text-amber-900">
+                    <span className="font-medium">Comisión MercadoPago (6%):</span>
+                    <span className="font-bold">
+                      +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.commissionAmount.toLocaleString("es-UY")}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center text-base pt-2 border-t border-[#9a7b38]/20">
+                  <span className="font-black text-gray-900">Total Importe:</span>
+                  <span className="font-black text-emerald-700 text-lg">
+                    {selectedPriceDetails.currencySymbol} {selectedPriceDetails.totalPrice.toLocaleString("es-UY")}
+                  </span>
+                </div>
               </div>
 
-              <div className="p-4 bg-white rounded-2xl border border-gray-100 space-y-1">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Método de Pago</span>
-                <p className="font-bold text-gray-900">
-                  {selectedPurchase.paymentMethod === "mercadopago" ? "MercadoPago" : "Depósito / Transferencia"}
-                </p>
-                <span
-                  className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-black mt-1 ${
-                    selectedPurchase.paymentStatus === "approved"
-                      ? "bg-emerald-100 text-emerald-800"
-                      : "bg-amber-100 text-amber-800"
-                  }`}
-                >
-                  {selectedPurchase.paymentStatus === "approved" ? "Pago Aprobado" : "Pendiente de Pago"}
-                </span>
-              </div>
-            </div>
-
-            {/* Dirección de Entrega */}
-            <div className="p-4 bg-amber-50/40 rounded-2xl border border-amber-100/60 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1">
-                  <MapPin size={14} className="text-[#9a7b38]" />
-                  Dirección de Entrega ({selectedPurchase.deliveryMethod !== "pickup" ? "Envío" : "Retiro"})
-                </span>
-                {selectedPurchase.deliveryAddress && (
+              {/* Datos del Cliente y Envío */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div className="p-4 bg-white rounded-2xl border border-gray-100 space-y-1">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Comprador</span>
+                  <p className="font-black text-gray-900 text-base">{selectedPurchase.fullName}</p>
                   <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedPurchase.deliveryAddress)}`}
+                    href={getWALink(
+                      selectedPurchase.phone,
+                      WAMessages.purchaseFollowup(
+                        selectedPurchase.fullName,
+                        selectedPurchase.articleId?.lotNumber,
+                        selectedPurchase.articleId?.title
+                      )
+                    )}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs font-bold text-[#9a7b38] hover:underline inline-flex items-center gap-1"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 mt-2 transition"
                   >
-                    <span>Ver en Maps</span>
-                    <ExternalLink size={12} />
+                    <MessageCircle size={14} />
+                    <span>Enviar WhatsApp ({selectedPurchase.phone})</span>
                   </a>
-                )}
+                </div>
+
+                <div className="p-4 bg-white rounded-2xl border border-gray-100 space-y-1">
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Método de Pago</span>
+                  <p className="font-bold text-gray-900">
+                    {selectedPurchase.paymentMethod === "mercadopago" ? "MercadoPago" : "Depósito / Transferencia"}
+                  </p>
+                  <span
+                    className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-black mt-1 ${
+                      selectedPurchase.paymentStatus === "approved"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-amber-100 text-amber-800"
+                    }`}
+                  >
+                    {selectedPurchase.paymentStatus === "approved" ? "Pago Aprobado" : "Pendiente de Pago"}
+                  </span>
+                </div>
               </div>
-              <p className="text-sm font-medium text-gray-900 leading-relaxed">
-                {selectedPurchase.deliveryAddress || "El cliente seleccionó retiro en sucursal o no especificó dirección."}
-              </p>
+
+              {/* Dirección de Entrega */}
+              <div className="p-4 bg-amber-50/40 rounded-2xl border border-amber-100/60 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1">
+                    <MapPin size={14} className="text-[#9a7b38]" />
+                    Dirección de Entrega ({selectedPurchase.deliveryMethod !== "pickup" ? "Envío" : "Retiro"})
+                  </span>
+                  {selectedPurchase.deliveryAddress && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedPurchase.deliveryAddress)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs font-bold text-[#9a7b38] hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>Ver en Maps</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
+                </div>
+                <p className="text-sm font-medium text-gray-900 leading-relaxed">
+                  {selectedPurchase.deliveryAddress || "El cliente seleccionó retiro en sucursal o no especificó dirección."}
+                </p>
+              </div>
             </div>
 
-            {/* Botones de Acción del Modal */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+            {/* Footer del Modal (Fijo Abajo con Botones Siempre Visibles) */}
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100 shrink-0">
               <button
                 onClick={() => setSelectedPurchase(null)}
                 className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-sm transition cursor-pointer"
@@ -763,8 +764,7 @@ export default function PurchasesPage() {
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 }
