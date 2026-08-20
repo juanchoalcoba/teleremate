@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ChevronLeft,
@@ -61,6 +61,18 @@ export default function PurchasesPage() {
 
   const limit = 15;
   const queryClient = useQueryClient();
+
+  // Lock body background scroll when modal is open
+  useEffect(() => {
+    if (selectedPurchase) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedPurchase]);
 
   // API Call - Fetch Purchases
   const { data, isLoading, refetch } = useQuery({
@@ -587,8 +599,14 @@ export default function PurchasesPage() {
 
       {/* ── MODAL DE DETALLE COMPLETO DEL COMPRADOR ── */}
       {selectedPurchase && selectedPriceDetails && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 relative border border-gray-100 max-h-[90vh] overflow-y-auto my-auto">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn"
+          onClick={() => setSelectedPurchase(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 relative border border-gray-100 max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             
             {/* Header del Modal */}
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
