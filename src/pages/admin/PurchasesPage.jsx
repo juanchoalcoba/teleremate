@@ -30,7 +30,7 @@ import {
 import { getWALink, WAMessages } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
 
-// Utility: Helper to calculate base price, 20% Teleremate commission, 6% MP commission, and total price
+// Utility: Helper to calculate base price, 20% Teleremate commission, MP 7.31% absorption fee, and total price
 const getPurchasePriceDetails = (purchase) => {
   const article = purchase?.articleId || {};
   const basePrice = Number(purchase?.price) || Number(article.salePrice) || Number(article.estimatedPrice) || 0;
@@ -38,8 +38,8 @@ const getPurchasePriceDetails = (purchase) => {
   const subtotalWithTeleremate = basePrice + teleremateCommission;
 
   const isMP = purchase?.paymentMethod === "mercadopago";
-  const mpCommissionAmount = isMP ? Math.round(basePrice * 0.06) : 0;
-  const totalPrice = isMP ? Math.round(basePrice * 1.26) : subtotalWithTeleremate;
+  const totalPrice = isMP ? Math.round(subtotalWithTeleremate / 0.9269) : subtotalWithTeleremate;
+  const mpCommissionAmount = isMP ? totalPrice - subtotalWithTeleremate : 0;
   const currencySymbol = article.currency === "USD" ? "US$" : "$";
 
   return {
@@ -483,7 +483,7 @@ export default function PurchasesPage() {
                             </span>
                             {priceDetails.isMP ? (
                               <span className="text-[11px] font-bold text-[#9a7b38] bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-0.5">
-                                Base {priceDetails.currencySymbol}{priceDetails.basePrice.toLocaleString("es-UY")} + 20% Tele + 6% MP
+                                Base {priceDetails.currencySymbol}{priceDetails.basePrice.toLocaleString("es-UY")} + 20% Tele + 7,31% MP
                               </span>
                             ) : (
                               <span className="text-[11px] font-bold text-blue-800 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200 mt-0.5">
@@ -683,7 +683,7 @@ export default function PurchasesPage() {
 
                 {selectedPriceDetails.isMP && (
                   <div className="flex justify-between items-center text-sm text-[#9a7b38]">
-                    <span className="font-medium">Comisión MercadoPago (6%):</span>
+                    <span className="font-medium">Comisión MercadoPago (7,31%):</span>
                     <span className="font-bold">
                       +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.mpCommissionAmount.toLocaleString("es-UY")}
                     </span>

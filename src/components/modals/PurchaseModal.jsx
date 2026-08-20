@@ -26,9 +26,9 @@ export default function PurchaseModal({ articleId, article: initialArticle, onCl
   }, [articleId, article]);
 
   const basePrice = article?.price || article?.estimatedPrice || 0;
-  const standardPrice = Math.round(basePrice * 1.2);
-  const mpCommissionAmount = Math.round(basePrice * 0.06);
-  const mpTotalPrice = Math.round(basePrice * 1.26);
+  const standardPrice = Math.round(basePrice * 1.20);
+  const mpTotalPrice = Math.round((basePrice * 1.20) / 0.9269);
+  const mpCommissionAmount = mpTotalPrice - standardPrice;
   const currencySymbol = article?.currency === "USD" ? "US$" : "$";
 
   useEffect(() => {
@@ -339,7 +339,7 @@ export default function PurchaseModal({ articleId, article: initialArticle, onCl
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500">Tarjetas de crédito, débito o dinero en cuenta (+6% comisión MP)</p>
+                  <p className="text-xs text-gray-500">Tarjetas de crédito, débito o dinero en cuenta (+7,31% de arancel e IVA MP)</p>
                 </div>
               </label>
             </div>
@@ -356,7 +356,7 @@ export default function PurchaseModal({ articleId, article: initialArticle, onCl
                       Aviso de Comisión MercadoPago
                     </h4>
                     <p className="text-xs text-blue-800 leading-relaxed">
-                      Al seleccionar MercadoPago se aplica un <strong>6% adicional</strong> por concepto de costos operativos de la pasarela de pago (Comisión total aplicable: 26%).
+                      Al seleccionar MercadoPago se aplica el recargo correspondiente al arancel financiero e IVA de pasarela (<strong>7,31%</strong>), garantizando la acreditación inmediata de tu compra.
                     </p>
                   </div>
                 </div>
@@ -368,7 +368,7 @@ export default function PurchaseModal({ articleId, article: initialArticle, onCl
                       <span>{currencySymbol} {standardPrice.toLocaleString("es-UY")}</span>
                     </div>
                     <div className="flex justify-between text-blue-800">
-                      <span>Recargo MercadoPago (+6%):</span>
+                      <span>Recargo MercadoPago (+7,31%):</span>
                       <span>+ {currencySymbol} {mpCommissionAmount.toLocaleString("es-UY")}</span>
                     </div>
                     <div className="flex justify-between font-bold text-sm text-blue-900 pt-1.5 border-t border-blue-200">
