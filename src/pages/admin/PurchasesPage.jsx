@@ -30,21 +30,24 @@ import {
 import { getWALink, WAMessages } from "../../utils/whatsapp";
 import { getImageUrl } from "../../utils/imageUtils";
 
-// Utility: Helper to calculate base price, 6% MP commission, and total price
+// Utility: Helper to calculate base price, 20% Teleremate commission, 6% MP commission, and total price
 const getPurchasePriceDetails = (purchase) => {
   const article = purchase?.articleId || {};
   const basePrice = Number(purchase?.price) || Number(article.salePrice) || Number(article.estimatedPrice) || 0;
+  const teleremateCommission = Math.round(basePrice * 0.20);
+  const subtotalWithTeleremate = basePrice + teleremateCommission;
+
   const isMP = purchase?.paymentMethod === "mercadopago";
-  const commissionPercentage = isMP ? 0.06 : 0;
-  const commissionAmount = Math.round(basePrice * commissionPercentage);
-  const totalPrice = isMP ? Math.round(basePrice * 1.06) : basePrice;
+  const mpCommissionAmount = isMP ? Math.round(basePrice * 0.06) : 0;
+  const totalPrice = isMP ? Math.round(basePrice * 1.26) : subtotalWithTeleremate;
   const currencySymbol = article.currency === "USD" ? "US$" : "$";
 
   return {
     basePrice,
+    teleremateCommission,
+    subtotalWithTeleremate,
     isMP,
-    commissionPercentage,
-    commissionAmount,
+    mpCommissionAmount,
     totalPrice,
     currencySymbol,
   };
@@ -480,11 +483,11 @@ export default function PurchasesPage() {
                             </span>
                             {priceDetails.isMP ? (
                               <span className="text-[11px] font-bold text-[#9a7b38] bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-0.5">
-                                Base {priceDetails.currencySymbol} {priceDetails.basePrice.toLocaleString("es-UY")} (+6% MP)
+                                Base {priceDetails.currencySymbol}{priceDetails.basePrice.toLocaleString("es-UY")} + 20% Tele + 6% MP
                               </span>
                             ) : (
-                              <span className="text-[11px] font-medium text-gray-500 mt-0.5">
-                                Sin comisión extra
+                              <span className="text-[11px] font-bold text-blue-800 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200 mt-0.5">
+                                Base {priceDetails.currencySymbol}{priceDetails.basePrice.toLocaleString("es-UY")} + 20% Tele
                               </span>
                             )}
                           </div>
@@ -651,27 +654,44 @@ export default function PurchasesPage() {
                 </div>
               </div>
 
-              {/* Desglose Financiero */}
+              {/* Desglose Financiero Completo */}
               <div className="p-4 bg-[#9a7b38]/5 rounded-2xl border border-[#9a7b38]/20 space-y-2">
                 <span className="text-xs font-bold text-[#9a7b38] uppercase tracking-wider block">
-                  Desglose Financiero
+                  Desglose Financiero Completo
                 </span>
+                
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600 font-medium">Precio Base Artículo:</span>
+                  <span className="text-gray-600 font-medium">Precio Base Artículo (Vendedor):</span>
                   <span className="font-bold text-gray-900">
                     {selectedPriceDetails.currencySymbol} {selectedPriceDetails.basePrice.toLocaleString("es-UY")}
                   </span>
                 </div>
+
+                <div className="flex justify-between items-center text-sm text-amber-900">
+                  <span className="font-medium">Comisión Teleremate (20%):</span>
+                  <span className="font-bold">
+                    +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.teleremateCommission.toLocaleString("es-UY")}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-xs text-gray-500 pt-1 border-t border-amber-200/50">
+                  <span className="font-medium">Subtotal (Base + Teleremate):</span>
+                  <span className="font-bold text-gray-700">
+                    {selectedPriceDetails.currencySymbol} {selectedPriceDetails.subtotalWithTeleremate.toLocaleString("es-UY")}
+                  </span>
+                </div>
+
                 {selectedPriceDetails.isMP && (
-                  <div className="flex justify-between items-center text-sm text-amber-900">
+                  <div className="flex justify-between items-center text-sm text-[#9a7b38]">
                     <span className="font-medium">Comisión MercadoPago (6%):</span>
                     <span className="font-bold">
-                      +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.commissionAmount.toLocaleString("es-UY")}
+                      +{selectedPriceDetails.currencySymbol} {selectedPriceDetails.mpCommissionAmount.toLocaleString("es-UY")}
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between items-center text-base pt-2 border-t border-[#9a7b38]/20">
-                  <span className="font-black text-gray-900">Total Importe:</span>
+
+                <div className="flex justify-between items-center text-base pt-2 border-t border-[#9a7b38]/30">
+                  <span className="font-black text-gray-900">TOTAL FINAL IMPORTE:</span>
                   <span className="font-black text-emerald-700 text-lg">
                     {selectedPriceDetails.currencySymbol} {selectedPriceDetails.totalPrice.toLocaleString("es-UY")}
                   </span>
