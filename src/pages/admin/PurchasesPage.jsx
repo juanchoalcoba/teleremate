@@ -600,13 +600,14 @@ export default function PurchasesPage() {
       {/* ── MODAL DE DETALLE COMPLETO DEL COMPRADOR ── */}
       {selectedPurchase && selectedPriceDetails && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs animate-fadeIn p-4 sm:p-6"
           onClick={() => setSelectedPurchase(null)}
         >
-          <div
-            className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 relative border border-gray-100 max-h-[85vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="min-h-full flex items-center justify-center py-4">
+            <div
+              className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 relative border border-gray-100 my-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
             
             {/* Header del Modal */}
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
@@ -762,7 +763,8 @@ export default function PurchasesPage() {
             </div>
           </div>
         </div>
-      )}
+      </div>
+    )}
     </div>
   );
 }
