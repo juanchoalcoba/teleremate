@@ -18,7 +18,8 @@ import {
   LayoutGrid,
   List,
   ArrowUpDown,
-  Filter
+  Filter,
+  Calendar
 } from "lucide-react";
 import { getArticles } from "../../services/api";
 import CatalogGridSlide from "../../components/catalog/CatalogGridSlide";
@@ -35,8 +36,8 @@ export default function CatalogPage() {
   const [quickViewArticle, setQuickViewArticle] = useState(null);
   const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
 
-  const currentCategory = searchParams.get("category") || "deposito";
-  const defaultAuctionDate = "";
+  const currentCategory = searchParams.get("category") || "remate";
+  const defaultAuctionDate = currentCategory === "remate" ? "2026-08-27T00:00:00.000Z" : "";
 
   const filters = {
     category: currentCategory,
@@ -51,10 +52,17 @@ export default function CatalogPage() {
   const page = parseInt(searchParams.get("page") || "1", 10);
 
   const CATEGORY_TABS = [
-    { value: "deposito", label: "Venta Directa", icon: Package },
     { value: "remate", label: "A Rematar", icon: Gavel },
+    { value: "deposito", label: "Venta Directa", icon: Package },
     { value: "inmueble", label: "Inmuebles", icon: Package },
     { value: "vehiculo", label: "Vehículos", icon: Package },
+  ];
+
+  const REMATE_DAYS = [
+    { value: "2026-08-27T00:00:00.000Z", label: "Jueves 27", subtitle: "27 de Agosto" },
+    { value: "2026-08-28T00:00:00.000Z", label: "Viernes 28", subtitle: "28 de Agosto" },
+    { value: "2026-08-29T00:00:00.000Z", label: "Sábado 29", subtitle: "29 de Agosto" },
+    { value: "2026-08-30T00:00:00.000Z", label: "Domingo 30", subtitle: "30 de Agosto" },
   ];
 
   const CONDITION_TABS = [
@@ -107,11 +115,13 @@ export default function CatalogPage() {
     });
   }, [setSearchParams]);
 
+  const limitPerPage = currentCategory === "remate" ? 50 : 12;
+
   const queryParams = {
     ...filters,
     search: search || undefined,
     page,
-    limit: 12,
+    limit: limitPerPage,
   };
 
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
@@ -205,7 +215,7 @@ export default function CatalogPage() {
                     onClick={() =>
                       updateFilters({
                         category: tab.value,
-                        auctionDate: "",
+                        auctionDate: tab.value === "remate" ? "2026-08-27T00:00:00.000Z" : "",
                         isNewCondition: "",
                         subcategory: "",
                       })
@@ -225,6 +235,34 @@ export default function CatalogPage() {
                 );
               })}
             </div>
+
+            {/* Sub-tabs for "A Rematar" */}
+            {filters.category === "remate" && (
+              <div className="flex flex-col gap-3 pt-1">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+                  {REMATE_DAYS.map((day) => {
+                    const isSelected = (filters.auctionDate || "2026-08-27T00:00:00.000Z") === day.value;
+                    return (
+                      <button
+                        key={day.value}
+                        onClick={() => updateFilters({ auctionDate: day.value })}
+                        className={`px-5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 ${
+                          isSelected
+                            ? "bg-[#9a7b38] text-white border-[#9a7b38] shadow-sm font-black scale-[1.02]"
+                            : "bg-white text-gray-700 border-gray-200 hover:bg-amber-50/50 hover:border-amber-300"
+                        }`}
+                      >
+                        <Calendar size={14} className={isSelected ? "text-white" : "text-amber-700"} />
+                        <span>{day.label}</span>
+                        <span className={`text-[10px] opacity-80 ${isSelected ? "text-amber-100" : "text-gray-500"}`}>
+                          ({day.subtitle})
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Sub-tabs for "Venta Directa" */}
             {filters.category === "deposito" && (

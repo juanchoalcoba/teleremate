@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Package } from "lucide-react";
 import { getArticles } from "../../services/api";
 import ArticleCard from "./ArticleCard";
+import AuctionLotRow from "./AuctionLotRow";
 
 export default function CatalogGridSlide({ 
   page, 
@@ -15,11 +16,14 @@ export default function CatalogGridSlide({
   sortOrder = "newest",
   onQuickView,
 }) {
+  const isRemateCategory = filters.category === "remate";
+  const limitPerPage = isRemateCategory ? 50 : 12;
+
   const queryParams = {
     ...filters,
     search: search || undefined,
     page,
-    limit: 12,
+    limit: limitPerPage,
   };
 
   const { data, isLoading, isFetching, isError, refetch } = useQuery({
@@ -32,6 +36,12 @@ export default function CatalogGridSlide({
 
   // Sort articles locally for instantaneous smooth UX
   const articles = [...rawArticles].sort((a, b) => {
+    if (isRemateCategory) {
+      // Keep numerical lot order for remates
+      const lotA = parseInt(a.auctionLot || a.lotNumber || "0", 10);
+      const lotB = parseInt(b.auctionLot || b.lotNumber || "0", 10);
+      return lotA - lotB;
+    }
     const priceA = a.price || a.estimatedPrice || 0;
     const priceB = b.price || b.estimatedPrice || 0;
     if (sortOrder === "price_asc") return priceA - priceB;
@@ -52,6 +62,18 @@ export default function CatalogGridSlide({
   }
 
   if (isLoading || !shouldFetch) {
+    if (isRemateCategory) {
+      return (
+        <div className="flex flex-col gap-2.5">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-16 bg-white border border-gray-100 animate-pulse rounded-xl shadow-xs"
+            />
+          ))}
+        </div>
+      );
+    }
     return (
       <div className={viewMode === "list" ? "flex flex-col gap-4" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"}>
         {Array.from({ length: 12 }).map((_, i) => (
@@ -73,7 +95,7 @@ export default function CatalogGridSlide({
           onClick={() => {
             setSearch("");
             updateFilters({
-              category: "deposito",
+              category: "remate",
               status: "",
               minPrice: "",
               maxPrice: "",
@@ -83,6 +105,16 @@ export default function CatalogGridSlide({
         >
           Limpiar todos los filtros
         </button>
+      </div>
+    );
+  }
+
+  if (isRemateCategory) {
+    return (
+      <div className={`transition-opacity flex flex-col gap-2.5 ${isFetching ? "opacity-50" : ""}`}>
+        {articles.map((a) => (
+          <AuctionLotRow key={a._id} article={a} theme={theme} />
+        ))}
       </div>
     );
   }
@@ -107,3 +139,4 @@ export default function CatalogGridSlide({
     </div>
   );
 }
+
