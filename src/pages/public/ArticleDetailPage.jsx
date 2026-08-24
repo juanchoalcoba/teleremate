@@ -181,30 +181,41 @@ export default function ArticleDetailPage() {
 
           <div className="bg-dark-950 text-white p-8 rounded-4xl shadow-xl">
             <div className="flex items-end justify-between gap-4 mb-8">
-              <div>
-                {article.category === "deposito" ? (
-                  <>
-                    <p className="text-gray-400 text-[10px] font-medium tracking-widest mb-1 line-through decoration-gray-500/50">
-                      Base: {getCurrencySymbol(article.currency, article.category)} {article.estimatedPrice?.toLocaleString("es-UY")}
-                    </p>
-                    <p className="text-brand-300 text-[10px] font-black mb-1 uppercase tracking-[0.2em]">
-                      Final (+20% com.)
-                    </p>
-                    <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-                      {getCurrencySymbol(article.currency, article.category)} {Math.round(article.estimatedPrice * 1.2)?.toLocaleString("es-UY")}
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-gray-400 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
-                      {getPriceLabel(article)}
-                    </p>
-                    <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
-                      {getCurrencySymbol(article.currency, article.category)} {article.estimatedPrice?.toLocaleString("es-UY")}
-                    </p>
-                  </>
-                )}
-              </div>
+              {article.category !== "remate" ? (
+                <div>
+                  {article.category === "deposito" ? (
+                    <>
+                      <p className="text-gray-400 text-[10px] font-medium tracking-widest mb-1 line-through decoration-gray-500/50">
+                        Base: {getCurrencySymbol(article.currency, article.category)} {article.estimatedPrice?.toLocaleString("es-UY")}
+                      </p>
+                      <p className="text-brand-300 text-[10px] font-black mb-1 uppercase tracking-[0.2em]">
+                        Final (+20% com.)
+                      </p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                        {getCurrencySymbol(article.currency, article.category)} {Math.round(article.estimatedPrice * 1.2)?.toLocaleString("es-UY")}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-gray-400 text-[10px] font-black mb-2 uppercase tracking-[0.2em]">
+                        {getPriceLabel(article)}
+                      </p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-black text-white whitespace-nowrap">
+                        {getCurrencySymbol(article.currency, article.category)} {article.estimatedPrice?.toLocaleString("es-UY")}
+                      </p>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-amber-400 text-[11px] font-black uppercase tracking-[0.2em]">
+                    Super Teleremate
+                  </p>
+                  <p className="text-lg font-bold text-gray-200 mt-1">
+                    Lote #{article.auctionLot || article.lotNumber}
+                  </p>
+                </div>
+              )}
               <div className="text-right">
                 {article.category === "remate" ? (
                   <>
@@ -280,14 +291,6 @@ export default function ArticleDetailPage() {
                     </button>
                   </div>
                 </>
-              )}
-              {article.category === "remate" && article.status !== "sold" && (
-                <button
-                  onClick={() => setShowAnnotationModal(true)}
-                  className="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-4 rounded-2xl shadow-xl shadow-brand-500/20 active:scale-95 transition-all mb-3 flex items-center justify-center gap-2"
-                >
-                  <BookmarkPlus size={20} /> ANOTARME AL REMATE
-                </button>
               )}
               <a
                 href={getWALink(TELEREMATE_WA, WAMessages.inquiry(article.lotNumber, article.title))}
