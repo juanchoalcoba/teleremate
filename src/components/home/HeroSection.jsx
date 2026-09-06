@@ -98,7 +98,7 @@ export default function HeroSection() {
               SLIDE 1: EL SHOWROOM DE OPORTUNIDADES
           ══════════════════════════════════════════════════════════════ */}
           <SwiperSlide className="w-full">
-            <div className="relative w-full min-h-[500px] sm:min-h-[520px] lg:min-h-[540px] xl:min-h-[560px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white flex items-center overflow-hidden px-6 sm:px-12 lg:px-16 xl:px-24 py-6 sm:py-8 lg:py-10">
+            <div className="relative w-full min-h-[500px] sm:min-h-[520px] lg:min-h-[540px] xl:min-h-[560px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white flex items-center overflow-hidden px-4 sm:px-10 lg:px-16 xl:px-24 py-6 sm:py-8 lg:py-10">
               
               {/* Iluminación ambiental */}
               <div className="absolute top-1/2 right-20 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/20 rounded-full blur-[150px] pointer-events-none" />
@@ -165,18 +165,18 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Botones */}
-                  <div className="flex flex-row items-center gap-3 w-full">
+                  {/* Botones: Apilados en móvil (100% ancho) y en línea en tablet/desktop para NUNCA salir de pantalla */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                     <Link
                       to="/catalogo"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl sm:rounded-2xl shadow-lg shadow-orange-500/30 transition-all active:scale-95 whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl shadow-lg shadow-orange-500/30 transition-all active:scale-95 text-center"
                     >
                       <span>VER CATÁLOGO</span>
                       <ArrowRight size={16} />
                     </Link>
                     <Link
                       to="/vender"
-                      className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl sm:rounded-2xl transition-all active:scale-95 whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all active:scale-95 text-center"
                     >
                       <span>VENDER ARTÍCULO</span>
                       <MessageCircle size={16} className="text-emerald-400" />
@@ -201,7 +201,7 @@ export default function HeroSection() {
               SLIDE 2: CATEGORÍAS PRINCIPALES (MISMO ALTO Y PROPORCIÓN)
           ══════════════════════════════════════════════════════════════ */}
           <SwiperSlide className="w-full">
-            <div className="relative w-full min-h-[500px] sm:min-h-[520px] lg:min-h-[540px] xl:min-h-[560px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white flex items-center overflow-hidden px-6 sm:px-12 lg:px-16 xl:px-24 py-6 sm:py-8 lg:py-10">
+            <div className="relative w-full min-h-[500px] sm:min-h-[520px] lg:min-h-[540px] xl:min-h-[560px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white flex items-center overflow-hidden px-4 sm:px-10 lg:px-16 xl:px-24 py-6 sm:py-8 lg:py-10">
               
               {/* Iluminación ambiental */}
               <div className="absolute top-1/2 right-20 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/20 rounded-full blur-[150px] pointer-events-none" />
@@ -267,18 +267,18 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Botones */}
-                  <div className="flex flex-row items-center gap-3 w-full">
+                  {/* Botones: Apilados en móvil (100% ancho) y en línea en tablet/desktop */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                     <Link
                       to="/catalogo"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl sm:rounded-2xl shadow-lg shadow-orange-500/30 transition-all active:scale-95 whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl shadow-lg shadow-orange-500/30 transition-all active:scale-95 text-center"
                     >
                       <span>VER CATÁLOGO</span>
                       <ArrowRight size={16} />
                     </Link>
                     <Link
                       to="/como-funciona"
-                      className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl sm:rounded-2xl transition-all active:scale-95 whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all active:scale-95 text-center"
                     >
                       <Play size={14} className="text-orange-400 fill-orange-400" />
                       <span>CÓMO FUNCIONA</span>
@@ -328,7 +328,7 @@ export default function HeroSection() {
               SLIDE 3: COMPRA SEGURA Y GARANTÍA (MISMO FORMATO Y ALTO)
           ══════════════════════════════════════════════════════════════ */}
           <SwiperSlide className="w-full">
-            <div className="relative w-full min-h-[500px] sm:min-h-[520px] lg:min-h-[540px] xl:min-h-[560px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white flex items-center overflow-hidden px-6 sm:px-12 lg:px-16 xl:px-24 py-6 sm:py-8 lg:py-10">
+            <div className="relative w-full min-h-[500px] sm:min-h-[520px] lg:min-h-[540px] xl:min-h-[560px] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-white flex items-center overflow-hidden px-4 sm:px-10 lg:px-16 xl:px-24 py-6 sm:py-8 lg:py-10">
               
               {/* Iluminación ambiental */}
               <div className="absolute top-1/2 right-20 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/20 rounded-full blur-[150px] pointer-events-none" />
@@ -394,11 +394,11 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Botones */}
-                  <div className="flex flex-row items-center gap-3 w-full">
+                  {/* Botones: Apilados en móvil (100% ancho) y en línea en tablet/desktop */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                     <Link
                       to="/catalogo"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl sm:rounded-2xl shadow-lg shadow-orange-500/30 transition-all active:scale-95 whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 hover:from-orange-600 hover:to-orange-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl shadow-lg shadow-orange-500/30 transition-all active:scale-95 text-center"
                     >
                       <span>VER CATÁLOGO</span>
                       <ArrowRight size={16} />
@@ -407,7 +407,7 @@ export default function HeroSection() {
                       href="https://chat.whatsapp.com/BSnSdwa9CSQHWR2BM1HkHA"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl sm:rounded-2xl transition-all active:scale-95 whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all active:scale-95 text-center"
                     >
                       <span>GRUPO WHATSAPP</span>
                       <MessageCircle size={16} className="text-emerald-400" />
@@ -459,21 +459,21 @@ export default function HeroSection() {
 
         </Swiper>
 
-        {/* ── BOTONES DE NAVEGACIÓN LATERALES (FLOTANTES BIEN A LOS EXTREMOS) ── */}
+        {/* ── BOTONES DE NAVEGACIÓN LATERALES (FLOTANTES CON TAMAÑO RESPONSIVO) ── */}
         <button
           onClick={() => swiperInstance?.slidePrev()}
-          className="absolute left-3 sm:left-5 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/70 hover:bg-black text-white border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl hover:scale-110"
+          className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-full bg-black/70 hover:bg-black text-white border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl hover:scale-110"
           aria-label="Slide anterior"
         >
-          <ChevronLeft size={22} />
+          <ChevronLeft size={20} />
         </button>
 
         <button
           onClick={() => swiperInstance?.slideNext()}
-          className="absolute right-3 sm:right-5 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/70 hover:bg-black text-white border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl hover:scale-110"
+          className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-full bg-black/70 hover:bg-black text-white border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-300 shadow-2xl hover:scale-110"
           aria-label="Slide siguiente"
         >
-          <ChevronRight size={22} />
+          <ChevronRight size={20} />
         </button>
 
         {/* ── PUNTOS DE PAGINACIÓN NARANJAS EN LA PARTE INFERIOR ── */}
