@@ -37,24 +37,6 @@ const PublicLayout = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* ── TOP CONTACT BAR ── */}
-      <div className="hidden md:block bg-gray-100/80 border-b border-gray-200/60 text-gray-700 py-1.5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-[11px] font-bold tracking-widest">
-          <a
-            href="tel:099626385"
-            className="flex items-center gap-2 text-gray-600 hover:text-[#9a7b38] transition-colors"
-          >
-            <Phone size={12} className="text-[#9a7b38]" /> 099 626 385
-          </a>
-          <a
-            href="mailto:contacto@teleremate.com.uy"
-            className="flex items-center gap-2 text-gray-600 hover:text-[#9a7b38] transition-colors"
-          >
-            <Mail size={12} className="text-[#9a7b38]" /> contacto@tele-remate.com.uy
-          </a>
-        </div>
-      </div>
-
       {/* ── NAVBAR ── */}
       <header
         className={`sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md ${
