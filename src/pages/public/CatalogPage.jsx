@@ -75,6 +75,13 @@ export default function CatalogPage() {
     { label: "Varios / Otros", icon: Grid },
   ];
 
+  const AUCTION_DATES = [
+    { value: "", label: "Todos", fullLabel: "Todos los días" },
+    { value: "2026-09-25T00:00:00.000Z", label: "Viernes 25", fullLabel: "Viernes 25 de Setiembre" },
+    { value: "2026-09-26T00:00:00.000Z", label: "Sábado 26", fullLabel: "Sábado 26 de Setiembre" },
+    { value: "2026-09-27T00:00:00.000Z", label: "Domingo 27", fullLabel: "Domingo 27 de Setiembre" },
+  ];
+
   const updateFilters = useCallback((patch) => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
@@ -133,6 +140,7 @@ export default function CatalogPage() {
     filters.status ||
     filters.minPrice ||
     filters.maxPrice ||
+    filters.auctionDate ||
     search;
 
   return (
@@ -286,6 +294,32 @@ export default function CatalogPage() {
                 </div>
               </div>
             )}
+
+            {/* Sub-tabs for "A Rematar" */}
+            {filters.category === "remate" && (
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1 pt-1">
+                {AUCTION_DATES.map((sub) => {
+                  const isSelected = (filters.auctionDate || "") === sub.value;
+                  return (
+                    <button
+                      key={sub.label}
+                      onClick={() => updateFilters({ auctionDate: sub.value })}
+                      className={`px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 cursor-pointer ${
+                        isSelected
+                          ? "bg-amber-50/80 border-amber-600/40 text-amber-950 shadow-xs font-black"
+                          : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-900"
+                      }`}
+                    >
+                      <Calendar
+                        size={14}
+                        className={isSelected ? "text-amber-700" : "text-gray-400"}
+                      />
+                      {sub.fullLabel || sub.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
@@ -341,6 +375,19 @@ export default function CatalogPage() {
               </span>
             )}
 
+            {filters.auctionDate && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-600/30 text-amber-950 rounded-full text-xs font-bold">
+                <Calendar size={12} className="text-amber-700" />
+                {AUCTION_DATES.find((d) => d.value === filters.auctionDate)?.fullLabel || "Fecha de Remate"}
+                <button
+                  onClick={() => updateFilters({ auctionDate: "" })}
+                  className="hover:text-amber-700 cursor-pointer"
+                >
+                  <X size={12} />
+                </button>
+              </span>
+            )}
+
             <button
               onClick={() => {
                 setSearch("");
@@ -350,6 +397,7 @@ export default function CatalogPage() {
                   status: "",
                   minPrice: "",
                   maxPrice: "",
+                  auctionDate: "",
                 });
               }}
               className="text-xs font-bold text-amber-700 hover:underline ml-auto cursor-pointer"

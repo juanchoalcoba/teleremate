@@ -62,18 +62,6 @@ export default function CatalogGridSlide({
   }
 
   if (isLoading || !shouldFetch) {
-    if (isRemateCategory) {
-      return (
-        <div className="flex flex-col gap-2.5">
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-16 bg-white border border-gray-100 animate-pulse rounded-xl shadow-xs"
-            />
-          ))}
-        </div>
-      );
-    }
     return (
       <div className={viewMode === "list" ? "flex flex-col gap-4" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"}>
         {Array.from({ length: 12 }).map((_, i) => (
@@ -99,22 +87,13 @@ export default function CatalogGridSlide({
               status: "",
               minPrice: "",
               maxPrice: "",
+              auctionDate: "",
             });
           }}
           className="mt-4 text-amber-700 font-bold text-sm hover:underline transition-colors"
         >
           Limpiar todos los filtros
         </button>
-      </div>
-    );
-  }
-
-  if (isRemateCategory) {
-    return (
-      <div className={`transition-opacity flex flex-col gap-2.5 ${isFetching ? "opacity-50" : ""}`}>
-        {articles.map((a) => (
-          <AuctionLotRow key={a._id} article={a} theme={theme} />
-        ))}
       </div>
     );
   }

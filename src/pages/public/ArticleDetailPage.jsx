@@ -264,6 +264,15 @@ export default function ArticleDetailPage() {
 
             {/* Action Buttons */}
             <div className="space-y-3">
+              {article.category === "remate" && article.status !== "sold" && (
+                <button
+                  onClick={() => setShowAnnotationModal(true)}
+                  className="w-full bg-white hover:bg-gray-100 text-black border-2 border-black font-black py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer mb-3"
+                >
+                  <BookmarkPlus size={18} /> ANOTARME AL REMATE
+                </button>
+              )}
+
               {(article.status !== "sold" && article.status !== "reserved" && article.category !== "remate") && (
                 <>
                   <div className="grid grid-cols-2 gap-3 mb-3">

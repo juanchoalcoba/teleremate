@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { X, Tag, ArrowRight, ExternalLink, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, Tag, ArrowRight, ExternalLink, ShieldCheck, ChevronLeft, ChevronRight, BookmarkPlus } from "lucide-react";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getCategoryLabel } from "../../utils/articleUtils";
+import AnnotationModal from "./AnnotationModal";
 
 export default function QuickViewModal({ article, onClose, onOpenPurchase }) {
   const [selectedImgIndex, setSelectedImgIndex] = useState(0);
+  const [showAnnotationModal, setShowAnnotationModal] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -172,6 +174,16 @@ export default function QuickViewModal({ article, onClose, onOpenPurchase }) {
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-2">
+            {category === "remate" && status !== "sold" && (
+              <button
+                onClick={() => setShowAnnotationModal(true)}
+                className="w-full bg-white hover:bg-gray-100 text-black border-2 border-black font-black py-3 px-4 rounded-xl shadow-md transition-all text-xs uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+              >
+                <BookmarkPlus size={16} />
+                <span>Anotarme al Remate</span>
+              </button>
+            )}
+
             {category === "deposito" && status !== "sold" && status !== "reserved" && (
               <button
                 onClick={() => {
@@ -196,6 +208,13 @@ export default function QuickViewModal({ article, onClose, onOpenPurchase }) {
           </div>
         </div>
       </div>
+
+      {showAnnotationModal && (
+        <AnnotationModal
+          articleId={_id}
+          onClose={() => setShowAnnotationModal(false)}
+        />
+      )}
     </div>
   );
 }
