@@ -36,15 +36,18 @@ export default function CatalogPage() {
   const [quickViewArticle, setQuickViewArticle] = useState(null);
   const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
 
-  const currentCategory = searchParams.get("category") || "deposito";
-  const defaultAuctionDate = "";
+  const currentCategory = searchParams.get("category") || "remate";
+  const rawAuctionDate = searchParams.get("auctionDate");
+  const selectedAuctionDate = currentCategory === "remate"
+    ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-09-25T00:00:00.000Z"))
+    : "";
 
   const filters = {
     category: currentCategory,
     status: searchParams.get("status") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    auctionDate: searchParams.get("auctionDate") || defaultAuctionDate,
+    auctionDate: selectedAuctionDate,
     isNewCondition: searchParams.get("isNewCondition") || "",
     subcategory: searchParams.get("subcategory") || "",
   };
@@ -76,7 +79,7 @@ export default function CatalogPage() {
   ];
 
   const AUCTION_DATES = [
-    { value: "", label: "Todos", fullLabel: "Todos los días" },
+    { value: "all", label: "Todos", fullLabel: "Todos los días" },
     { value: "2026-09-25T00:00:00.000Z", label: "Viernes 25", fullLabel: "Viernes 25 de Setiembre" },
     { value: "2026-09-26T00:00:00.000Z", label: "Sábado 26", fullLabel: "Sábado 26 de Setiembre" },
     { value: "2026-09-27T00:00:00.000Z", label: "Domingo 27", fullLabel: "Domingo 27 de Setiembre" },
@@ -216,7 +219,7 @@ export default function CatalogPage() {
                     onClick={() =>
                       updateFilters({
                         category: tab.value,
-                        auctionDate: "",
+                        auctionDate: tab.value === "remate" ? "2026-09-25T00:00:00.000Z" : "",
                         isNewCondition: "",
                         subcategory: "",
                       })
@@ -299,7 +302,10 @@ export default function CatalogPage() {
             {filters.category === "remate" && (
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1 pt-1">
                 {AUCTION_DATES.map((sub) => {
-                  const isSelected = (filters.auctionDate || "") === sub.value;
+                  const isSelected =
+                    sub.value === "all"
+                      ? rawAuctionDate === "all"
+                      : selectedAuctionDate === sub.value;
                   return (
                     <button
                       key={sub.label}
@@ -380,7 +386,7 @@ export default function CatalogPage() {
                 <Calendar size={12} className="text-amber-700" />
                 {AUCTION_DATES.find((d) => d.value === filters.auctionDate)?.fullLabel || "Fecha de Remate"}
                 <button
-                  onClick={() => updateFilters({ auctionDate: "" })}
+                  onClick={() => updateFilters({ auctionDate: "all" })}
                   className="hover:text-amber-700 cursor-pointer"
                 >
                   <X size={12} />
@@ -397,7 +403,7 @@ export default function CatalogPage() {
                   status: "",
                   minPrice: "",
                   maxPrice: "",
-                  auctionDate: "",
+                  auctionDate: currentCategory === "remate" ? "2026-09-25T00:00:00.000Z" : "",
                 });
               }}
               className="text-xs font-bold text-amber-700 hover:underline ml-auto cursor-pointer"
