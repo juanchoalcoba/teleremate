@@ -46,7 +46,7 @@ export default function CatalogPage() {
   const currentCategory = searchParams.get("category") || "remate";
   const rawAuctionDate = searchParams.get("auctionDate");
   const selectedAuctionDate = currentCategory === "remate"
-    ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-09-25T00:00:00.000Z"))
+    ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-09-26T00:00:00.000Z"))
     : "";
 
   const filters = {
@@ -226,7 +226,7 @@ export default function CatalogPage() {
                     onClick={() =>
                       updateFilters({
                         category: tab.value,
-                        auctionDate: tab.value === "remate" ? "2026-09-25T00:00:00.000Z" : "",
+                        auctionDate: tab.value === "remate" ? "2026-09-26T00:00:00.000Z" : "",
                         isNewCondition: "",
                         subcategory: "",
                       })
@@ -424,7 +424,7 @@ export default function CatalogPage() {
                   status: "",
                   minPrice: "",
                   maxPrice: "",
-                  auctionDate: currentCategory === "remate" ? "2026-09-25T00:00:00.000Z" : "",
+                  auctionDate: currentCategory === "remate" ? "2026-09-26T00:00:00.000Z" : "",
                 });
               }}
               className="text-xs font-bold text-amber-700 hover:underline ml-auto cursor-pointer"
