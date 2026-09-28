@@ -43,7 +43,7 @@ export default function CatalogPage() {
     setShowScrollHint(scrollLeft + clientWidth < scrollWidth - 15);
   };
 
-  const currentCategory = searchParams.get("category") || "remate";
+  const currentCategory = searchParams.get("category") || "deposito";
   const rawAuctionDate = searchParams.get("auctionDate");
   const selectedAuctionDate = currentCategory === "remate"
     ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-09-27T00:00:00.000Z"))
