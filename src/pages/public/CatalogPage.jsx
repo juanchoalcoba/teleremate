@@ -43,10 +43,10 @@ export default function CatalogPage() {
     setShowScrollHint(scrollLeft + clientWidth < scrollWidth - 15);
   };
 
-  const currentCategory = searchParams.get("category") || "deposito";
+  const currentCategory = searchParams.get("category") || "remate";
   const rawAuctionDate = searchParams.get("auctionDate");
   const selectedAuctionDate = currentCategory === "remate"
-    ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-09-27T00:00:00.000Z"))
+    ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-10-10T00:00:00.000Z"))
     : "";
 
   const filters = {
@@ -87,9 +87,8 @@ export default function CatalogPage() {
 
   const AUCTION_DATES = [
     { value: "all", label: "Todos", fullLabel: "Todos los días" },
-    { value: "2026-09-25T00:00:00.000Z", label: "Viernes 25", fullLabel: "Viernes 25 de Setiembre" },
-    { value: "2026-09-26T00:00:00.000Z", label: "Sábado 26", fullLabel: "Sábado 26 de Setiembre" },
-    { value: "2026-09-27T00:00:00.000Z", label: "Domingo 27", fullLabel: "Domingo 27 de Setiembre" },
+    { value: "2026-10-10T00:00:00.000Z", label: "Sábado 10", fullLabel: "Sábado 10 de Octubre" },
+    { value: "2026-10-11T00:00:00.000Z", label: "Domingo 11", fullLabel: "Domingo 11 de Octubre" },
   ];
 
   const updateFilters = useCallback((patch) => {
@@ -226,7 +225,7 @@ export default function CatalogPage() {
                     onClick={() =>
                       updateFilters({
                         category: tab.value,
-                        auctionDate: tab.value === "remate" ? "2026-09-27T00:00:00.000Z" : "",
+                        auctionDate: tab.value === "remate" ? "2026-10-10T00:00:00.000Z" : "",
                         isNewCondition: "",
                         subcategory: "",
                       })
@@ -424,7 +423,7 @@ export default function CatalogPage() {
                   status: "",
                   minPrice: "",
                   maxPrice: "",
-                  auctionDate: currentCategory === "remate" ? "2026-09-27T00:00:00.000Z" : "",
+                  auctionDate: currentCategory === "remate" ? "2026-10-10T00:00:00.000Z" : "",
                 });
               }}
               className="text-xs font-bold text-amber-700 hover:underline ml-auto cursor-pointer"
