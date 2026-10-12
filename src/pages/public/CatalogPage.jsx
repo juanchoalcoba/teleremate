@@ -36,18 +36,9 @@ export default function CatalogPage() {
   const [sortOrder, setSortOrder] = useState("newest"); // "newest" | "price_asc" | "price_desc"
   const [quickViewArticle, setQuickViewArticle] = useState(null);
   const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
-  const [showScrollHint, setShowScrollHint] = useState(true);
 
-  const handleSubtabsScroll = (e) => {
-    const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
-    setShowScrollHint(scrollLeft + clientWidth < scrollWidth - 15);
-  };
-
-  const currentCategory = searchParams.get("category") || "remate";
-  const rawAuctionDate = searchParams.get("auctionDate");
-  const selectedAuctionDate = currentCategory === "remate"
-    ? (rawAuctionDate === "all" ? "" : (rawAuctionDate || "2026-10-10T00:00:00.000Z"))
-    : "";
+  const currentCategory = searchParams.get("category") || "deposito";
+  const selectedAuctionDate = searchParams.get("auctionDate") || "";
 
   const filters = {
     category: currentCategory,
@@ -225,7 +216,7 @@ export default function CatalogPage() {
                     onClick={() =>
                       updateFilters({
                         category: tab.value,
-                        auctionDate: tab.value === "remate" ? "2026-10-10T00:00:00.000Z" : "",
+                        auctionDate: "",
                         isNewCondition: "",
                         subcategory: "",
                       })
@@ -304,48 +295,6 @@ export default function CatalogPage() {
               </div>
             )}
 
-            {/* Sub-tabs for "A Rematar" */}
-            {filters.category === "remate" && (
-              <div className="relative">
-                <div
-                  onScroll={handleSubtabsScroll}
-                  className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1 pt-1 pr-10"
-                >
-                  {AUCTION_DATES.map((sub) => {
-                    const isSelected =
-                      sub.value === "all"
-                        ? rawAuctionDate === "all"
-                        : selectedAuctionDate === sub.value;
-                    return (
-                      <button
-                        key={sub.label}
-                        onClick={() => updateFilters({ auctionDate: sub.value })}
-                        className={`px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border flex items-center gap-2 cursor-pointer ${
-                          isSelected
-                            ? "bg-amber-50/80 border-amber-600/40 text-amber-950 shadow-xs font-black"
-                            : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-900"
-                        }`}
-                      >
-                        <Calendar
-                          size={14}
-                          className={isSelected ? "text-amber-700" : "text-gray-400"}
-                        />
-                        {sub.fullLabel || sub.label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Subtle blinking right indicator for mobile */}
-                {showScrollHint && (
-                  <div className="md:hidden pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 flex items-center pr-1 pl-6 h-full bg-gradient-to-l from-[#f8fafc] via-[#f8fafc]/80 to-transparent transition-opacity duration-300">
-                    <div className="w-5 h-5 rounded-full bg-amber-100/90 border border-amber-300/80 shadow-xs flex items-center justify-center text-amber-800 animate-pulse">
-                      <ChevronRight size={13} className="stroke-[2.5]" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
@@ -423,7 +372,7 @@ export default function CatalogPage() {
                   status: "",
                   minPrice: "",
                   maxPrice: "",
-                  auctionDate: currentCategory === "remate" ? "2026-10-10T00:00:00.000Z" : "",
+                  auctionDate: "",
                 });
               }}
               className="text-xs font-bold text-amber-700 hover:underline ml-auto cursor-pointer"
