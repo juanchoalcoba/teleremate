@@ -37,7 +37,7 @@ export default function CatalogPage() {
   const [quickViewArticle, setQuickViewArticle] = useState(null);
   const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
 
-  const currentCategory = searchParams.get("category") || "deposito";
+  const currentCategory = searchParams.get("category") || "remate";
   const selectedAuctionDate = searchParams.get("auctionDate") || "";
 
   const filters = {
@@ -78,8 +78,7 @@ export default function CatalogPage() {
 
   const AUCTION_DATES = [
     { value: "all", label: "Todos", fullLabel: "Todos los días" },
-    { value: "2026-10-10T00:00:00.000Z", label: "Sábado 10", fullLabel: "Sábado 10 de Octubre" },
-    { value: "2026-10-11T00:00:00.000Z", label: "Domingo 11", fullLabel: "Domingo 11 de Octubre" },
+    { value: "2026-10-24T00:00:00.000Z", label: "Sábado 24", fullLabel: "Sábado 24 de Octubre" },
   ];
 
   const updateFilters = useCallback((patch) => {
@@ -461,7 +460,7 @@ export default function CatalogPage() {
                 </p>
                 <button
                   onClick={() => {
-                    setSearchParams(new URLSearchParams({ category: "deposito" }));
+                    setSearchParams(new URLSearchParams({ category: "remate" }));
                   }}
                   className="mt-4 text-amber-700 font-bold text-sm hover:underline transition-colors"
                 >
