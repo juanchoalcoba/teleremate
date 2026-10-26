@@ -37,7 +37,7 @@ export default function CatalogPage() {
   const [quickViewArticle, setQuickViewArticle] = useState(null);
   const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
 
-  const currentCategory = searchParams.get("category") || "remate";
+  const currentCategory = searchParams.get("category") || "deposito";
   const selectedAuctionDate = searchParams.get("auctionDate") || "";
 
   const filters = {
@@ -460,7 +460,7 @@ export default function CatalogPage() {
                 </p>
                 <button
                   onClick={() => {
-                    setSearchParams(new URLSearchParams({ category: "remate" }));
+                    setSearchParams(new URLSearchParams({ category: "deposito" }));
                   }}
                   className="mt-4 text-amber-700 font-bold text-sm hover:underline transition-colors"
                 >

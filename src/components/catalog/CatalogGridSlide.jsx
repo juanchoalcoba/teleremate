@@ -83,7 +83,7 @@ export default function CatalogGridSlide({
           onClick={() => {
             setSearch("");
             updateFilters({
-              category: "remate",
+              category: "deposito",
               status: "",
               minPrice: "",
               maxPrice: "",
