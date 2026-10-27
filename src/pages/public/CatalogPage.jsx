@@ -37,7 +37,7 @@ export default function CatalogPage() {
   const [quickViewArticle, setQuickViewArticle] = useState(null);
   const [purchaseModalArticle, setPurchaseModalArticle] = useState(null);
 
-  const currentCategory = searchParams.get("category") || "deposito";
+  const currentCategory = searchParams.get("category") || "remate";
   const selectedAuctionDate = searchParams.get("auctionDate") || "";
 
   const filters = {
@@ -78,7 +78,8 @@ export default function CatalogPage() {
 
   const AUCTION_DATES = [
     { value: "all", label: "Todos", fullLabel: "Todos los días" },
-    { value: "2026-10-24T00:00:00.000Z", label: "Sábado 24", fullLabel: "Sábado 24 de Octubre" },
+    { value: "2026-10-31T00:00:00.000Z", label: "Sábado 31", fullLabel: "Sábado 31 de Octubre" },
+    { value: "2026-11-01T00:00:00.000Z", label: "Domingo 1", fullLabel: "Domingo 1 de Noviembre" },
   ];
 
   const updateFilters = useCallback((patch) => {
@@ -294,6 +295,37 @@ export default function CatalogPage() {
               </div>
             )}
 
+            {/* Sub-tabs for "A Rematar" (Días de Remate) */}
+            {filters.category === "remate" && (
+              <div className="flex flex-col gap-3 pt-1">
+                <div className="flex items-center gap-2 overflow-x-auto md:flex-wrap no-scrollbar pb-1 px-1">
+                  {AUCTION_DATES.map((dateTab) => {
+                    const isSelected =
+                      (dateTab.value === "all" && (!filters.auctionDate || filters.auctionDate === "all")) ||
+                      filters.auctionDate === dateTab.value;
+                    return (
+                      <button
+                        key={dateTab.value}
+                        onClick={() =>
+                          updateFilters({
+                            auctionDate: dateTab.value === "all" ? "" : dateTab.value,
+                          })
+                        }
+                        className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                          isSelected
+                            ? "bg-zinc-900 text-white shadow-sm"
+                            : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                        }`}
+                      >
+                        <Calendar size={14} className={isSelected ? "text-amber-400" : "text-gray-400"} />
+                        {dateTab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
 
@@ -354,7 +386,7 @@ export default function CatalogPage() {
                 <Calendar size={12} className="text-amber-700" />
                 {AUCTION_DATES.find((d) => d.value === filters.auctionDate)?.fullLabel || "Fecha de Remate"}
                 <button
-                  onClick={() => updateFilters({ auctionDate: "all" })}
+                  onClick={() => updateFilters({ auctionDate: "" })}
                   className="hover:text-amber-700 cursor-pointer"
                 >
                   <X size={12} />
@@ -460,7 +492,7 @@ export default function CatalogPage() {
                 </p>
                 <button
                   onClick={() => {
-                    setSearchParams(new URLSearchParams({ category: "deposito" }));
+                    setSearchParams(new URLSearchParams({ category: "remate" }));
                   }}
                   className="mt-4 text-amber-700 font-bold text-sm hover:underline transition-colors"
                 >
